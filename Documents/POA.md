@@ -22,8 +22,7 @@
 
 ## 1. Introduction
 
-This report contains the Plan of Approach for Team 3.
-
+This is the POA document for Team 3 in this document w
 ## 2. Background
 
 [Include relevant information about the project or task at hand.]
