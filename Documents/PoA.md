@@ -22,7 +22,9 @@
 
 ## 1. Introduction
 
+This document will describe the Plan of Approach for the group project "Client on Board" in the 2nd quartile of the second year for 2023/2024. The name of the company that made the assignment is Parantion. The product we are asked to deliver is a solution in the form of a program for managing performance automatic regression testing.
 
+The plan will cover everything from understanding what Parantion needs to looking at how other people do similar things in the software world. We'll decide what our program needs to do and how it should work. We know that things might not always go smoothly. Thus, we'll think ahead about what could go wrong and come up with ways to fix problems quickly. This way, we can keep the project moving forward.
 
 ## 2. Background
 
