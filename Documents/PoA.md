@@ -41,6 +41,19 @@ This technology stack, which includes TypeScript and Svelte, not only fits with 
 
 [Provide a summary or overview of expected results.]
 
+- Implementing a websocket, will allow for immediate reporting of blockers encountered during testing.
+  It will provide real-time notifications to relevant stakeholders when blockers are identified. It will be easier to solve problems.
+- Regression Test Reporting:
+  Reporting system provides a clear overview of completed regression tests for each part of the project.
+  Detailed reports could include information on passed and failed tests, allowing for a quick assessment of the product's stability.
+- Board Reset for New Sprint:
+  Development of a feature that allows for easy resetting of a new testing board to streamline the transition to a new sprint
+  could involve archiving previous test data and configurations for a clean slate.
+- Progression Tracking Based on Weight:
+  This could provide insights into the overall progress of testing based on the assigned weight to different test cases.
+- Test Due Date Notifications:
+  Integration of a notification system to remind testers about upcoming test.
+  This feature ensures that testing activities stay on schedule, so they can get it easier, contributing to timely product development.
 
 ## 4. Organization
 
