@@ -31,6 +31,8 @@ Dynamic Deventer company Parantion is looking to streamline its JetBrains Space-
 
 **Backend:** Using **TypeScript** in conjunction with **Express.js** guarantees a strong, statically-typed base for server-side functions.
 
+**Database:** The inclusion of MySQL enhances data management capabilities, providing a reliable and scalable solution for storing and retrieving essential information.
+
 This technology stack, which includes TypeScript and Svelte, not only fits with the team's experience but also presents the Regression Testing Management System as a cutting-edge option. Future improvements are supported by the iterative development methodology, which guarantees that the system adapts to Parantion's changing requirements for dynamic testing.
 
 ## 3. Results
