@@ -22,10 +22,8 @@ motivation," the team will accept it, but the member will be expected to catch u
 make up for the missed work.
 
 If a team member fails to complete their work for a second time and the explanation is simply "I was lazy," without
-a legitimate reason such as illness, then a strike will be issued. Craig will be notified of the strike, and the
-team member will be expected to catch up and spend double the time to make up for the missed work. We believe that
-this approach will encourage all team members to take their responsibilities seriously and to work together to
-achieve our goals.
+a legitimate reason such as illness, then a strike will be issued. We believe that this approach will encourage all
+team members to take their responsibilities seriously and to work together to achieve our goals.
 
 We have established a meeting schedule to ensure regular communication and collaboration within our team. We have
 planned to hold three meetings each week, typically scheduled for Monday, Wednesday, and Friday. This means that we
