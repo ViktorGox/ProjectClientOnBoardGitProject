@@ -21,10 +21,60 @@
 - During meetings, maintain a professional and focused environment.
 - Avoid disruptions, side conversations, or unrelated activities.
 
-
 ## Confidentiality and Plagiarism
 - Information and work shared among group members must remain within the group.
 - To prevent plagiarism, members should refrain from sharing their codes with other students.
 
 ## Respect
 - Team members are expected to treat each other with respect.
+
+## Accountability and Responsibility
+- Each team member is accountable for their assigned tasks and responsibilities.
+- If a member is unable to fulfill their duties, they should proactively seek assistance or delegate tasks.
+
+## Communication Channels
+- Utilize designated communication channels (e.g., messaging apps, email) for team discussions and updates.
+- Respond promptly to team messages and notifications.
+
+## Documentation and Transparency
+- Keep thorough documentation of individual and group progress.
+- Be transparent about challenges, setbacks, and changes in project timelines.
+
+## Contribution Equality
+- Strive for an equitable distribution of tasks among team members.
+- Encourage and value the diverse skills and perspectives each member brings.
+
+## Iterative Feedback
+- Provide constructive and respectful feedback to team members on their work.
+- Embrace a culture of continuous improvement and learning.
+
+## Technology and Tool Usage
+- Follow agreed-upon guidelines for using collaborative tools and technologies.
+- Ensure that all team members have access to necessary tools and resources.
+
+## Adherence to Academic Integrity
+- Uphold academic integrity standards and avoid any form of cheating or plagiarism.
+- Cite sources appropriately and adhere to any academic guidelines provided by the lecturer.
+
+## Flexibility and Adaptability
+- Be open to adapting plans and strategies based on the evolving needs of the project.
+- Embrace a flexible mindset to navigate unexpected challenges.
+
+## Professionalism
+- Conduct yourself in a professional manner in all interactions within the team and with external stakeholders.
+- Represent the team positively in academic and professional settings.
+
+## Conflict of Interest
+- Disclose any potential conflicts of interest that may impact the team or project.
+- Work collaboratively to find solutions that mitigate conflicts and maintain the team's integrity.
+
+## Consequences for Violations
+- Clearly outline the consequences for repeated violations of the code of conduct.
+- Ensure that consequences are fair and proportionate to the nature of the violation.
+
+
+
+
+
+## signed by:
+- Justin Fuchs
