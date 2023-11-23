@@ -48,8 +48,8 @@ In terms of organization, each team member has a specific role and responsibilit
 communicate effectively and complete tasks efficiently. Team management tools and social media platforms, such as
 Discord and Google Docs, are used to stay in touch and share documents. The project is broken down into smaller tasks
 for each sprint, and after discussing and deciding on the tasks, each team member is responsible for completing them in
-a timely manner. triweekly meetings are held at university and additional meetings can be scheduled as needed. The team
-also uses Discord and video conferencing to stay in touch outside of the classroom. Feedback is encouraged and used to
+a timely manner. tri-weekly meetings are held at university and additional meetings can be scheduled as needed. The team
+also uses Discord and video conferencing to stay in touch outside the classroom. Feedback is encouraged and used to
 improve the work of the team. However, in case a team member does not complete their task or does not show up,
 the following steps will be taken: first with communication and reminder, then consequences such as warning or strikes,
 and at the end, escalation to the instructor if the problem persists. It is important to keep in mind that the team is
