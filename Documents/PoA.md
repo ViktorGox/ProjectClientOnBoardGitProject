@@ -22,7 +22,9 @@
 
 ## 1. Introduction
 
+This document will describe the Plan of Approach for the group project "Client on Board" in the 2nd quartile of the second year for 2023/2024. The client that has created the assignment is Parantion. The product we are asked to deliver is a solution in the form of a program for performing automatic regression testing.
 
+VIKTOR WILL CONTINUE THIS!
 
 ## 2. Background
 
@@ -36,31 +38,13 @@ Dynamic Deventer company Parantion is looking to streamline its JetBrains Space-
 
 This technology stack, which includes TypeScript and Svelte, not only fits with the team's experience but also presents the Regression Testing Management System as a cutting-edge option. Future improvements are supported by the iterative development methodology, which guarantees that the system adapts to Parantion's changing requirements for dynamic testing.
 
-
 ## 3. Results
 
 [Provide a summary or overview of expected results.]
 
-
 ## 4. Organization
 
-In terms of organization, each team member has a specific role and responsibilities. The team works closely together to
-communicate effectively and complete tasks efficiently. Team management tools and social media platforms, such as
-Discord and Google Docs, are used to stay in touch and share documents. The project is broken down into smaller tasks
-for each sprint, and after discussing and deciding on the tasks, each team member is responsible for completing them in
-a timely manner. triweekly meetings are held at university and additional meetings can be scheduled as needed. The team
-also uses Discord and video conferencing to stay in touch outside of the classroom. Feedback is encouraged and used to
-improve the work of the team. However, in case a team member does not complete their task or does not show up,
-the following steps will be taken: first with communication and reminder, then consequences such as warning or strikes,
-and at the end, escalation to the instructor if the problem persists. It is important to keep in mind that the team is
-a cohesive unit and everyone's contributions are important for the success of the project. Therefore, non-compliance or
-non-attendance issues should be addressed in a timely and professional manner and a solution that is fair for the whole
-team should be found.
-
-We will follow Scrum roles:
-Product Owner: Justin Fuchs
-Developers: Jafar Alirahmi-Viktor Krastev-Rubén Gómez-Yaroslav Peptiuk-Aleks Proskurkin-Ferhat Kelten
-
+[Detail the organizational structure of the team, including roles and responsibilities.]
 
 ## 5. Borders and Risk
 
