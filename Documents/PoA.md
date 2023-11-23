@@ -64,7 +64,18 @@ Developers: Jafar Alirahmi-Viktor Krastev-Rubén Gómez-Yaroslav Peptiuk-Aleks P
 
 ## 5. Borders and Risk
 
-[Discuss any potential challenges, risks, or limitations that may affect the project.]
+There are some potential challenges, limitations and risks that may affect the project.
+
+* One of our teammates might not put in their expected time and effort into the project, which could affect our overall effort and project's timeline.
+* If a teammate doesn't pull before pushing the code, it will cause merge conflicts for others.
+* Less communication with teammates can lead to problems in finishing the project on time.
+* Not choosing a programming language that everyone agrees for this project might cause delays in completing the project on time.
+* Not attending the class on time might create problems in catching up with the project.
+* Insufficient testing, during development and before deployment can cause critical issues in the project.
+* If the project objectives are not well-defined, it can cause to confusion and a lack of a focus.
+* Changes in project requirements after starting development can cause delays and may require significant adjustments to the existing work.
+* Insufficient documentation of code, processes and decisions can make it difficult for team members to understand and maintain the project.
+
 
 ## 6. Conclusion
 
