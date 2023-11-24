@@ -41,7 +41,6 @@ This technology stack, which includes TypeScript and Svelte, not only fits with 
 
 ## 3. Results
 
-[Provide a summary or overview of expected results.]
 
 - Implementing a websocket, will allow for immediate reporting of blockers encountered during testing.
   It will provide real-time notifications to relevant stakeholders when blockers are identified. It will be easier to solve problems.
@@ -94,7 +93,10 @@ There are some potential challenges, limitations and risks that may affect the p
 
 ## 6. Conclusion
 
-[Summarize key points and outline the overall approach moving forward.]
+In summary, our Plan of Approach lays out a practical strategy for building a regression testing system tailored to Parantion's needs. We've chosen a tech stack that makes sense and outlined features that aim to improve testing efficiency. Team organization follows Scrum principles for a structured workflow.
+in the Borders and Risk chapter we have identified potential challenges like time management and code integration and have plans to deal with them. Simply put, our plan is focused towards delivering a solution that meets Parantion's requirements.
+
+
 
 ---
 
