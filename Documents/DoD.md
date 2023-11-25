@@ -50,5 +50,5 @@
 - Moved to "Testing" on the issue board.
 
 ## Task Closure:
-- The task or user story is marked as "Closed" in the project management tool.
+- The task or user story is marked as "Closed" in the board.
 - Any associated documentation, such as release notes, has been updated.
