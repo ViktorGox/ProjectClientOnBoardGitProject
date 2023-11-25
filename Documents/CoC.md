@@ -9,6 +9,7 @@
 - If a task is deemed too difficult or incompletable, the team member must report back to others.
 - Effective communication is essential for the success of the team.
 
+
 ## Conflict Resolution
 - In case of conflicts between team members, the team shall attempt to resolve the issue internally.
 - If internal resolution is unsuccessful, the matter will be brought to the attention of the lecturer.
@@ -31,6 +32,15 @@
 ## Accountability and Responsibility
 - Each team member is accountable for their assigned tasks and responsibilities.
 - If a member is unable to fulfill their duties, they should proactively seek assistance or delegate tasks.
+- Accountability is crucial to the success of our project. We expect all team members to fulfill their responsibilities
+  and to communicate clearly and honestly with the rest of the team. If a team member fails to complete their work
+  between stand-up meetings, an explanation is required. In this case, if the explanation is "I didn't have the
+  motivation," the team will accept it, but the member will be expected to catch up and spend double the time to
+  make up for the missed work.
+
+- If a team member fails to complete their work for a second time and the explanation is simply "I was lazy," without
+  a legitimate reason such as illness, then a strike will be issued. Eelco will be notified of the strike, and the
+  team member will be expected to catch up and spend double the time to make up for the missed work.
 
 ## Communication Channels
 - Utilize designated communication channels (e.g., messaging apps, email) for team discussions and updates.
