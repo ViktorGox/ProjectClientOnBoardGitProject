@@ -71,10 +71,3 @@
 ## Consequences for Violations
 - Clearly outline the consequences for repeated violations of the code of conduct.
 - Ensure that consequences are fair and proportionate to the nature of the violation.
-
-
-
-
-
-## signed by:
-- Justin Fuchs
