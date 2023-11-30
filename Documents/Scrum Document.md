@@ -22,9 +22,15 @@ Each member wrote part of the PoA and requirements.
 
 ### Meeting 3 - 
 
+### Meeting 4? -
 
+### Meeting 5 - 29.11.2023 14:10 
 
+In this meeting, we looked over the issues after the meeting with the client and filtered the board, edited, removed and added missing ones. We also talked about the tasks we will do after this meeting.
 
+### Meeting 6 - 30.11.2023 9:45
+
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We then worked on completing the business, user, functional and non functional requirements.
 
 ## End Of Sprint
 Board at the End Of Sprint
