@@ -9,6 +9,10 @@ process.
 
 ## Backlog
 [Backlog images related to startup stages]
+Board with all issues
+![Backlog Issues](assets/BacklogIssues.jpg)
+Every issue has user story related to it in the description
+![Issue and User story](assets/IssueUserStory.jpg)
 
 ## Meetings
 
