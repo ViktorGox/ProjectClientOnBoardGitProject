@@ -134,7 +134,14 @@ Board at the End Of Sprint
 []
 ### Viktor
 
-During sprint 1, the group started doing the documentation required to lay the foundations for the project. I personally made about 10-15 requirements, which I added to gitlab. Worked on the PoA file. In the second week I read through all requirements that the group had made and noted which ones are bad, good, duplicates and any other note I had about them. On the second meeting I talked with the group about the notes I made and we cleaned the requirements. In our meeting on saturday where we finalized the documentation, I made the technical design and added more information about the meetings.
+During sprint 1, the group started doing the documentation required to lay the 
+foundations for the project. I personally made about 10-15 requirements, which I 
+added to gitlab. Worked on the PoA file. In the second week I read through all 
+requirements that the group had made and noted which ones are bad, good, 
+duplicates and any other note I had about them. On the second meeting I talked 
+with the group about the notes I made and we cleaned the requirements. In our 
+meeting on saturday where we finalized the documentation, I made the technical 
+design and added more information about the meetings.
 
 ### Aleks
 []
