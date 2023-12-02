@@ -20,7 +20,9 @@ In this meeting the assignment description was analyzed.
 In this meeting, we discussed what should be included in the startup stage. A document structure was also created.
 Each member wrote part of the PoA and requirements.
 
-### Meeting 3 - 
+### Meeting 3 - 24.11.2023 20:00
+In this meeting, we discussed functional design and its items, as well as assigned tasks to team members.
+This meeting was held via Discord on Friday.
 
 ### Meeting 4 - 28.11.2023 9:00
 
@@ -28,11 +30,13 @@ This was the meeting with the client, we went to Parantion and talked with the c
 
 ### Meeting 5 - 29.11.2023 14:10 
 
-In this meeting, we looked over the issues after the meeting with the client and filtered the board, edited, removed and added missing ones. We also talked about the tasks we will do after this meeting.
+In this meeting, we looked over the issues after the meeting with the client and filtered the board, edited, removed and
+added missing ones. We also talked about the tasks we will do after this meeting.
 
 ### Meeting 6 - 30.11.2023 9:45
 
-In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We then worked on completing the business, user, functional and non functional requirements.
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We 
+then worked on completing the business, user, functional and non functional requirements.
 
 ## End Of Sprint
 Board at the End Of Sprint
