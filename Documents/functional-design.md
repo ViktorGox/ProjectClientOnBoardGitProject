@@ -10,18 +10,21 @@
 
 ## Introduction
 
-The Functional Design document outlines the necessary functionalities and requirements for our testing and management system's development. This document is a comprehensive guide meant to benefit stakeholders, developers, and testers involved in the project. By carefully defining requirements and incorporating wireframes, this document ensures the meticulous planning vital for building a resilient and user-friendly system.
+The Functional Design document outlines the necessary functionalities and requirements for our testing and management
+system's development. This document is a comprehensive guide meant to benefit stakeholders, developers, and testers
+involved in the project. By carefully defining requirements and incorporating wireframes, this document ensures the
+meticulous planning vital for building a resilient and user-friendly system.
 
 # Requirements
 
 ## Business
 
-| Requirement                                                                                                                     | MSCW | Source    |
-|---------------------------------------------------------------------------------------------------------------------------------|------|-----------|
-| The system must be easy to use and easy to understand so we don’t have to spend time explaining to new employees.               | M    | Interview |
-| The system should be error-free so that it will not slow down our company’s progress or even damage our profit.                 | M    | Document  |
-| The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M    | Document  |
-| The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M    | Interview |
+| Requirement                                                                                                                     | MoSCW | Source    |
+|---------------------------------------------------------------------------------------------------------------------------------|-------|-----------|
+| The system must be easy to use and easy to understand so we don’t have to spend time explaining to new employees.               | M     | Interview |
+| The system should be error-free so that it will not slow down our company’s progress or even damage our profit.                 | M     | Document  |
+| The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M     | Document  |
+| The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M     | Interview |
 
 ## User
 
