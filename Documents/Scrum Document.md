@@ -22,7 +22,9 @@ Each member wrote part of the PoA and requirements.
 
 ### Meeting 3 - 
 
-### Meeting 4? -
+### Meeting 4 - 28.11.2023 9:00
+
+This was the meeting with the client, we went to Parantion and talked with the client. We asked some of our questions and got a clearer idea of what we have to deliver.
 
 ### Meeting 5 - 29.11.2023 14:10 
 
