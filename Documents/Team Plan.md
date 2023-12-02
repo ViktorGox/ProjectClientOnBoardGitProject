@@ -1,6 +1,16 @@
 # Team plan
 
 ## Targets
+- To carry out this project successfully we have to increase our programming skills, specifically
+  with TypeScript. Not all members know this language, so we must learn and practice.
+- Successfully complete all the requirements that Parantion has asked of us.
+- Be able to complete all proposed tasks on time.
+- As a team we want to be organized. There will be 3 weekly meetings to advance the project 
+  and talk to each other to assign tasks.
+- We want to be an efficient team. To do this, first we need to be organized and, from here, 
+  we have to work hard
+- We must cooperate and help each other. If we avoid conflicts we will have a happy and motivated 
+  team. There will be peace and you will be able to work better
 
 ## Code of Conduct
 ### Punctuality and Attendance
