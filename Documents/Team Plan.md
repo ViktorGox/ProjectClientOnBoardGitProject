@@ -31,7 +31,7 @@
 - If a team member cannot complete their work due to personal reasons, immediate notification to the team is required.
 - The team will collectively ensure that the tasks of the affected member are appropriately redistributed.
 
-## Meeting Etiquette
+### Meeting Etiquette
 - During meetings, maintain a professional and focused environment.
 - Avoid disruptions, side conversations, or unrelated activities.
 
@@ -146,10 +146,7 @@ includes embracing a flexible mindset to navigate unexpected challenges.
 
 
 ## Roles
-
-### Scrum Master
-- (Rotative)
-### Database Administrators
+### Product Owner
 - Justin
 ### Frontend
 - Jafar
@@ -159,9 +156,6 @@ includes embracing a flexible mindset to navigate unexpected challenges.
 - Aleks
 - Ferhat
 - Rubén
-### Designer
-- Viktor
-- Yaroslav
 ### Editor of Documentation
 - Jafar
 - Viktor
@@ -170,6 +164,9 @@ includes embracing a flexible mindset to navigate unexpected challenges.
 - Justin
 - Rubén
 - Ferhat
-
+### Scrum Master
+- (Rotative)
+### Database Administrators
+- Justin
 
 
