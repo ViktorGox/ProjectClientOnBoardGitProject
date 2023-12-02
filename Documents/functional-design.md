@@ -2,85 +2,75 @@
 
 - [Introduction](./functional-design.md#introduction)
 - [Requirements](./functional-design.md#requirements)
-  - [Functional](./functional-design.md#functional)
-  - [Non functional](./functional-design.md#non-functional)
-- [User stories](./functional-design.md#userstories)
-- [Wireframes](./functional-design.md#wireframes)
+  - [Business](./functional-design.md#business)
+  - [User](./functional-design.md#user)
+  - [System](./functional-design.md#system)
+    - [Functional](./functional-design.md#functional)
+    - [Non-functional](./functional-design.md#non-functional)
 
 ## Introduction
 
+The Functional Design document outlines the necessary functionalities and requirements for our testing and management system's development. This document is a comprehensive guide meant to benefit stakeholders, developers, and testers involved in the project. By carefully defining requirements and incorporating wireframes, this document ensures the meticulous planning vital for building a resilient and user-friendly system.
+
+# Requirements
+
+## Business
+
+| Requirement                                                                                                                     | MSCW | Source    |
+|---------------------------------------------------------------------------------------------------------------------------------|------|-----------|
+| The system must be easy to use and easy to understand so we don’t have to spend time explaining to new employees.               | M    | Interview |
+| The system should be error-free so that it will not slow down our company’s progress or even damage our profit.                 | M    | Document  |
+| The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M    | Document  |
+| The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M    | Interview |
+
+## User
+
+| Requirement                                                                                                                                            | MSCW | Source    |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|------|-----------|
+| As a tester, I want to mark tests as blockers so that I can highlight serious bugs.                                                                    | M    | Interview |
+| As a developer, I want to assign weights to tests so that overall test effort can be estimated.                                                        | M    | Document  |
+| As a manager, I want new boards to set up when old ones close so that new sprints can be started seamlessly.                                           | M    | Document  |
+| As a Developer and a Manager, we want to add columns in boards so that I can categorize test cases.                                                    | M    | Document  |
+| As a Manager, I want to set due dates for tests so that test execution has clear timelines.                                                            | M    | Document  |
+| As a Manager, I want to edit user roles so that access can be controlled efficiently.                                                                  | M    | Interview |
+| As a user, I want to see an overview of current tests so that I can get the big picture.                                                               | M    | Interview |
+| As an Admin, I want to edit added tests to fix any errors.                                                                                             | M    | Interview |
+| As an Admin, I want to be able to add test cases so that we can test new features.                                                                     | M    | Document  |
+| As a User, I want to search tests by names so that I can access them faster.                                                                           | M    | Document  |
+| As a tester, I want to receive notification about overdue tests so that I can prioritize my work.                                                      | M    | Document  |
+| As a tester, I want to receive notification about upcoming tests so that I can prepare and allocate time.                                              | M    | Document  |
+| As a manager, I want immediate notifications about blocking bugs so that critical issues can be addressed urgently.                                    | M    | Interview |
+| As an admin, I want to be able to assign and unassign people from test cases.                                                                          | M    | Interview |
+| As a tester, I want to be able to add comments on test cases so that I can keep track of progress.                                                     | M    | Interview |
+| As a tester, I want to be able to generate reports containing information about tests completed so far for this sprint and/or including older sprints. | M    | Interview |
+| As a tester, I want to be able to attach files to test case logs so that we can use images and videos to be more descriptive.                          | S    | Interview |
+| As a tester, I want to be able to change the status of the test case so that we can organize better.                                                   | M    | Interview |
 
 
-## Requirements
-
-The requirements for this project have been split into functional and non-functional requirements.
+## System
 
 ### Functional
 
-- FR1 - The system should save data when a board is closed to be included in reports later.
-- FR2 - Users want the ability to change test status by moving it to another board or selecting a new status on the test page for progress monitoring.
-- FR3 - Parantion testers require the ability to mark a test case as a blocker to highlight serious bugs.
-- FR4 - Parantion manager need to assign a weight to each task of a test case, and the total weight should be shown per test case.
-- FR5 - Parantion manager should be able to create test cases and assign them to columns for better organization.
-- FR6 - Paration managers require the ability to close boards to conclude sprints.
-- FR7 - Paration manager participants want a new board created when an old one is closed, and data from the old one moved to the new one for organization.
-- FR8 - Parantion admin testers should be able to create columns in boards for organizing test cases.
-- FR9 - Parantion manager want the ability to assign due dates for tests when creating them for clear timelines.
-- FR10 - Managers should be able to edit roles of other users for efficient role management.
-- FR11 - The system must meet safety and security standards to protect all confidential data belonging to involved parties.
-- FR12 - The system should allow sorting of tests by weight per column.
-- FR13 - The system must generate reports on the completion status of regression test runs per sprint and product, including details on tests, testers, failed/passed tests, time taken, and weight.
-- FR14 - Testers should be able to document test steps, log bugs with links to test cases, and update test case content.
-- FR15 - Parantion manager want to add and remove testers to have control over the system.
-- FR16 - Managers should be able to assign and unassign testers to tests for clear task allocation.
-- FR17 - Parantion users want to see an overview of the current tests in the system.
-- FR18 - Parantion management participants want to add tests to keep track of ongoing testing.
-- FR19 - Parantion management participants should be able to edit added tests to correct errors.
-- FR20 - Parantion testers want to search tests by name across the whole board for quicker access.
-- FR621 - The system should notify testers about tests that have passed their deadline.
-- FR22 - The system should notify testers about tests that are due soon.
-- FR23 - The system should immediately send a notification via WebSocket upon detecting a blocking issue.
+| Requirement                                                                                                                                                                                 | MSCW | Source              |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
+| The system must notify testers about tests that have passed their due date.                                                                                                                 | M    | Document            |
+| The system must notify testers about tests that are due soon.                                                                                                                               | M    | Document            |
+| The system must immediately send a notification upon detecting a blocking issue.                                                                                                            | M    | Interview           |
+| The system must allow sorting tests by weight per column.                                                                                                                                   | S    | Document            |
+| The system must generate reports on the completion status of regression test runs per sprint and product, including details on tests, testers, failed/passed tests, time taken, and weight. | S    | Interview           |
+| The system must save data when a board is closed to be included in reports later.                                                                                                           | M    | Document, Interview |
+| Access to test data and configurations should be role-based, ensuring that users only have access to information relevant to their roles.                                                   | M    | Document, Interview |
+| The system must allow searching of tests by name.                                                                                                                                           | S    | Document            |
 
+### Non-functional
 
-
-
-
-
-
-
-### Non functional
-
-
-
-
-## Userstories
-
-
-
-## Wireframes
-
-
-Screens for managing users and items have been omitted.
-
-### Homepage
-
-![](assets/homepage.jpeg)
-
-
-
-### Details
-
-![](assets/details.jpeg)
-
-
-
-### Login
-
-![](assets/login.jpeg)
-
-The login page should allow the user to log in.
-
-### Register
-
-![](assets/register.jpeg)
-
+| Requirement                                                                                                                                                                                                      | MSCW | Source              |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
+| The system must ensure the confidentiality, integrity, and availability of all data and transactions. It must comply with GDPR legislation and prevent unauthorized access, modification, or disclosure of data. | M    | Document            |
+| The system should be designed to accommodate the company's future growth in terms of features, functionalities, and data storage capacity.                                                                       | M    | Document            |
+| The system must be able to integrate with other systems or platforms used by the company, such as accounting and inventory management systems.                                                                   | M    | Interview           |
+| The system must be easy to use and navigate for all employees, regardless of their technical skill level. It must have a user-friendly interface with clear and concise instructions.                            | M    | Interview           |
+| The system should be available 96.67% of the time.                                                                                                                                                               | M    | Document            |
+| The system must be compatible with different web browsers, operating systems, and devices, such as desktops, laptops, tablets, and mobile phones.                                                                | M    | Interview, Document |
+| The system must be able to recover from failure within 10 minutes without data loss or disruption of service.                                                                                                    | M    | Interview           |
+| The system should be easily maintainable, allowing updates and bug fixes to be implemented without causing downtime or loss of data.                                                                             | M    | Interview           |
