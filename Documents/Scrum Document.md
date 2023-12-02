@@ -131,7 +131,19 @@ Board at the End Of Sprint
 ## Retrospectives
 
 ### Jafar
-[]
+
+During the initial phase of our startup, I took on the role of the scrum master in the first week. This involved 
+creating the initial project structure, setting up requirement issues, and initiating key Scrum documentation such as
+parts of the team plan, PoA, and DoD. As the organizer and facilitator of team meetings, I ensured that our discussions
+were focused on meeting project requirements and maintaining project timelines.
+In addition to my managerial responsibilities, I actively contributed to the project's technical aspects. This included 
+working on the functional design and playing a pivotal role in the creation of the PoA and requirements. Throughout the
+sprint, I gained insights into the documentation and the necessity
+for clear and concise requirements from the project's inception. Moving forward, I recognize the importance of fostering
+early and continuous communication among team members to enhance collaboration and overall efficiency. 
+The positive outcomes achieved during this sprint, notably the completion of documentation and the establishment of a
+template code structure, stand as motivating milestones for our team as we transition into the next phase of our project.
+
 ### Viktor
 
 During start up stage, Sprint 0, the group started doing the documentation required to lay 
