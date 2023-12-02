@@ -134,8 +134,8 @@ Board at the End Of Sprint
 []
 ### Viktor
 
-During sprint 1, the group started doing the documentation required to lay the 
-foundations for the project. I personally made about 10-15 requirements, which I 
+During start up stage, Sprint 0, the group started doing the documentation required to lay 
+the foundations for the project. I personally made about 10-15 requirements, which I 
 added to gitlab. Worked on the PoA file. In the second week I read through all 
 requirements that the group had made and noted which ones are bad, good, 
 duplicates and any other note I had about them. On the second meeting I talked 
