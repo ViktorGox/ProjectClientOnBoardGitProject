@@ -99,3 +99,30 @@
 ## Quality
 
 ## Roles
+
+### Scrum Master
+- (Rotative)
+### Database Administrators
+- Justin
+### Frontend
+- Jafar
+- Viktor
+### Backend
+- Viktor
+- Aleks
+- Ferhat
+- Rubén
+### Designer
+- Viktor
+- Yaroslav
+### Editor of Documentation
+- Jafar
+- Viktor
+- Aleks
+- Yaroslav
+- Justin
+- Rubén
+- Ferhat
+
+
+
