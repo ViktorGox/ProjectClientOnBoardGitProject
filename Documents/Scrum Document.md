@@ -164,4 +164,9 @@ design and added more information about the meetings.
 ### Rubén
 []
 ### Ferhat
-[]
+I've been a bit busy with my work and other meetings that in the first two weeks. I tried my best to attend all
+the classes and meetings. So far, our focus has been on the documentation and designs. I've created wireframes and
+added them to Technical Document, explaining the functionality they provide to the user. Additionally, I've included business
+requirements in the functional design documentation. We've also discussed the project's boundaries and risks, and I've
+documented those in the Plan of Approach. Moving forward, I plan to maintain a balance between work and meetings to enhance
+my productivity for the team, ensuring active participation in our upcoming meetings.
