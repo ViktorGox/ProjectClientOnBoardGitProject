@@ -1,11 +1,9 @@
 # Users
 
-Place the credentials for at least two users in the table below. There should be at least one administrator and one regular user.
-
+Credentials that can be used to log into the system to use it.
 
 | Username | Password | Account type |
 |----------|--------|------------|
 | `admin`  | | |
-| `user`   | | |
 
 
