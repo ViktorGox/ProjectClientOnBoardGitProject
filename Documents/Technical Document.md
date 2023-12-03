@@ -24,9 +24,24 @@ Newly crated columns will go next to each other, and the screen will be sideways
 ### Test case page
 The third wireframe is the page which you see when you click on an issue.
 ![](assets/TestCaseMoreInfoWireFrame.drawio.png)
-This page contians quite a few things. On the top left it will say the test case name. Below that will be a place where each step, that needs to be done to execute the test. There can be multiple steps, if there are more than the screen can contain, it will turn into a scrollable screen. To add a new step, click on the add step button. The steps contain information about what needs to be done, the weight and whether they are completed or not. When a step is pressed, more information about it will appear below the steps. There is also a field where the tester can enter information about their tests if they decide they need to.
+
+This page contains quite a few things. On the top left it will say the test case name. Below that will be a place where each step, that needs to be done to execute the test. There can be multiple steps, if there are more than the screen can contain, it will turn into a scrollable screen. To add a new step, click on the add step button. The steps contain information about what needs to be done, the weight and whether they are completed or not. When a step is pressed, more information about it will appear below the steps. There is also a field where the tester can enter information about their tests if they decide they need to.
 
 On the right side you can see the assigned person and the due date.
+
+### List of All Test Cases
+The fourth wireframe is the page that shows the list of test cases
+![](assets/ListOfAllTestCases.drawio.png)
+
+This page contains a few things. On the top middle the test cases can be filtered by open, close and all. Next to filters a new test case can be created.
+
+The list of the test cases shows test name, total weight of the test case, assignee and the due date. To see the details of the test case just needed to click on it.
+
+### Create Test Issue
+The fifth wireframe represents the page of that test issue can be created.
+![](assets/CreateTestIssue.drawio.png)
+
+This page is the first page of creating a new test issue. On top left it asks the test name. The button on top right deletes the whole test issue, if its created by mistake. Below of the delete button, with assignee button test can be assigned to a person and can be put the due date of the test issue. On middle left it asks the steps and weights. Steps can be added one by one with Add Step button.
 
 ## Database Design
 
