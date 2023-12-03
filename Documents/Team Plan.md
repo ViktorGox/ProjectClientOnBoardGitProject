@@ -152,10 +152,11 @@ includes embracing a flexible mindset to navigate unexpected challenges.
 - Jafar
 - Viktor
 ### Backend
-- Viktor
+- Yaroslav
 - Aleks
 - Ferhat
 - Rubén
+- Justin
 ### Editor of Documentation
 - Jafar
 - Viktor
