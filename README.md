@@ -13,8 +13,20 @@ This website will help keep track of test issues, who's handling them, their wei
 
 
 ## Description
+Documents file contains all the documentations we have.
 
+* DoD &rarr; Definition of Done
+* PoA &rarr; Plan of Approach
+* Functional Design
+* Scrum Document
+* Team Plan
+* Technical Document
+* Users
 
+In assets directory we stored our wireframes.
+
+We will use client directory for frontend and server directory for backend.
+We will do all tests in test directory.
 
 
 ## Testing
