@@ -14,6 +14,7 @@ This website will help keep track of test issues, who's handling them, their wei
 ## Description
 Documents file contains all the documentations we have.
 
+* Client communication log
 * DoD &rarr; Definition of Done
 * PoA &rarr; Plan of Approach
 * Functional Design
