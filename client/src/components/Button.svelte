@@ -4,10 +4,12 @@
     export let width = 50;
     export let height = 20;
     export let sizeUnit = "px";
+    export let padding;
+    export let margin;
 </script>
 
 <div class="background">
-    <div class="button" on:click={onClick} style="width: {width}{sizeUnit}; height: {height}{sizeUnit}">{text}</div>
+    <div class="button" on:click={onClick} style="margin: {margin}; padding: {padding}; width: {width}{sizeUnit}; height: {height}{sizeUnit}">{text}</div>
 </div>
 
 <style>
