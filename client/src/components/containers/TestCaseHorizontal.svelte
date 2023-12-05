@@ -50,6 +50,8 @@
         border-right: none;
         text-align: start;
         padding: 0 0 0 10px;
+        display: flex;
+        align-items: center;
     }
 
     .right-1, .right-2, .right-3 {
