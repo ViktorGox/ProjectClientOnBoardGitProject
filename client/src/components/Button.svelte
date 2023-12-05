@@ -1,10 +1,8 @@
 <script lang="ts">
     export let onClick;
     export let text = "Button";
-    if(!onClick) text = "Unassigned " + text; // no idea why I'm adding this, seems smart tho
-
-    export let width = 20;
-    export let height = 30;
+    export let width = 50;
+    export let height = 20;
     export let sizeUnit = "px";
 </script>
 
@@ -19,5 +17,8 @@
         border-radius: 5px;
         border: black solid 2px;
         padding: 7px 20px 7px 20px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
     }
 </style>
