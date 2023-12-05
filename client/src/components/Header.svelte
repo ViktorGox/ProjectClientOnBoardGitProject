@@ -11,6 +11,11 @@
 <style>
     ul {
         list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     a.active {
