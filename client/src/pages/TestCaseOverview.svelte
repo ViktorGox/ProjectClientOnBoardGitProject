@@ -1,6 +1,7 @@
 <script lang="ts">
     import HorizontalSplitContainer from "../components/containers/HorizontalSplitContainer.svelte";
     import Button from "../components/Button.svelte";
+    import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
 
     function a() {
 
@@ -25,7 +26,17 @@
         </HorizontalSplitContainer>
     </div>
     <div class="bottom">
-
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal></TestCaseHorizontal>
     </div>
 </div>
 
@@ -37,7 +48,7 @@
     }
 
     .bottom {
-        background: deepskyblue;
+        margin: 10px;
     }
 
     .right {
