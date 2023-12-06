@@ -1,22 +1,25 @@
 import express from 'express';
-import mysql from 'mysql'
+import mysql from 'mysql';
+import dotenv from 'dotenv';
+
 const app = express()
-const port = 3000
+
+dotenv.config({ path: '/Users/kimiko/IdeaProjects/ComplexDatastructures/Project Client on board/server/.env' })
+const port = process.env.PORT;
 
 import auth from './routes/auth.js';
 
-app.use("/auth", auth);
 
+app.use("/auth", auth);
 app.get('/', (req, res) => {
   console.log(req);
   // res.send('Hello World!')
   res.json({ msg: "hello world"});
 })
-//todo: implement .ENV for security reasons.
 export  let con = mysql.createConnection({
-  host: "database.discordbothosting.com",
-  user: "u2669_s4z6JYe2Hp",
-  password: "j!A!cck!kZZ6Wv7U^G4OTda7"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
 });
 //connection to DB
 con.connect(function(err) {
