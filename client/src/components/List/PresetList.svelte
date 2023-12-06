@@ -13,6 +13,8 @@
         {#if itemList.length === 0}
             {noItemsText}
         {:else}
+            <!-- Also has an outside layer, this can be used as a title. For example on a list, on top you have what the
+             column is, this is what this is for. Can be any element you want, or empty.-->
             <slot name="header"></slot>
             {#each itemList.slice(0, itemLimit) as item, index}
                 <slot name="item" {item} {index}></slot>
