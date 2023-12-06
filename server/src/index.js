@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 const app = express()
 
-dotenv.config({ path: '/Users/kimiko/IdeaProjects/ComplexDatastructures/Project Client on board/server/.env' })
+dotenv.config()
 const port = process.env.PORT;
 
 import auth from './routes/auth.js';
@@ -33,7 +33,7 @@ app.listen(port, () => {
 });
 
  {
-  con.query("SELECT * FROM User", function (err, result, fields) {
+  con.query("SELECT * FROM Test", function (err, result, fields) {
     if (err) throw err;
     console.log(result);
   });
