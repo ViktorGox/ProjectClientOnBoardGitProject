@@ -20,6 +20,7 @@ export  let con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
+  database: `s2669_ClientOnBoardDevDB`,
 });
 //connection to DB
 con.connect(function(err) {
@@ -29,4 +30,11 @@ con.connect(function(err) {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})
+});
+
+ {
+  con.query("SELECT * FROM User", function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+  });
+};
