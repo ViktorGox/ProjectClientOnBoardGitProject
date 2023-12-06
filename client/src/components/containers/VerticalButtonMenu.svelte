@@ -11,9 +11,7 @@
         {name}
     </div>
     <div class="buttons">
-        <PresetList itemList={buttonOnClicks} noItemsText="No items found to show.">
-            <div slot="header">
-            </div>
+        <PresetList itemList={buttonOnClicks}>
             <div slot="item" let:item let:index>
                 <SideMenuButton onClick={buttonOnClicks[index]}></SideMenuButton>
             </div>
