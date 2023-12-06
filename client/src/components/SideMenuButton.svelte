@@ -3,8 +3,8 @@
     export let text = "SideButton";
 </script>
 
-<div class="background">
-    <div class="button" on:click={onClick}>{text}</div>
+<div class="background" on:click={onClick}>
+    <div class="button">{text}</div>
 </div>
 
 <style>
