@@ -13,10 +13,9 @@ import auth from './routes/auth.js';
 app.use("/auth", auth);
 app.get('/', (req, res) => {
   console.log(req);
-  // res.send('Hello World!')
   res.json({ msg: "hello world"});
 })
-export  let con = mysql.createConnection({
+export let con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
@@ -37,4 +36,4 @@ app.listen(port, () => {
     if (err) throw err;
     console.log(result);
   });
-};
+}
