@@ -1,17 +1,23 @@
 <script lang="ts">
     import HorizontalSplitContainer from "./HorizontalSplitContainer.svelte";
-
+    import TestCaseDetailsSideBar from "../TestCaseDetailsSideBar.svelte";
     export let name = "Test case name";
     export let weight = 0;
     export let assignee = "John Doe";
     export let dueDate = "1-1-1970";
     export let height = 50;
     export let unit = "px";
+
+    let showSidebar = false;
+    function handleContainerClick() {
+        showSidebar = !showSidebar;
+    }
 </script>
 
 <div class="background">
+
     <HorizontalSplitContainer widthOne="70" widthTwo="30">
-        <div slot="left">
+        <div slot="left" on:click="{handleContainerClick}">
             <div class="left" style="height: {height}{unit}">
                 {name}
             </div>
@@ -30,6 +36,7 @@
             </div>
         </div>
     </HorizontalSplitContainer>
+<!--    <TestCaseDetailsSideBar {showSidebar} />-->
 </div>
 
 <style>
