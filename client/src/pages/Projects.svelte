@@ -1,6 +1,65 @@
 <script lang="ts">
-
+    // import {onMount} from "svelte";
+    // import {currentToken} from "../Tokenstore.ts";
+    // import router from "page";
+    // import Button from "../components/Button.svelte";
+    //
+    // export let params;
+    // let username = params.username;
+    // let projects = [];
+    //
+    // async function getProjects() {
+    //     const response = await fetch(`http://localhost:3000/projects`);
+    //     projects = await response.json();
+    // }
+    //
+    // onMount(async () => {
+    //     await getProjects();
+    // });
+    //
+    // function editProjectWithId(id) {
+    //     router(`/ProjectDetail/${id}`);
+    // }
+    //
+    // async function deleteProjectWithId(id) {
+    //     const response = await fetch(`http://localhost:3000/projects/${id}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${$currentToken}` // Replace 'token' with the actual token
+    //         }
+    //     });
+    //     const result = await response.json();
+    //     console.log(result);
+    //     await getProjects();
+    // }
+    //
+    // function addNewProject() {
+    //     router("/ProjectDetail");
+    // }
 </script>
+
+<!--{#if projects.length > 0}-->
+<!--    <main>-->
+
+<!--        <ul>-->
+<!--            {#each projects as project}-->
+<!--                <li>-->
+<!--                    <p> Name: {project.name} <br>-->
+<!--                        Team: {project.team} <br>-->
+<!--                        Last Activity: {project.LastActivity} <br>-->
+<!--                    </p>-->
+<!--                    <Button text="Edit" clickHandler={() => {editProjectWithId(project.id)}}/>-->
+<!--                    <Button text="Delete" clickHandler={async () => {await deleteProjectWithId(project.id)}}/>-->
+<!--                </li>-->
+
+<!--            {/each}-->
+<!--        </ul>-->
+
+<!--        <Button text="Add Project" clickHandler={addNewProject}/>-->
+
+<!--    </main>-->
+<!--{/if}-->
 <main>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end m-5">
         <button class="btn btn-success btn-lg "><i class="bi bi-plus-circle"></i>Add Project</button>
