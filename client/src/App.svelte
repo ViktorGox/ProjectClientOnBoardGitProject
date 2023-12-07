@@ -5,6 +5,7 @@
     import Header from "./components/Header.svelte";
 
     import Sidebar from "./components/Sidebar.svelte";
+    import Projects from "./pages/Projects.svelte";
 
     let page;
     let params;
@@ -15,7 +16,7 @@
         currentRoute = ctx.pathname;
     });
     router('/projects', (ctx) => {
-        page = SecondPageForTesting;
+        page = Projects;
         currentRoute = ctx.pathname;
     });
 
