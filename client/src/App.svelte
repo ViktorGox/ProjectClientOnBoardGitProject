@@ -3,6 +3,7 @@
     import TestCaseOverview from './pages/TestCaseOverview.svelte'
     import SecondPageForTesting from './pages/SecondPageForTesting.svelte'
     import Header from "./components/Header.svelte";
+
     import Sidebar from "./components/Sidebar.svelte";
 
     let page;
@@ -13,7 +14,7 @@
         page = TestCaseOverview;
         currentRoute = ctx.pathname;
     });
-    router('/about', (ctx) => {
+    router('/projects', (ctx) => {
         page = SecondPageForTesting;
         currentRoute = ctx.pathname;
     });
