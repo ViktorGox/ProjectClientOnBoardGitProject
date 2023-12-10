@@ -11,10 +11,10 @@
 
 <div class="background">
     <SideMenuButton text="Dashboard" href="/projects/:id"></SideMenuButton>
-    <SideMenuButton text="Projects" href="/projects"></SideMenuButton>
-    <SideMenuButton text="Reports" href="/projects"></SideMenuButton>
+    <SideMenuButton text="Projects" href="projects"></SideMenuButton>
+    <SideMenuButton text="Reports" href="projects"></SideMenuButton>
     <VerticalButtonMenu name="Test Cases" links={hrefsTestCases} titles={titlesTestCases}></VerticalButtonMenu>
-    <VerticalButtonMenu name="settings" links={hrefsAnalytics} titles={titlesAnalytics}></VerticalButtonMenu>
+    <VerticalButtonMenu name="Settings" links={hrefsAnalytics} titles={titlesAnalytics}></VerticalButtonMenu>
 </div>
 
 <style>

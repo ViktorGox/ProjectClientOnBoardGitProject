@@ -5,6 +5,7 @@
     export let name = "Button Menu";
     export let links = [];
     export let titles = [];
+    export let images = [];
 </script>
 
 <div class="background">
@@ -15,7 +16,7 @@
             </div>
         </div>
         <div slot="item" let:item let:index>
-            <SideMenuButton href={links[index]} text={titles[index]}></SideMenuButton>
+            <SideMenuButton href={links[index]} text={titles[index]} image={images[index]}></SideMenuButton>
         </div>
     </PresetList>
 </div>
