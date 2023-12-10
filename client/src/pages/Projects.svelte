@@ -1,6 +1,6 @@
 <script lang="ts">
     // import {onMount} from "svelte";
-    // import {currentToken} from "../Tokenstore.ts";
+    // import {currentToken} from "../TokenStore.js";
     // import router from "page";
     // import Button from "../components/Button.svelte";
     //
@@ -84,7 +84,7 @@
         <tbody>
         <tr>
             <th scope="row">1</th>
-            <td>test</td>
+            <td ><a href="/projects/:id">test</a></td>
             <td>Team1</td>
             <td>13 hours ago</td>
             <td><i class="bi bi-pencil-square p-2"></i><i class="bi bi-trash-fill p-2"></i></td>
