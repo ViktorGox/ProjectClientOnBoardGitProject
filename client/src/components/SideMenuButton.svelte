@@ -8,8 +8,9 @@
     <img src={image}>
     {#if !image}
         <div class="button" style="margin-left: 15px">{text}</div>
+    {:else }
+        <div class="button">{text}</div>
     {/if}
-    <div class="button">{text}</div>
 </a>
 
 <style>
