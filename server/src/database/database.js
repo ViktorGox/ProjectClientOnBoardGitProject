@@ -5,12 +5,14 @@ import * as queries from './query.js';
 let user1 = {
     username: "manager",
     password: "$2a$12$vPgvMP7LFoFk0sGWJ.o0..f9xgtVZJtlUSqzAJDPJAC4jBHrUBqD6",
+    //manager
     role: "Manager"
 }
 
 let user2 = {
     username: "tester",
-    password: "$2y$10$v5zXyAfhIyf1RJBnMutY2Ouwatf.KTW8IOy0L512BzFFjm3ocmjCy",
+    password: "$2a$12$B8uneEk97kFijTp/9SoZPOrmuKjTuwC4STOHEtDLKBjzOSEwF4sWG",
+    //tester
     role: "Tester"
 }
 
