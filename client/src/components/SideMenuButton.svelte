@@ -1,20 +1,20 @@
-<script lang="ts">
-    export let onClick;
+<script>
     export let text = "SideButton";
+    export let href;
 </script>
 
-<div class="background" on:click={onClick}>
+<a class="background" href={href}>
     <div class="button">{text}</div>
-</div>
+</a>
 
 <style>
     .background {
-        background-color: rgba(255,255,255,0.5);
         width: 100%;
         height: 30px;
         display: flex;
         padding: 0 0 0 25px;
         align-items: center;
-        /*border-bottom: 2px solid white;*/
+        text-decoration: none;
+        color: white;
     }
 </style>

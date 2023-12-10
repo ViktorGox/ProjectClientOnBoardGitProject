@@ -1,7 +1,6 @@
 <script lang="ts">
     import router from 'page';
     import TestCaseOverview from './pages/TestCaseOverview.svelte'
-    import SecondPageForTesting from './pages/SecondPageForTesting.svelte'
     import Header from "./components/Header.svelte";
 
     import Sidebar from "./components/Sidebar.svelte";

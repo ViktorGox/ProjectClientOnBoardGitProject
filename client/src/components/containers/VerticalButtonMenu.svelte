@@ -1,36 +1,40 @@
-<script lang="ts">
+<script>
     import PresetList from "../List/PresetList.svelte";
     import SideMenuButton from "../SideMenuButton.svelte";
 
     export let name = "Button Menu";
-    export let buttonOnClicks = [];
-    export let buttonTitles = [];
-
-    let showList = false;
-
-    function toggleList() {
-        showList = !showList;
-    }
+    export let links = [];
+    export let titles = [];
 </script>
 
 <div class="background">
-    <div class="top" on:click={toggleList}>
-        <SideMenuButton text={name}></SideMenuButton>
-    </div>
-    <div class="buttons" class:show={showList}>
-        {#if showList}
-            <PresetList itemList={buttonOnClicks}>
-                <div slot="item" let:item let:index>
-                    <SideMenuButton onClick={buttonOnClicks[index]} text={buttonTitles[index]}></SideMenuButton>
-                </div>
-            </PresetList>
-        {/if}
-    </div>
+    <PresetList itemList={links}>
+        <div slot="header" class="header">
+            <div class="header-wrapper">
+                {name}
+            </div>
+        </div>
+        <div slot="item" let:item let:index>
+            <SideMenuButton href={links[index]} text={titles[index]}></SideMenuButton>
+        </div>
+    </PresetList>
 </div>
 
 <style>
     .background {
-        background-color: rgba(255, 255, 255, 0.5);
         user-select: none;
+    }
+
+    .header{
+        color:white;
+        font-weight: bold;
+        display: flex;
+        padding: 0 0 0 10%;
+        margin: 10px 0 0 0;
+    }
+
+    .header-wrapper {
+        width: 90%;
+        border-top: 2px solid white;
     }
 </style>

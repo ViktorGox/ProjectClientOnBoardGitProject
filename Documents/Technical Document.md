@@ -64,6 +64,8 @@ The fifth wireframe represents the page of that test issue can be created.
 
 This page is the first page of creating a new test issue. On top left it asks the test name. The button on top right deletes the whole test issue, if its created by mistake. Below of the delete button, with assignee button test can be assigned to a person and can be put the due date of the test issue. On middle left it asks the steps and weights. Steps can be added one by one with Add Step button.
 
+###
+
 ## Database Design
 
 
