@@ -1,39 +1,20 @@
-import express from 'express';
-import mysql from 'mysql';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from 'cors';
 
-const app = express()
+import * as database from "./database/database.js";
+import tokenRouter from "./routes/token-router.js";
 
-dotenv.config()
-const port = process.env.PORT;
+const port = 3000;
+const app = express();
 
-import auth from './routes/auth.js';
+database.createDatabase();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/token', tokenRouter);
 
 
-app.use("/auth", auth);
-app.get('/', (req, res) => {
-  console.log(req);
-  res.json({ msg: "hello world"});
-})
-export let con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: `s2669_ClientOnBoardDevDB`,
+app.listen(port, function () {
+    console.log(`Server listening on port ${port}`);
 });
-//connection to DB
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Database Connected");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-});
-
- {
-  con.query("SELECT * FROM Test", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-  });
-}
