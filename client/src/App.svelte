@@ -5,6 +5,7 @@
 
     import Sidebar from "./components/Sidebar.svelte";
     import Projects from "./pages/Projects.svelte";
+    import Dashboard from "./pages/Dashboard.svelte";
 
     let page;
     let params;
@@ -16,6 +17,11 @@
     });
     router('/projects', (ctx) => {
         page = Projects;
+        currentRoute = ctx.pathname;
+    });
+    router('/projects/:id', (ctx) => {
+        page = Dashboard;
+        params = ctx.params;
         currentRoute = ctx.pathname;
     });
 
