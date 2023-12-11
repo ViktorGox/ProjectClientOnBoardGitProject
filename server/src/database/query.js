@@ -1,8 +1,8 @@
 //Creating the tables
 export const createUserTableQuery =
     `CREATE TABLE IF NOT EXISTS User (
-        UserId INTEGER PRIMARY KEY AUTOINCREMENT,
-        username STRING UNIQUE,
+        userId INTEGER PRIMARY KEY AUTOINCREMENT,
+        username STRING,
         password STRING,
         role STRING
      );`;
@@ -51,8 +51,15 @@ export const dropTestTable = `DROP TABLE IF EXISTS Test;`;
 export const dropTestStepTable = `DROP TABLE IF EXISTS TestStep;`;
 
 
-export const insertUserQuery = `INSERT INTO User (username, password, role) VALUES (?,?,?);`;
 
 
 
 export const getAllUsersQuery = `SELECT * FROM User ;`;
+
+export const insertUserQuery = `INSERT INTO User (username, password, role) VALUES (?,?,?);`;
+
+export const getUserById = `SELECT * FROM User WHERE userId = ?;`;
+
+export const updateUser = `UPDATE User SET username = ?, password = ?, role = ? WHERE userId = ?;`;
+
+export const deleteUser = `DELETE FROM User WHERE userId = ?;`;

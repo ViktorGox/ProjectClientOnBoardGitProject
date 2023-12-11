@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userDb from "../database/database.js";
+import * as userDb from "../database/user-database.js";
 
 export function checkToken(req, res) {
     const givenUsername = req.body.username;
