@@ -29,9 +29,10 @@
     }
 
     .main-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        width: 70%;
+        flex-grow: 1;
+        padding: 20px;
+        border-right: 1px solid #ccc;
+
     }
 </style>

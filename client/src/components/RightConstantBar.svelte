@@ -16,8 +16,8 @@
 
 <style>
     .right-constant-bar {
-        position: fixed;
-        top: 0;
+        position: relative;
+        top: 5px;
         right: 0;
         height: 100vh;
         width: 20%;

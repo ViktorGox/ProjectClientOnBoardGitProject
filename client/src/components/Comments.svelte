@@ -18,7 +18,6 @@
             </li>
         {/each}
     </ul>
-    <!-- Add a form for users to submit new comments -->
     <form>
         <textarea placeholder="Add a comment..."></textarea>
         <input type="file" accept="image/*" />
@@ -64,10 +63,11 @@
     }
 
     button {
+        margin-top: 10px;
         background-color: #007bff;
         color: #fff;
         border: none;
-        padding: 5px 10px;
+        padding: 10px 10px;
         cursor: pointer;
     }
 </style>
