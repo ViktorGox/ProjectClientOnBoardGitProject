@@ -7,7 +7,7 @@
     export let widthTwo = 50;
 </script>
 
-<div class="background">
+<div class="background" style="width: {widthOne + widthTwo}%">
     <div class="left" style="flex: 0 0 {widthOne}%">
         <slot name="left"></slot>
     </div>
@@ -18,7 +18,6 @@
 
 <style>
     .background {
-        width: 80%;
         display: flex;
     }
 

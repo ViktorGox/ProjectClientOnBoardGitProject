@@ -1,42 +1,43 @@
 <script lang="ts">
-    import HorizontalSplitContainer from "./HorizontalSplitContainer.svelte";
     import router from "page";
+
     export let name = "Test case name";
-    export let id = 1;
-    export let weight = 0;
+    export let module = "Log in Page";
+    export let status = "To do";
     export let assignee = "John Doe";
-    export let dueDate = "1-1-1970";
+    export let weight = 0;
+
+    export let id = 1;
     export let height = 50;
     export let unit = "px";
 
-    let showSidebar = false;
     function handleContainerClick() {
         router(`/tests/${id}`);
     }
 </script>
 
 <div class="background" on:click="{handleContainerClick}">
-
-    <HorizontalSplitContainer widthOne="70" widthTwo="30">
-        <div slot="left" >
-            <div class="left" style="height: {height}{unit}">
-                {name}
-            </div>
-        </div>
-        <div slot="right">
-            <div class="right" style="height: {height}{unit}">
-                <div class="right-1">
-                    {weight}
-                </div>
-                <div class="right-2">
-                    {assignee}
-                </div>
-                <div class="right-3">
-                    {dueDate}
-                </div>
-            </div>
-        </div>
-    </HorizontalSplitContainer>
+    <div class="data wider" style="height: {height}{unit}">
+        {name}
+    </div>
+    <div class="data" style="height: {height}{unit}">
+        {module}
+    </div>
+    <div class="data" style="height: {height}{unit}">
+        {status}
+    </div>
+    <div class="data" style="height: {height}{unit}">
+        {assignee}
+    </div>
+    <div class="data" style="height: {height}{unit}">
+        {weight}
+    </div>
+    <div class="data" style="height: {height}{unit}">
+        edit
+    </div>
+    <div class="data right-border" style="height: {height}{unit}">
+        delete
+    </div>
 </div>
 
 <style>
@@ -45,30 +46,22 @@
         justify-content: center;
         margin: 10px;
         cursor: pointer;
-
     }
 
-    .right {
+    .data {
         display: flex;
         justify-content: space-around;
         border: black solid 2px;
-    }
-
-    .left {
-        border: black solid 2px;
         border-right: none;
-        text-align: start;
-        padding: 0 0 0 10px;
-        display: flex;
-        align-items: center;
+        width: 15%;
     }
 
-    .right-1, .right-2, .right-3 {
-        width: 33.33%;
+    .right-border {
+        border-right: black solid 2px;
     }
 
-    .right-2, .right-3 {
-        border-left: black solid 2px;
+    .wider {
+        width: 50%;
     }
 
     * {
