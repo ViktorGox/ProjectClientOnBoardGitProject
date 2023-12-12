@@ -25,6 +25,8 @@
     }
 
     img {
+        margin-top: 0;
         height: 15px;
+        width: 15px;
     }
 </style>
