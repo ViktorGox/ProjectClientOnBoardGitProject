@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import res from "express/lib/response.js";
+import * as userDb from "../database/user-database.js";
 
 export function checkToken(req, res) {
     const givenUsername = req.body.username;
@@ -14,11 +14,11 @@ export function checkToken(req, res) {
 
     const storedPassword = foundUser.password;
 
-    checkPassword(givenPassword, storedPassword, foundUser);
+    checkPassword(givenPassword, storedPassword, foundUser, res);
 }
 
 function getUser(givenUsername) {
-    let allUsers;
+    const allUsers = userDb.getAllUsers();
 
     let foundUser;
     for (const user of allUsers) {
@@ -30,27 +30,29 @@ function getUser(givenUsername) {
     return foundUser;
 }
 
-function checkPassword(givenPassword, storedPassword, user) {
-    bcrypt.compare(givenPassword, storedPassword, (err, result) => {
+function checkPassword(givenPassword, storedPassword, user, res) {
+    bcrypt.compare(givenPassword, storedPassword, function (err, result) {
         if (err) {
             return res.status(500).json({error: 'Internal server error'});
         } else if (result) {
-            createToken(user);
+            createToken(user, res);
         } else {
             return res.status(401).json({error: 'Invalid password'});
         }
     });
 }
 
-function createToken(user) {
+function createToken(user, res) {
     jwt.sign({
-        userName: user.username,
-        role: user.role,
+        username: user.username,
+        role: user.role
     }, 'secretKey', {expiresIn: '12h'}, (err, token) => {
         if (err) {
             return res.status(500).json({error: 'Token generation failed'});
         } else {
+            console.log("Token generation is successful");
             return res.status(200).json({token});
         }
     });
 }
+
