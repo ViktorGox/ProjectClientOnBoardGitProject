@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     // Component should be used when you need a horizontally split screen. Provide the left and right part on your own by doing
     // ...>   <div slot="left"> YOUR COMPONENT </div> <div slot="right"> YOUR COMPONENT </div> <...
     // or look up in TestCaseOverview.svelte
