@@ -26,13 +26,13 @@
         </HorizontalSplitContainer>
     </div>
     <div class="bottom">
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal status="Blocker"></TestCaseHorizontal>
+        <TestCaseHorizontal status="Successful"></TestCaseHorizontal>
+        <TestCaseHorizontal status="Bug"></TestCaseHorizontal>
+        <TestCaseHorizontal weight="232"></TestCaseHorizontal>
+        <TestCaseHorizontal assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
+        <TestCaseHorizontal weight="232" assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
+        <TestCaseHorizontal module="SomeVeryLongModuleJustABitMore" name="AVeryVerySuperMuchLongNameForATestCaseToTestTheCSSIfItsWorkingCorrectlyAndItSeemsToBeWorkingCorrectly"></TestCaseHorizontal>
         <TestCaseHorizontal></TestCaseHorizontal>
         <TestCaseHorizontal></TestCaseHorizontal>
         <TestCaseHorizontal></TestCaseHorizontal>

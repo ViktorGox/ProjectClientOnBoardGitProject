@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     // Component should be used when you need a horizontally split screen. Provide the left and right part on your own by doing
     // ...>   <div slot="left"> YOUR COMPONENT </div> <div slot="right"> YOUR COMPONENT </div> <...
     // or look up in TestCaseOverview.svelte
@@ -7,7 +7,7 @@
     export let widthTwo = 50;
 </script>
 
-<div class="background">
+<div class="background" style="width: {widthOne + widthTwo}%">
     <div class="left" style="flex: 0 0 {widthOne}%">
         <slot name="left"></slot>
     </div>
@@ -18,7 +18,6 @@
 
 <style>
     .background {
-        width: 80%;
         display: flex;
     }
 
