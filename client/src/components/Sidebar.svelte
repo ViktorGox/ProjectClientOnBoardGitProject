@@ -23,7 +23,8 @@
 
 <style>
     .background {
-        background: #381D48;
+        background: #607D8B;
         width: 250px;
+        height: 100vh;
     }
 </style>
