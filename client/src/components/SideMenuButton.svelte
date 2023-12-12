@@ -5,7 +5,9 @@
 </script>
 
 <a class="background" href={href}>
-    <img src={image}>
+    {#if image}
+        <img src={image} alt="Side menu alt">
+    {/if}
     {#if !image}
         <div class="button" style="margin-left: 15px">{text}</div>
     {:else }
@@ -25,8 +27,8 @@
     }
 
     img {
-        margin-top: 0;
         height: 15px;
         width: 15px;
+        margin-top:0;
     }
 </style>
