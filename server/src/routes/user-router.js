@@ -1,12 +1,13 @@
 import express from "express";
 import * as userController from '../controllers/user-controller.js';
+import {isLoggedIn, isAdmin} from "../middlewares.js";
 
 const router = express.Router();
 
-router.get("/", userController.getAllUsers);
-router.get("/:id", userController.getUserById);
-router.post("/", userController.postUser);
-router.put("/:id", userController.updateUser);
-router.delete("/:id", userController.deleteUserById);
+router.get("/", isLoggedIn, isAdmin, userController.getAllUsers);
+router.get("/:id", isLoggedIn, isAdmin, userController.getUserById);
+router.post("/", isLoggedIn, isAdmin, userController.postUser);
+router.put("/:id", isLoggedIn, isAdmin, userController.updateUser);
+router.delete("/:id", isLoggedIn, isAdmin, userController.deleteUserById);
 
 export default router;

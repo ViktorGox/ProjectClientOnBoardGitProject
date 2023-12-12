@@ -6,24 +6,24 @@ let db = new Database('database.sqlite');
 
 export function createUsers() {
     let user1 = {
-        username: "manager",
-        password: "$2a$12$vPgvMP7LFoFk0sGWJ.o0..f9xgtVZJtlUSqzAJDPJAC4jBHrUBqD6",
-        //password: manager
-        role: "Manager"
+        username: "admin",
+        password: "$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC",
+        //password: admin
+        role: "Admin"
     }
 
     let user2 = {
-        username: "tester",
-        password: "$2a$12$B8uneEk97kFijTp/9SoZPOrmuKjTuwC4STOHEtDLKBjzOSEwF4sWG",
-        //password: tester
-        role: "Tester"
+        username: "developer",
+        password: "$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS",
+        //password: developer
+        role: "Developer"
     }
 
     let user3 = {
-        username: "user",
-        password: "$2a$12$1P8vNfv72wm5C76qEUjdoebGaOaYwYRH9AjTWRnehV8o4DyqSEV0S",
-        //password: user
-        role: "User"
+        username: "tester",
+        password: "$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy",
+        //password: tester
+        role: "Tester"
     }
 
     let users = [];
