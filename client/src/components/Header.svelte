@@ -1,48 +1,91 @@
 <script lang="ts">
     export let active;
+    let loggedIn = true; // Set to true or false based on your logic
 </script>
 
 <nav>
-    <div class="px-3 py-2 text-bg-dark border-bottom">
+    <div class="navbar navbar-dark bg-dark">
         <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a class:active={active === "/projects"} href="/projects" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">Home
-                </a>
+            <a
+                    class:active={active === (loggedIn ? "/projects" : "/login")}
+                    href={loggedIn ? "/projects" : "/login"}
+                    class="navbar-brand"
+            >
+                {#if loggedIn}
+                    Home
+                {:else}
+                    Login
+                {/if}
+            </a>
 
-                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <i class="bi bi-bell d-block mx-4 mb-1" width="24" height="24"></i>
+            <ul class="nav col-12 col-lg-auto">
+                {#if loggedIn}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-bell d-inline-block mx-2"></i>
                             Notifications
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <i class="bi bi-person d-block mx-2 mb-1" width="24" height="24"></i>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-person d-inline-block mx-2"></i>
                             User
                         </a>
                     </li>
-                </ul>
-            </div>
+                {/if}
+            </ul>
         </div>
     </div>
-<!--    <ul>-->
-<!--        <li><a class:active={active === "/"} href="/">Home</a></li>-->
-<!--        <li><a class:active={active === "/about"} href="/about">About</a></li>-->
-<!--    </ul>-->
 </nav>
 
 <style>
-    ul {
-        list-style-type: none;
-        padding: 0;
+    body {
         margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+        background-color: #343a40; /* Dark background color for the navbar */
+        padding: 10px 0;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff; /* White text color for the brand */
+        text-decoration: none;
+        transition: color 0.3s ease-in-out; /* Smooth color transition on hover */
+    }
+
+    .navbar-brand:hover {
+        color: #486080; /* Yellow color on hover */
+    }
+
+    .nav {
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    a.active {
-        font-weight: bold;
+    .nav-item {
+        margin-right: 15px;
+    }
+
+    .nav-link {
+        color: #fff; /* White text color for the links */
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: color 0.3s ease-in-out; /* Smooth color transition on hover */
+    }
+
+    .nav-link i {
+        font-size: 1.2rem;
+        margin-right: 5px;
+    }
+
+    .nav-link:hover {
+        color: #486080; /* Grey color on hover */
+        text-decoration: underline;
     }
 </style>
