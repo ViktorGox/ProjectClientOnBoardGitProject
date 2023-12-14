@@ -16,7 +16,7 @@
 
     router('/', (ctx) => {
         page = Login;
-        currentRoute = ctx.pathname;
+        // currentRoute = ctx.pathname;
     });
 
     router('/testCases', (ctx) => {
@@ -43,7 +43,7 @@
 </script>
 
 <main>
-    <!--{#if $tokenStore.token !== undefined && $tokenStore.token !== ""}-->
+    {#if $tokenStore.token !== undefined && $tokenStore.token !== ""}
     <Header active={currentRoute}/>
     <div class="main">
         <Sidebar></Sidebar>
@@ -51,7 +51,10 @@
             <svelte:component this={page} {params}/>
         </div>
     </div>
-    <!--{/if}-->
+    {/if}
+    <div class="page">
+        <svelte:component this={page} {params}/>
+    </div>
 </main>
 
 
