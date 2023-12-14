@@ -1,7 +1,7 @@
 {
-  "name": "web-technology",
+  "name": "Parantion",
   "version": "1.0.0",
-  "description": "Template for the module 2.1 Web Technology for Saxion ACT HBO-ICT",
+  "description": "Regression test management system",
   "main": "index.js",
   "type": "module",
   "scripts": {
