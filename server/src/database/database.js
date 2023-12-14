@@ -1,23 +1,14 @@
-import Database from "better-sqlite3";
-import * as queries from './query.js';
-import * as userDb from './user-database.js';
+import pkg from 'pg';
+ const {  Client } = pkg;
 
 
-let db;
+export const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'RegressionTestingDB',
+    password: '123',
+    port: 42069,
+})
 
-export function createDatabase() {
-    try {
-        db = new Database("database.sqlite");
-
-        //Delete all data and start with the dummy data again.
-        //We can change it later but for now lez work on with only dummy data.
-        db.prepare(queries.dropUserTable).run();
-
-        db.prepare(queries.createUserTableQuery).run();
-
-        userDb.createUsers();
-    } catch (e) {
-        console.error("Error while initializing database", e);
-        throw e;
-    }
-}
+await client.connect();
+console.log(`Database logged in as ${client.user} on port ${client.port}`);
