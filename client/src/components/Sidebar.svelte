@@ -13,9 +13,8 @@
 </script>
 
 <div class="background">
-    <SideMenuButton text="Dashboard" href="/" image="./src/assets/svelte.png"></SideMenuButton>
+    <SideMenuButton text="Dashboard" href="/testCases" image="./src/assets/svelte.png"></SideMenuButton>
     <SideMenuButton text="Projects" href="projects" image="./src/assets/svelte.png"></SideMenuButton>
-    <SideMenuButton text="Projects" href="projects"></SideMenuButton>
     <VerticalButtonMenu name="Test Cases" links={hrefsTestCases} titles={titlesTestCases}></VerticalButtonMenu>
     <VerticalButtonMenu name="Analytics" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesAll}></VerticalButtonMenu>
     <VerticalButtonMenu name="ThirdOneForExample" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesHalf}></VerticalButtonMenu>

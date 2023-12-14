@@ -1,16 +1,18 @@
-<script lang="ts">
-    // import {onMount} from "svelte";
-    // import {currentToken} from "../TokenStore.js";
-    // import router from "page";
-    // import Button from "../components/Button.svelte";
-    //
+<script>
+    import {onMount} from "svelte";
+    // import {currentToken} from "../stores/TokenStore.js";
+    import router from "page";
+    import Button from "../components/Button.svelte";
+    import Header from "../components/Header.svelte";
+
+    import Sidebar from "../components/Sidebar.svelte";
     // export let params;
     // let username = params.username;
-    // let projects = [];
+    // let sprints = [];
     //
     // async function getProjects() {
     //     const response = await fetch(`http://localhost:3000/projects`);
-    //     projects = await response.json();
+    //     sprints = await response.json();
     // }
     //
     // onMount(async () => {
@@ -39,28 +41,33 @@
     // }
 </script>
 
-<!--{#if projects.length > 0}-->
+<!--{#if sprints.length > 0}-->
 <!--    <main>-->
 
 <!--        <ul>-->
-<!--            {#each projects as project}-->
+<!--            {#each sprints as sprint}-->
 <!--                <li>-->
-<!--                    <p> Name: {project.name} <br>-->
-<!--                        Team: {project.team} <br>-->
-<!--                        Last Activity: {project.LastActivity} <br>-->
+<!--                    <p> Name: {sprint.name} <br>-->
+<!--                        Number of Tests: {sprint.getSize()} <br>-->
+<!--                        Start Date: {sprint.StartDate} <br>-->
+<!--                        Due Date: {sprint.DueDate} <br>-->
 <!--                    </p>-->
-<!--                    <Button text="Edit" clickHandler={() => {editProjectWithId(project.id)}}/>-->
-<!--                    <Button text="Delete" clickHandler={async () => {await deleteProjectWithId(project.id)}}/>-->
+<!--                    <Button text="Edit" clickHandler={() => {editProjectWithId(sprint.id)}}/>-->
+<!--                    <Button text="Delete" clickHandler={async () => {await deleteProjectWithId(sprint.id)}}/>-->
 <!--                </li>-->
 
 <!--            {/each}-->
 <!--        </ul>-->
 
-<!--        <Button text="Add Project" clickHandler={addNewProject}/>-->
+<!--        <Button text="Add Sprint" clickHandler={addNewProject}/>-->
 
 <!--    </main>-->
 <!--{/if}-->
 <main>
+    <section>
+
+
+    </section>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end m-5">
         <button class="btn btn-success btn-lg "><i class="bi bi-plus-circle"></i>Add Project</button>
     </div>
