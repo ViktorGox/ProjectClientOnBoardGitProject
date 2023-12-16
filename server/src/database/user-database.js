@@ -1,8 +1,5 @@
 import * as queries from './query.js';
-import Database from "better-sqlite3";
 import statusCodes from "http-status-codes";
-
-let db = new Database('database.sqlite');
 
 export function createUsers() {
     let user1 = {

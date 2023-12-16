@@ -1,14 +1,25 @@
 import pkg from 'pg';
- const {  Client } = pkg;
+import dotenv from 'dotenv';
 
+const { Pool } = pkg;
+dotenv.config();
 
-export const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'RegressionTestingDB',
-    password: '123',
-    port: 42069,
-})
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+});
 
-await client.connect();
-console.log(`Database logged in as ${client.user} on port ${client.port}`);
+export async function runDatabase() {
+    const client = await pool.connect();
+
+    // uncomment to test that it works. Probably add some users first to confirm it works.
+
+    // const result = await client.query('SELECT * FROM Users');
+    // const data = result.rows;
+    // console.log(data);
+
+    client.release();
+}
