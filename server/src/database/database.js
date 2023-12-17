@@ -23,3 +23,17 @@ export async function runDatabase() {
 
     client.release();
 }
+export async function getAllUsers() {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM users');
+        const users = result.rows;
+        client.release();
+        return users;
+    } catch (error) {
+        console.error('Error retrieving users from the database', error);
+        throw error;
+    }
+}
+
+
