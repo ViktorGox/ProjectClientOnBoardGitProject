@@ -1,8 +1,8 @@
 import express from "express";
-import {doso} from "../controllers/tests-controller.js";
+import {getQuery} from "../controllers/tests-controller.js";
 
 const router = express.Router();
 
-router.get("/", doso);
+router.get("/", getQuery);
 
 export default router;
