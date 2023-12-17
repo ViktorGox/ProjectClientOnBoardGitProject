@@ -170,3 +170,39 @@ added them to Technical Document, explaining the functionality they provide to t
 requirements in the functional design documentation. We've also discussed the project's boundaries and risks, and I've
 documented those in the Plan of Approach. Moving forward, I plan to maintain a balance between work and meetings to enhance
 my productivity for the team, ensuring active participation in our upcoming meetings.
+
+
+
+### Meeting 10 - 12.12.2023 8:30
+
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We
+then worked on the main page and also with database.
+
+We will use status to change issues from one column to another one.
+We decided to split our work in each page. I mean that 2 of us will 
+work in the same page(one doing frontend, another one doing backend).
+
+Present:
+Ruben(Scrum Master)
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav
+Ferhat
+
+### Meeting 11 - 12.12.2023 8:30
+
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. 
+We then worked on the main page.
+The database has been created, and from here we can work with the backend and see results.
+Each member of the group has an assigned task, so we have to keep working
+
+Present:
+Ruben(Scrum Master)
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav
+Ferhat(late)
