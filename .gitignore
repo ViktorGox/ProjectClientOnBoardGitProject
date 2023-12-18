@@ -33,10 +33,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-.gitignore
-/server/src/database.sqlite
-package-lock.json
-/tests/rest/http-client.env.json
-/server/package.json
-/server/package-lock.json

@@ -8,6 +8,13 @@ currentToken.subscribe(value => {
     token = value.token;
 });
 
+export const includes = 'Includes';
+export const equals = 'Equals';
+export const moreThan = 'More';
+export const lessThan = 'Less';
+export const moreOrEqualTo = 'MoreEqual';
+export const lessOrEqualTo = 'LessEqual';
+
 /**
  * Function to call a get request with a query to the back end for multiple instances.
  * To send multiple possible answers for one property, covert to 1 string and separate with a comma(,).
@@ -66,10 +73,11 @@ export async function fetchRequest(path, fetchType = 'GET', data = {}) {
  * <p>Example of how it would look like for big query</p>
  * <p>queryProperties = ["name","status", "assignee", "weight", "module"]; </p>
  * <p>queryParams = ["som", "Blocker, Bug, Successful", "First, Second", "2", "log in, register"] </p>
- * <p>querySettings = ["Includes", "Equals", "Equals", "MoreThan", "Equals"] </p>
+ * <p>querySettings = ["Includes", "Equals", "Equals", "More", "Equals"] </p>
  * <p>Name will accept any test where the name contains "som". Status will accept only Blocker, Bug, Successful.
  * Assignee will only accept First, Second. Weight will accept anywhere where weight is > 2. Keep in mind > and =>
  * are different! Module is the same as status.</p>
+ * <p>Use the export consts instead of just strings.</p>
  * <p>To convert an array of elements you can use the arrayToString in the Utils.js</p>
  * @param path what resource to be called. /tests  /users
  * @param queryProperties An array of strings for which properties it will be searched.
