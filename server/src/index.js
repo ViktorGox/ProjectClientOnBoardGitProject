@@ -16,7 +16,7 @@ app.use('/token', tokenRouter);
 app.use('/users', userRouter);
 app.use('/tests', testsRouter)
 
-runDatabase();
+// runDatabase();
 
 app.listen(port, function () {
     console.log(`Server listening on port ${port}`);

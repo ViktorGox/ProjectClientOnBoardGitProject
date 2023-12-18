@@ -58,17 +58,17 @@ export const steps = [
 
 export const users = [
     {
-        name : "new@gmail.com",
+        email : "new@gmail.com",
         role : "admin",
         password : "123",
     },
     {
-        name : "new@gmail.com",
+        email : "new@gmail.com",
         role : "developer",
         password : "123",
     },
     {
-        name : "new@gmail.com",
+        email : "new@gmail.com",
         role : "tester",
         password : "123",
     }
