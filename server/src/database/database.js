@@ -1,7 +1,7 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 
-const { Pool } = pkg;
+const {Pool} = pkg;
 dotenv.config();
 
 const pool = new Pool({
@@ -17,12 +17,13 @@ export async function runDatabase() {
 
     // uncomment to test that it works. Probably add some users first to confirm it works.
 
-    // const result = await client.query('SELECT * FROM Users');
+    // const result = await client.query('SELECT * FROM test');
     // const data = result.rows;
     // console.log(data);
 
     client.release();
 }
+
 export async function getAllUsers() {
     try {
         const client = await pool.connect();
@@ -34,4 +35,13 @@ export async function getAllUsers() {
         console.error('Error retrieving users from the database', error);
         throw error;
     }
+}
+
+export async function performQuery(query) {
+    const client = await pool.connect();
+
+    const result = await client.query(query);
+    client.release();
+
+    return result.rows;
 }

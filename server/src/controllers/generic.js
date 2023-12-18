@@ -1,4 +1,5 @@
 import statusCodes from "http-status-codes";
+import {performQuery} from "../database/database.js";
 
 const includes = 'Includes';
 const equals = 'Equals';
@@ -7,11 +8,36 @@ const lessThan = 'Less';
 const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
-export function getQueryGeneric(req, res) {
-    return getQueryDataBase(req, res);
+export async function getQueryGeneric(req, res) {
+    const query = generateGetQuery(req, res);
+    return await performQuery(query).then((data) => {
+        return res.status(statusCodes.OK).json(data);
+    }).catch((e) => {
+        if (query.error) {
+            return res.status(statusCodes.BAD_REQUEST).json({error: query.error});
+        }
+        if (e.routine) {
+            if (e.routine === "op_error") {
+                return res.status(statusCodes.BAD_REQUEST).json({
+                    error: "Operator doesn't exist. You are probably using " +
+                        "Includes on a digit.",
+                    query: query
+                });
+            }
+            if (e.routine === "pg_strtoint32_safe") {
+                return res.status(statusCodes.BAD_REQUEST).json({
+                    error: "You are trying to compare non-digits with" +
+                        " digit value.",
+                    query: query
+                });
+            }
+        }
+        return res.status(statusCodes.BAD_REQUEST).json({error: e});
+    });
 }
 
-function getQueryDataBase(req, res) {
+function generateGetQuery(req) {
+    if (!req.fullpath) throw new Error("Full path was not set!");
     let query = 'SELECT * FROM ' + req.fullpath + ' WHERE ';
 
     const keys = Object.keys(req.query);
@@ -20,10 +46,9 @@ function getQueryDataBase(req, res) {
         for (let i = 0; i < keys.length; i++) {
             const param = keys[i];
 
-            // Handle non existent parameter.
-
             if (Array.isArray(req.query[param])) {
-                // handle multiple same name query params.
+                query = handleParamDuplicate(req, param, query);
+                continue;
             }
 
             const paramInfo = splitSetting(req.query[param]);
@@ -34,10 +59,23 @@ function getQueryDataBase(req, res) {
             }
         }
     } catch (e) {
-        return res.status(statusCodes.BAD_REQUEST).json({error: e.message});
+        return {error: e.message}
     }
 
-    return res.status(statusCodes.OK).json({query: query});
+    return query;
+}
+
+function handleParamDuplicate(req, param, query) {
+    for (let i = 0; i < req.query[param].length; i++) {
+        const paramInfo = splitSetting(req.query[param][i]);
+        query += addParameterToQuery(param, paramInfo);
+
+        if (i !== req.query[param].length - 1) {
+            query += " AND ";
+        }
+    }
+
+    return query;
 }
 
 function addParameterToQuery(param, paramInfo) {
@@ -63,11 +101,17 @@ function addSetting(setting) {
         setting = 'ILIKE';
     } else if (setting === equals) {
         setting = '=';
+    } else if (setting === moreThan) {
+        setting = '>'
+    } else if (setting === lessThan) {
+        setting = '<'
+    } else if (setting === moreOrEqualTo) {
+        setting = '>='
+    } else if (setting === lessOrEqualTo) {
+        setting = '<='
     } else {
         throw new Error("Invalid setting: " + setting);
     }
-
-    // Add for more than less ...
 
     return setting;
 }
@@ -82,7 +126,7 @@ function addSpecialChars(setting, string) {
 function splitSetting(string) {
     const lastIndex = string.lastIndexOf(';');
 
-    if(lastIndex === -1) {
+    if (lastIndex === -1) {
         throw new Error("Parameter missing a setting. Info: " + string);
     }
 
