@@ -10,6 +10,7 @@ const lessOrEqualTo = 'LessEqual';
 
 export async function getQueryGeneric(req, res) {
     const query = generateGetQuery(req, res);
+    console.log(query);
     return await performQuery(query).then((data) => {
         return res.status(statusCodes.OK).json(data);
     }).catch((e) => {
@@ -38,9 +39,12 @@ export async function getQueryGeneric(req, res) {
 
 function generateGetQuery(req) {
     if (!req.fullpath) throw new Error("Full path was not set!");
-    let query = 'SELECT * FROM ' + req.fullpath + ' WHERE ';
+    let query = 'SELECT * FROM ' + req.fullpath;
 
     const keys = Object.keys(req.query);
+    if(keys.length > 0) {
+        query += ' WHERE ';
+    }
 
     try {
         for (let i = 0; i < keys.length; i++) {
