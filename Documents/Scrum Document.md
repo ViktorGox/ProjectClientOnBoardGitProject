@@ -120,8 +120,24 @@ Ruben
 Yaroslav
 
 Absent:
-Justin, had other course
+Justin, at work
 Ferhat
+
+### Meeting 8 - 2.12.2023
+
+In the meeting, we created GitLab issues and discussed them to ensure everyone shares the same understanding.
+
+Present:
+Jafar
+Justin
+Ferhat
+Viktor
+Aleks
+Ruben
+Yaroslav
+
+
+
 
 ## End Of Sprint
 Board at the End Of Sprint
@@ -160,7 +176,12 @@ design and added more information about the meetings.
 ### Yaroslav
 []
 ### Justin
-[]
+
+At the project's start, I worked on documents, like the code of conduct, and tweaked some requirements. In this sprint, I took on designing the database, which you can find in the functional design. It was tricky because everyone had different ideas.
+
+A challenge we faced was communication issues due to different schedules. Personally, I prefer not to work evenings to spend time with family and friends. Unfortunately, this meant missing some Saturday meetings, as I'm committed to work that day.
+
+To improve, I'll be more flexible and plan sessions proactively to ensure I can participate.
 ### Rubén
 []
 ### Ferhat
