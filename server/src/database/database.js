@@ -39,17 +39,20 @@ export async function getAllUsers() {
 export async function performQuery(query, answers = []) {
     const client = await pool.connect();
 
-    return client.query(query, answers, (err, result) => {
-        if (err) {
-            console.error('Error executing query', err);
-            return;
-        }
+    try {
+        const result = await new Promise((resolve, reject) => {
+            client.query(query, answers, (err, result) => {
+                if (err) {
+                    console.error('Error executing query', err);
+                    reject(err);
+                } else {
+                    resolve(result.rows);
+                }
+            });
+        });
 
-        // Process the query result
-        console.log('Query result:', result.rows);
-
-        // Close the connection
+        return result;
+    } finally {
         client.release();
-        return result.rows;
-    });
+    }
 }

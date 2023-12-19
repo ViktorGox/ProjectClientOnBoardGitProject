@@ -42,7 +42,7 @@ export async function testingWithin(req, res) {
     // }
     // let query = generateQueryForInnerCall(props, params, setting);
     // return await performInnerQuery(table, request, res, query, body);
-    return performQuery('SELECT * FROM test WHERE status = \'bug\' OR status = \'blocker\'');
+    // return performQuery('SELECT * FROM test WHERE status = \'bug\' OR status = \'blocker\'');
 }
 
 //?testid=15;Equals&testid=13;Equals
