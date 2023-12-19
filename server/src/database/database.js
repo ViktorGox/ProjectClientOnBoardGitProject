@@ -28,7 +28,7 @@ export async function getAllUsers() {
 /**
  * Executes a query in the database, and returns the data found. Can be one generated automatically, or custom one
  * with replacement positions ($1).
- * Example:
+ * <p> Example: </p>
  * <p> return performQueryInputAnswers('SELECT * FROM test WHERE status = \'bug\' OR status = \'blocker\''); </p>
  * <p> return performQueryInputAnswers('SELECT * FROM test WHERE status = $1 OR status = $2', ['bug', 'blocker']); </p>
  * @param query Generate query and pass it, or enter your own custom query, if it uses replacement

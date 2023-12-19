@@ -19,7 +19,8 @@ export function stringReplace(fullString, toRemove, replaceWith) {
 }
 
 /**
- * Can be used to convert an array
+ * Can be used to convert an array of strings or numbers, to a single string with elements separated
+ * by a comma in order to create queryParams.
  * @param array
  * @returns {string}
  */
