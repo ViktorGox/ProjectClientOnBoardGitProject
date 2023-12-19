@@ -1,22 +1,9 @@
-import pkg from "pg";
 import * as queries from './query/user-query.js'
 import statusCodes from "http-status-codes";
-
-const {Client} = pkg;
-
-export const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'ClientProject',
-    password: '123456789',
-    port: 5432
-});
-
-await client.connect();
+import {performQuery} from "./database.js";
 
 export function getAllUsers() {
-    return client
-        .query(queries.getAllUsersQuery)
+    return performQuery(queries.getAllUsersQuery)
         .then(result => result.rows)
         .catch(() => {
             throw {
@@ -27,8 +14,7 @@ export function getAllUsers() {
 }
 
 export function getUserById(userId) {
-    return client
-        .query(queries.getUserById, [userId])
+    return performQuery(queries.getUserById, [userId])
         .then(result => result.rows[0])
         .catch(() => {
             throw {
@@ -42,8 +28,7 @@ export function postNewUser(newUser) {
     const {email, role, password} = newUser;
     checkUserAttributes(newUser);
 
-    return client
-        .query(queries.createNewUser, [email, role, password])
+    return performQuery(queries.createNewUser, [email, role, password])
         .then(result => result.rows[0])
         .catch(error => {
             throw error;
@@ -51,15 +36,14 @@ export function postNewUser(newUser) {
 }
 
 export function updateUser(userData) {
-    const{email, role, password, userid} = userData;
+    const {email, role, password, userid} = userData;
 
-    return client
-        .query(queries.updateUser, [
-            email,
-            role,
-            password,
-            userid,
-        ])
+    return performQuery(queries.updateUser, [
+        email,
+        role,
+        password,
+        userid,
+    ])
         .then(result => {
             if (result.rowCount === 0) {
                 throw {
@@ -75,8 +59,7 @@ export function updateUser(userData) {
 }
 
 export function deleteUserById(userId) {
-    return client
-        .query(queries.deleteUser, [userId])
+    return performQuery(queries.deleteUser, [userId])
         .then(result => {
             if (result.rowCount === 0) {
                 throw {
