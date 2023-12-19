@@ -13,14 +13,18 @@ export async function generateQueryGeneric(req, res) {
 
     let query;
 
-    if (req.request === 'get') {
-        query = generateGetQuery(req);
-    } else if (req.request === 'delete') {
-        query = generateDeleteQuery(req);
-    } else if (req.request === 'insert') {
-        query = generateInsertQuery(req);
-    } else if (req.request === 'update') {
-        query = generateUpdateQuery(req);
+    try {
+        if (req.request === 'get') {
+            query = generateGetQuery(req);
+        } else if (req.request === 'delete') {
+            query = generateDeleteQuery(req);
+        } else if (req.request === 'insert') {
+            query = generateInsertQuery(req);
+        } else if (req.request === 'update') {
+            query = generateUpdateQuery(req);
+        }
+    } catch (e) {
+        return res.status(statusCodes.BAD_REQUEST).json(e.message);
     }
 
     console.log(query);
@@ -43,9 +47,9 @@ export async function generateQueryGeneric(req, res) {
                     query: query
                 });
             }
-            if(e.routine === "checkInsertTargets") {
+            if(e.routine === "checkInsertTargets" || e.routine === "errorMissingColumn") {
                 return res.status(statusCodes.BAD_REQUEST).json({
-                    error: "One or more of the tables do not exist. Wrong table?",
+                    error: "One or more of the columns do not exist. Wrong table?",
                     query: query
                 })
             }
@@ -128,24 +132,20 @@ function generateWhereClause(req) {
         whereClause += ' WHERE ';
     }
 
-    try {
-        for (let i = 0; i < keys.length; i++) {
-            const param = keys[i];
+    for (let i = 0; i < keys.length; i++) {
+        const param = keys[i];
 
-            if (Array.isArray(req.query[param])) {
-                whereClause = handleParamDuplicate(req, param, whereClause);
-                continue;
-            }
-
-            const paramInfo = splitSetting(req.query[param]);
-            whereClause += addParameterToQuery(param, paramInfo);
-
-            if (i !== keys.length - 1) {
-                whereClause += " OR ";
-            }
+        if (Array.isArray(req.query[param])) {
+            whereClause = handleParamDuplicate(req, param, whereClause);
+            continue;
         }
-    } catch (e) {
-        return {error: e.message}
+
+        const paramInfo = splitSetting(req.query[param]);
+        whereClause += addParameterToQuery(param, paramInfo);
+
+        if (i !== keys.length - 1) {
+            whereClause += " OR ";
+        }
     }
 
     console.log(whereClause);
