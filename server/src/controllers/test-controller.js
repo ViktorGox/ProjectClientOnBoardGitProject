@@ -1,27 +1,18 @@
 import {performQueryFromReq, performSimpleOneQuery} from "./generic.js";
-import {performQuery} from "../database/database.js";
 
 export async function getQuery(req, res) {
-    req.table = 'test';
-    req.request = 'get';
     return await performQueryFromReq(req, res);
 }
 
 export async function deleteQuery(req, res) {
-    req.table = 'test';
-    req.request = 'delete';
     return await performQueryFromReq(req, res);
 }
 
 export async function postQuery(req, res) {
-    req.table = 'test';
-    req.request = 'insert';
     return await performQueryFromReq(req, res);
 }
 
 export async function putQuery(req, res) {
-    req.table = 'test';
-    req.request = 'update';
     return await performQueryFromReq(req, res);
 }
 

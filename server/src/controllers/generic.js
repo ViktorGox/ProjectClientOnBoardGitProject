@@ -9,21 +9,20 @@ const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
 export async function performQueryFromReq(req, res) {
-    if (!req.table) throw new Error("Full path was not set!");
-
+    console.log(removeLeadingSlash(req.baseUrl));
     let query;
 
     try {
-        if (req.request.toLowerCase() === 'get') {
+        if (req.method.toLowerCase() === 'get') {
             query = generateGetQuery(req);
-        } else if (req.request.toLowerCase() === 'delete') {
+        } else if (req.method.toLowerCase() === 'delete') {
             query = generateDeleteQuery(req);
-        } else if (req.request.toLowerCase() === 'insert') {
+        } else if (req.method.toLowerCase() === 'insert') {
             query = generateInsertQuery(req);
-        } else if (req.request.toLowerCase() === 'update') {
+        } else if (req.method.toLowerCase() === 'update') {
             query = generateUpdateQuery(req);
         } else {
-            throw new Error("Unknown request. " + req.request);
+            throw new Error("Unknown request. " + req.method);
         }
     } catch (e) {
         return res.status(statusCodes.BAD_REQUEST).json(e.message);
@@ -67,14 +66,14 @@ export async function performQueryFromReq(req, res) {
 }
 
 function generateGetQuery(req) {
-    let query = 'SELECT * FROM ' + req.table;
+    let query = 'SELECT * FROM ' + removeLeadingSlash(req.baseUrl);
 
     query += generateWhereClause(req);
     return query;
 }
 
 function generateDeleteQuery(req) {
-    let query = 'DELETE FROM ' + req.table;
+    let query = 'DELETE FROM ' + removeLeadingSlash(req.baseUrl);
 
     query += generateWhereClause(req);
     return query;
@@ -85,7 +84,7 @@ function generateInsertQuery(req) {
 
     // TODO: Handle not all columns filled?
 
-    let query = 'INSERT INTO ' + req.table + " (";
+    let query = 'INSERT INTO ' + removeLeadingSlash(req.baseUrl) + " (";
 
     for (let i = 0; i < keys.length; i++) {
         const param = keys[i];
@@ -113,7 +112,7 @@ function generateInsertQuery(req) {
 }
 
 function generateUpdateQuery(req) {
-    let query = 'UPDATE ' + req.table + ' SET ';
+    let query = 'UPDATE ' + removeLeadingSlash(req.baseUrl) + ' SET ';
 
     const keys = Object.keys(req.body);
 
@@ -256,16 +255,16 @@ function splitSetting(string) {
  * <p> SELECT * FROM test WHERE testid = 5 </p>
  * <p> DELETE FROM test WHERE testid = 5 </p>
  * @param table The table you want to query. Example: 'test'.
- * @param request The type of query you want to make. Example 'get' / 'delete'.
- * @param res Just your res from the request. Required to return the data. You can override it after.
+ * @param method The type of query you want to make. Example 'get' / 'delete'.
+ * @param res Just your res from the method. Required to return the data. You can override it after.
  * @param queryProperty The property you want to search. Example 'testid'.
  * @param queryParam The value of the parameter. Example 5.
  * @returns The found data. Empty array if nothing was found.
  */
-export async function performSimpleOneQuery(table, request, res, queryProperty, queryParam) {
+export async function performSimpleOneQuery(table, method, res, queryProperty, queryParam) {
     let fakeReq = {
-        table: table,
-        request: request,
+        baseUrl: table,
+        method: method,
         query: {}
     }
 
@@ -279,17 +278,17 @@ export async function performSimpleOneQuery(table, request, res, queryProperty, 
 /**
  * Used to generate a query from the back end for the back end.
  * @param table The table you want to query. Example: 'test'.
- * @param request The type of query you want to make. Example 'get'.
- * @param res Just your res from the request. Required to return the data. You can override it after.
+ * @param method The type of query you want to make. Example 'get'.
+ * @param res Just your res from the method. Required to return the data. You can override it after.
  * @param query The query parameters which can be added to the query as a where clause to filter the search.
  * Look at {@link generateQueryForInnerCall} to generate it.
  * @param body For insert and update query. Just a normal default body. "Variable" : "value"
  * @returns The results of the database query. Empty array if nothing was found.
  */
-export async function performInnerQuery(table, request, res, query, body = {}) {
+export async function performInnerQuery(table, method, res, query, body = {}) {
     const fakeReq = {
-        table: table,
-        request: request,
+        baseUrl: table,
+        method: method,
         query: query,
         body: body
     }
@@ -359,4 +358,11 @@ function arrayToString(array) {
 
 function removeLastCharacter(string) {
     return string.slice(0, -1);
+}
+
+function removeLeadingSlash(inputString) {
+    if (inputString && inputString.charAt(0) === '/') {
+        return inputString.slice(1);
+    }
+    return inputString;
 }
