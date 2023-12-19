@@ -20,7 +20,7 @@
         width: 100%;
         height: 30px;
         display: flex;
-        padding: 0 0 0 1.5rem;
+        padding: 0 0 0 25px;
         align-items: center;
         text-decoration: none;
         color: white;
@@ -29,11 +29,6 @@
     img {
         height: 15px;
         width: 15px;
-        margin-top: 0;
-    }
-
-    .background:hover {
-        transition: opacity 0.9s ease-in-out;
-        transform: scale(1.05);
+        margin-top:0;
     }
 </style>
