@@ -4,7 +4,6 @@ import {deleteQuery, getQuery, postQuery, putQuery, testingWithin} from "../cont
 const router = express.Router();
 
 router.get('/', getQuery);
-// router.get('/:id' ); TODO: this.
 router.get('/:id', testingWithin);
 
 router.delete('/',deleteQuery);

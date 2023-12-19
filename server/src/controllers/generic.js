@@ -1,4 +1,3 @@
-import statusCodes from "http-status-codes";
 import {performQuery} from "../database/database.js";
 
 const includes = 'Includes';
@@ -8,8 +7,7 @@ const lessThan = 'Less';
 const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
-export async function performQueryFromReq(req, res) {
-    console.log(removeLeadingSlash(req.baseUrl));
+export async function performQueryFromReq(req) {
     let query;
 
     try {
@@ -25,43 +23,44 @@ export async function performQueryFromReq(req, res) {
             throw new Error("Unknown request. " + req.method);
         }
     } catch (e) {
-        return res.status(statusCodes.BAD_REQUEST).json(e.message);
+        return e.message;
     }
 
     console.log(query);
+
     return await performQuery(query).then((data) => {
-        return res.status(statusCodes.OK).json(data);
+        return data;
     }).catch((e) => {
         if (query.error) {
-            return res.status(statusCodes.BAD_REQUEST).json({error: query.error});
+            return query.error;
         }
         if (e.routine) {
             if (e.routine === "op_error") {
-                return res.status(statusCodes.BAD_REQUEST).json({
+                return {
                     error: "Operator doesn't exist. You are probably using Includes on a digit.",
                     query: query
-                });
+                };
             }
             if (e.routine === "pg_strtoint32_safe") {
-                return res.status(statusCodes.BAD_REQUEST).json({
+                return {
                     error: "You are trying to compare non-digits with digit value.",
                     query: query
-                });
+                };
             }
             if (e.routine === "checkInsertTargets" || e.routine === "errorMissingColumn") {
-                return res.status(statusCodes.BAD_REQUEST).json({
+                return {
                     error: "One or more of the columns do not exist. Wrong table?",
                     query: query
-                })
+                };
             }
             if(e.routine === "scanner_yyerror") {
-                return res.status(statusCodes.BAD_REQUEST).json({
+                return {
                     error: "Query was not properly generated. Or some other unknown error (scanner_yyerror)",
                     query: query
-                })
+                };
             }
         }
-        return res.status(statusCodes.BAD_REQUEST).json({error: e});
+        return e;
     });
 }
 
@@ -256,12 +255,11 @@ function splitSetting(string) {
  * <p> DELETE FROM test WHERE testid = 5 </p>
  * @param table The table you want to query. Example: 'test'.
  * @param method The type of query you want to make. Example 'get' / 'delete'.
- * @param res Just your res from the method. Required to return the data. You can override it after.
  * @param queryProperty The property you want to search. Example 'testid'.
  * @param queryParam The value of the parameter. Example 5.
  * @returns The found data. Empty array if nothing was found.
  */
-export async function performSimpleOneQuery(table, method, res, queryProperty, queryParam) {
+export async function performSimpleOneQuery(table, method, queryProperty, queryParam) {
     let fakeReq = {
         baseUrl: table,
         method: method,
@@ -272,20 +270,19 @@ export async function performSimpleOneQuery(table, method, res, queryProperty, q
 
     fakeReq.query[queryProperty] = queryParam + ";Equals";
 
-    return await performQueryFromReq(fakeReq, res);
+    return await performQueryFromReq(fakeReq);
 }
 
 /**
  * Used to generate a query from the back end for the back end.
  * @param table The table you want to query. Example: 'test'.
  * @param method The type of query you want to make. Example 'get'.
- * @param res Just your res from the method. Required to return the data. You can override it after.
  * @param query The query parameters which can be added to the query as a where clause to filter the search.
  * Look at {@link generateQueryForInnerCall} to generate it.
  * @param body For insert and update query. Just a normal default body. "Variable" : "value"
  * @returns The results of the database query. Empty array if nothing was found.
  */
-export async function performInnerQuery(table, method, res, query, body = {}) {
+export async function performInnerQuery(table, method, query, body = {}) {
     const fakeReq = {
         baseUrl: table,
         method: method,
@@ -293,7 +290,7 @@ export async function performInnerQuery(table, method, res, query, body = {}) {
         body: body
     }
 
-    return await performQueryFromReq(fakeReq, res);
+    return await performQueryFromReq(fakeReq);
 }
 
 /**
