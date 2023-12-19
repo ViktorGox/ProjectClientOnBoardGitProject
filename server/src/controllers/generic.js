@@ -8,7 +8,7 @@ const lessThan = 'Less';
 const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
-export async function generateQueryGeneric(req, res) {
+export async function performQueryFromReq(req, res) {
     if (!req.table) throw new Error("Full path was not set!");
 
     let query;
@@ -269,9 +269,11 @@ export async function performSimpleOneQuery(table, request, res, queryProperty, 
         query: {}
     }
 
+    // TODO: should return 404 if nothing found?
+
     fakeReq.query[queryProperty] = queryParam + ";Equals";
 
-    return await generateQueryGeneric(fakeReq, res);
+    return await performQueryFromReq(fakeReq, res);
 }
 
 /**
@@ -292,7 +294,7 @@ export async function performInnerQuery(table, request, res, query, body = {}) {
         body: body
     }
 
-    return await generateQueryGeneric(fakeReq, res);
+    return await performQueryFromReq(fakeReq, res);
 }
 
 /**

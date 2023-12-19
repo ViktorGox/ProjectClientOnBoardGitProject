@@ -1,28 +1,28 @@
-import {generateQueryGeneric} from "./generic.js";
+import {performQueryFromReq, performSimpleOneQuery} from "./generic.js";
 import {performQuery} from "../database/database.js";
 
 export async function getQuery(req, res) {
     req.table = 'test';
     req.request = 'get';
-    return await generateQueryGeneric(req, res);
+    return await performQueryFromReq(req, res);
 }
 
 export async function deleteQuery(req, res) {
     req.table = 'test';
     req.request = 'delete';
-    return await generateQueryGeneric(req, res);
+    return await performQueryFromReq(req, res);
 }
 
 export async function postQuery(req, res) {
     req.table = 'test';
     req.request = 'insert';
-    return await generateQueryGeneric(req, res);
+    return await performQueryFromReq(req, res);
 }
 
 export async function putQuery(req, res) {
     req.table = 'test';
     req.request = 'update';
-    return await generateQueryGeneric(req, res);
+    return await performQueryFromReq(req, res);
 }
 
 export async function testingWithin(req, res) {
@@ -41,7 +41,8 @@ export async function testingWithin(req, res) {
     //     "completiondate": "2023-12-19"
     // }
     // let query = generateQueryForInnerCall(props, params, setting);
-    // return await performInnerQuery(table, request, res, query, body);
+    console.log(req.param);
+    return await performSimpleOneQuery('users', 'get', res, 'userid', 6);
     // return performQuery('SELECT * FROM test WHERE status = \'bug\' OR status = \'blocker\'');
 }
 
