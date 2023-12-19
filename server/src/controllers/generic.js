@@ -8,8 +8,21 @@ const lessThan = 'Less';
 const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
-export async function getQueryGeneric(req, res) {
-    const query = generateGetQuery(req, res);
+export async function generateQueryGeneric(req, res) {
+    if (!req.table) throw new Error("Full path was not set!");
+
+    let query;
+
+    if (req.request === 'get') {
+        query = generateGetQuery(req);
+    } else if (req.request === 'delete') {
+        query = generateDeleteQuery(req);
+    } else if (req.request === 'insert') {
+        query = generateInsertQuery(req);
+    } else if (req.request === 'update') {
+        query = generateUpdateQuery(req);
+    }
+
     console.log(query);
     return await performQuery(query).then((data) => {
         return res.status(statusCodes.OK).json(data);
@@ -20,17 +33,21 @@ export async function getQueryGeneric(req, res) {
         if (e.routine) {
             if (e.routine === "op_error") {
                 return res.status(statusCodes.BAD_REQUEST).json({
-                    error: "Operator doesn't exist. You are probably using " +
-                        "Includes on a digit.",
+                    error: "Operator doesn't exist. You are probably using Includes on a digit.",
                     query: query
                 });
             }
             if (e.routine === "pg_strtoint32_safe") {
                 return res.status(statusCodes.BAD_REQUEST).json({
-                    error: "You are trying to compare non-digits with" +
-                        " digit value.",
+                    error: "You are trying to compare non-digits with digit value.",
                     query: query
                 });
+            }
+            if(e.routine === "checkInsertTargets") {
+                return res.status(statusCodes.BAD_REQUEST).json({
+                    error: "One or more of the tables do not exist. Wrong table?",
+                    query: query
+                })
             }
         }
         return res.status(statusCodes.BAD_REQUEST).json({error: e});
@@ -38,12 +55,64 @@ export async function getQueryGeneric(req, res) {
 }
 
 function generateGetQuery(req) {
-    if (!req.fullpath) throw new Error("Full path was not set!");
-    let query = 'SELECT * FROM ' + req.fullpath;
+    let query = 'SELECT * FROM ' + req.table;
 
+    query += generateWhereClause(req);
+    return query;
+}
+
+function generateDeleteQuery(req) {
+    let query = 'DELETE FROM ' + req.table;
+
+    query += generateWhereClause(req);
+    return query;
+}
+
+function generateInsertQuery(req) {
+    const keys = Object.keys(req.body);
+
+    // Handle not all columns filled.
+
+    let query = 'INSERT INTO ' + req.table + " (";
+
+    for (let i = 0; i < keys.length; i++) {
+        const param = keys[i];
+        query += param;
+
+        if (i !== keys.length - 1) {
+            query += ", ";
+        }
+    }
+
+    query += ") VALUES (";
+
+    for (let i = 0; i < keys.length; i++) {
+        const param = keys[i];
+        query += "'"+req.body[param]+"'";
+
+        if (i !== keys.length - 1) {
+            query += ", ";
+        }
+    }
+
+    query += ');'
+
+    return query;
+}
+
+function generateUpdateQuery(req) {
+    let query = 'UPDATE FROM ' + req.table;
+
+    query += generateWhereClause(req);
+    return query;
+}
+
+
+function generateWhereClause(req) {
+    let whereClause = "";
     const keys = Object.keys(req.query);
-    if(keys.length > 0) {
-        query += ' WHERE ';
+    if (keys.length > 0) {
+        whereClause += ' WHERE ';
     }
 
     try {
@@ -51,22 +120,22 @@ function generateGetQuery(req) {
             const param = keys[i];
 
             if (Array.isArray(req.query[param])) {
-                query = handleParamDuplicate(req, param, query);
+                whereClause = handleParamDuplicate(req, param, whereClause);
                 continue;
             }
 
             const paramInfo = splitSetting(req.query[param]);
-            query += addParameterToQuery(param, paramInfo);
+            whereClause += addParameterToQuery(param, paramInfo);
 
             if (i !== keys.length - 1) {
-                query += " OR ";
+                whereClause += " OR ";
             }
         }
     } catch (e) {
         return {error: e.message}
     }
 
-    return query;
+    return whereClause;
 }
 
 function handleParamDuplicate(req, param, query) {
