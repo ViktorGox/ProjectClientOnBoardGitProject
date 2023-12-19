@@ -71,7 +71,7 @@ function generateDeleteQuery(req) {
 function generateInsertQuery(req) {
     const keys = Object.keys(req.body);
 
-    // Handle not all columns filled.
+    // TODO: Handle not all columns filled?
 
     let query = 'INSERT INTO ' + req.table + " (";
 
@@ -101,7 +101,20 @@ function generateInsertQuery(req) {
 }
 
 function generateUpdateQuery(req) {
-    let query = 'UPDATE FROM ' + req.table;
+    let query = 'UPDATE ' + req.table + ' SET ';
+
+    const keys = Object.keys(req.body);
+
+    for (let i = 0; i < keys.length; i++) {
+        const param = keys[i];
+        const paramLoad = req.body[param];
+
+        query += param + " = " + paramLoad;
+
+        if (i !== keys.length - 1) {
+            query += ", ";
+        }
+    }
 
     query += generateWhereClause(req);
     return query;
@@ -135,6 +148,7 @@ function generateWhereClause(req) {
         return {error: e.message}
     }
 
+    console.log(whereClause);
     return whereClause;
 }
 

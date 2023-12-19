@@ -17,3 +17,9 @@ export async function postQuery(req ,res) {
     req.request = 'insert';
     return await generateQueryGeneric(req, res);
 }
+
+export async function putQuery(req ,res) {
+    req.table = 'test';
+    req.request = 'update';
+    return await generateQueryGeneric(req, res);
+}
