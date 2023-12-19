@@ -17,9 +17,9 @@ export async function performQueryFromReq(req, res) {
             query = generateGetQuery(req);
         } else if (req.method.toLowerCase() === 'delete') {
             query = generateDeleteQuery(req);
-        } else if (req.method.toLowerCase() === 'insert') {
+        } else if (req.method.toLowerCase() === 'post') {
             query = generateInsertQuery(req);
-        } else if (req.method.toLowerCase() === 'update') {
+        } else if (req.method.toLowerCase() === 'put' || req.method.toLowerCase() === 'patch') {
             query = generateUpdateQuery(req);
         } else {
             throw new Error("Unknown request. " + req.method);
