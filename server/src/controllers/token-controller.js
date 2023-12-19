@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userDb from "../database/database.js";
+import * as userDb from "../database/user-database.js";
 
 export async function checkToken(req, res) {
-    const givenUsername = req.body.username;
+    const givenEmail = req.body.email;
     const givenPassword = req.body.password;
 
     try {
-        const foundUser = await getUser(givenUsername);
+        const foundUser = await getUser(givenEmail);
 
         if (!foundUser) {
             return res.status(404).json({ error: 'Username not found' });
@@ -22,21 +22,18 @@ export async function checkToken(req, res) {
     }
 }
 
-async function getUser(givenUsername) {
+async function getUser(givenEmail) {
     try {
         const allUsers = await userDb.getAllUsers();
 
         let foundUser;
         for (const user of allUsers) {
-            if (user.username === givenUsername) {
+            if (user.email === givenEmail) {
                 foundUser = user;
-                break;
             }
         }
-
         return foundUser;
     } catch (error) {
-        console.error('Error getting user:', error);
         throw error;
     }
 }

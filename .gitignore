@@ -1,4 +1,5 @@
 # Default ignored files
+./server/package.json
 /shelf/
 /workspace.xml
 /out/
