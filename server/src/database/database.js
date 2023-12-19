@@ -12,18 +12,6 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
-export async function runDatabase() {
-    const client = await pool.connect();
-
-    // uncomment to test that it works. Probably add some users first to confirm it works.
-
-    // const result = await client.query('SELECT * FROM test');
-    // const data = result.rows;
-    // console.log(data);
-
-    client.release();
-}
-
 export async function getAllUsers() {
     try {
         const client = await pool.connect();
@@ -37,11 +25,34 @@ export async function getAllUsers() {
     }
 }
 
-export async function performQuery(query) {
+/**
+ * Executes a query in the database, and returns the data found. Can be one generated automatically, or custom one
+ * with replacement positions ($1).
+ * <p> Example: </p>
+ * <p> return performQueryInputAnswers('SELECT * FROM test WHERE status = \'bug\' OR status = \'blocker\''); </p>
+ * <p> return performQueryInputAnswers('SELECT * FROM test WHERE status = $1 OR status = $2', ['bug', 'blocker']); </p>
+ * @param query Generate query and pass it, or enter your own custom query, if it uses replacement
+ * positions, put ${number} for every parameter the query takes. Start from 1 and increment by one.
+ * @param answers An array which contains the replacements for the ${number}.
+ * @returns Returns an array of all data found.
+ */
+export async function performQuery(query, answers = []) {
     const client = await pool.connect();
 
-    const result = await client.query(query);
-    client.release();
+    try {
+        const result = await new Promise((resolve, reject) => {
+            client.query(query, answers, (err, result) => {
+                if (err) {
+                    console.error('Error executing query', err);
+                    reject(err);
+                } else {
+                    resolve(result.rows);
+                }
+            });
+        });
 
-    return result.rows;
+        return result;
+    } finally {
+        client.release();
+    }
 }
