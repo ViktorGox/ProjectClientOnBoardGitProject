@@ -7,6 +7,20 @@ const lessThan = 'Less';
 const moreOrEqualTo = 'MoreEqual';
 const lessOrEqualTo = 'LessEqual';
 
+/**
+ * This method takes a req object, auto generates a query, executes it and returns the result.
+ * You can create a custom req and provide it, to fake a request and still be able to use this method. Look at method
+ * {@link performInnerQuery} or {@link performSimpleOneQuery}.
+ * @param req The req is required to have the following sub variables:
+ * <p> "baseUrl" for table name</p>
+ * <p> "method" for request type</p>
+ * <p> "query" for if the request can, and is wanted to have a where clause</p>
+ * <p> "params" for if looking for one element particular element (test/:id)</p>
+ * <p> "body" for post/put request, the that will actually be inserted/updated</p>
+ * @returns {Promise<unknown>} the result of the query, or an error object.
+ * The error object contains error.message, is text about the message and error.code, which is the possible code
+ * you want to return.
+ */
 export async function performQueryFromReq(req) {
     let query;
 
@@ -53,7 +67,7 @@ export async function performQueryFromReq(req) {
                     query: query
                 };
             }
-            if(e.routine === "scanner_yyerror") {
+            if (e.routine === "scanner_yyerror") {
                 return {
                     error: "Query was not properly generated. Or some other unknown error (scanner_yyerror)",
                     query: query
@@ -135,13 +149,52 @@ function generateUpdateQuery(req) {
  */
 function generateWhereClause(req) {
     let whereClause = "";
-    const keys = Object.keys(req.query);
-    if (keys.length > 0) {
+
+    const paramsKeys = Object.keys(req.params);
+    const queryKeys = Object.keys(req.query);
+
+    if (queryKeys.length > 0 || paramsKeys.length > 0) {
         whereClause += ' WHERE ';
     }
 
-    for (let i = 0; i < keys.length; i++) {
-        const param = keys[i];
+    whereClause += whereClauseFromPath(req);
+    if (queryKeys.length > 0 && paramsKeys.length > 0) {
+        whereClause += ' OR ';
+    }
+    whereClause += whereClauseFromQuery(req);
+    return whereClause;
+}
+
+/**
+ * Adds a where clause based only on the req.params.
+ */
+function whereClauseFromPath(req) {
+    const paramsKeys = Object.keys(req.params);
+    let whereClause = "";
+
+    for (let i = 0; i < paramsKeys.length; i++) {
+        const param = paramsKeys[i];
+        console.log(param + " " + req.params[param]);
+
+        whereClause += param + " = " + req.params[param];
+
+        if (i !== paramsKeys.length - 1) {
+            whereClause += " OR ";
+        }
+    }
+
+    return whereClause;
+}
+
+/**
+ * Adds a where clause based only on the req.query.
+ */
+function whereClauseFromQuery(req) {
+    const queryKeys = Object.keys(req.query);
+    let whereClause = "";
+
+    for (let i = 0; i < queryKeys.length; i++) {
+        const param = queryKeys[i];
 
         if (Array.isArray(req.query[param])) {
             whereClause = handleParamDuplicate(req, param, whereClause);
@@ -151,7 +204,7 @@ function generateWhereClause(req) {
         const paramInfo = splitSetting(req.query[param]);
         whereClause += addParameterToQuery(param, paramInfo);
 
-        if (i !== keys.length - 1) {
+        if (i !== queryKeys.length - 1) {
             whereClause += " OR ";
         }
     }
@@ -280,17 +333,20 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
  * @param query The query parameters which can be added to the query as a where clause to filter the search.
  * Look at {@link generateQueryForInnerCall} to generate it.
  * @param body For insert and update query. Just a normal default body. "Variable" : "value"
+ * @param params Any data that might be wanted as path parameter. Simulates test/{:id}
  * @returns The results of the database query. Empty array if nothing was found.
  */
-export async function performInnerQuery(table, method, query, body = {}) {
+export async function performInnerQuery(table, method, query, body = {}, params = {}) {
     const fakeReq = {
         baseUrl: table,
         method: method,
         query: query,
-        body: body
+        body: body,
+        params: params
     }
-
-    return await performQueryFromReq(fakeReq);
+    return await performQueryFromReq(fakeReq).then((result) => {
+        return result;
+    });
 }
 
 /**
@@ -307,18 +363,16 @@ export async function performInnerQuery(table, method, query, body = {}) {
  * Look at the variables at the top of the file {@link includes}, {@link equals}, {@link moreThan} and the other 3.
  * @returns the query object.
  */
-export function generateQueryForInnerCall(queryProperties = [], queryParams= [], querySettings= []) {
+export function generateQueryForInnerCall(queryProperties = [], queryParams = [], querySettings = []) {
     const query = {};
 
-    if(queryProperties.length !== queryParams.length || queryProperties.length !== querySettings.length) {
+    if (queryProperties.length !== queryParams.length || queryProperties.length !== querySettings.length) {
         throw new Error("The provided arrays must have the same lengths! Did you not combine queryParam for one " +
             "queryProperty? QueryProperty length: " + queryProperties.length + " | QueryParams length: " +
             queryParams.length + " | QuerySetting length; " + querySettings.length);
     }
 
     for (let i = 0; i < queryProperties.length; i++) {
-        console.log("1 "+query[queryProperties[i]]);
-        console.log("2 "+queryParams[i]);
         query[queryProperties[i]] = queryParams[i] + ";" + querySettings[i];
     }
 
