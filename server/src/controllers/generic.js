@@ -37,7 +37,7 @@ export async function performQueryFromReq(req) {
             throw new Error("Unknown request. " + req.method);
         }
     } catch (e) {
-        return e.message;
+        return {error :e.message};
     }
 
     console.log(query);
@@ -46,13 +46,14 @@ export async function performQueryFromReq(req) {
         return data;
     }).catch((e) => {
         if (query.error) {
-            return query.error;
+            return {error :e.message, query: query};
+            // return query.error;
         }
         if (e.routine) {
             if (e.routine === "op_error") {
                 return {
                     error: "Operator doesn't exist. You are probably using Includes on a digit.",
-                    query: query
+                    query: query,
                 };
             }
             if (e.routine === "pg_strtoint32_safe") {
@@ -74,7 +75,7 @@ export async function performQueryFromReq(req) {
                 };
             }
         }
-        return e;
+        return {error :e.message};
     });
 }
 
@@ -174,7 +175,6 @@ function whereClauseFromPath(req) {
 
     for (let i = 0; i < paramsKeys.length; i++) {
         const param = paramsKeys[i];
-        console.log(param + " " + req.params[param]);
 
         whereClause += param + " = " + req.params[param];
 
