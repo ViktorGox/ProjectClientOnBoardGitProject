@@ -1,10 +1,10 @@
 import express from "express";
-import {deleteQuery, getQuery, postQuery, putQuery, testingWithin} from "../controllers/test-controller.js";
+import {deleteQuery, getQuery, postQuery, putQuery, getTestById} from "../controllers/test-controller.js";
 
 const router = express.Router();
 
 router.get('/', getQuery);
-router.get('/:id', testingWithin);
+router.get('/:testid', getTestById);
 
 router.delete('/',deleteQuery);
 router.post('/', postQuery);
