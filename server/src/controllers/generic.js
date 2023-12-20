@@ -9,7 +9,9 @@ const lessOrEqualTo = 'LessEqual';
 
 /**
  * This method takes a req object, auto generates a query, executes it and returns the result.
- * You can create a custom req and provide it, to fake a request and still be able to use this method. Look at method
+ * You can create a custom req and provide it, to fake a request and still be able to use this method. Look at method.
+ * Errors are caught and returned as response.error. So you can check if an error was encountered by checking if
+ * .error exists.
  * {@link performInnerQuery} or {@link performSimpleOneQuery}.
  * @param req The req is required to have the following sub variables:
  * <p> "baseUrl" for table name</p>
@@ -34,7 +36,7 @@ export async function performQueryFromReq(req) {
         } else if (req.method.toLowerCase() === 'put' || req.method.toLowerCase() === 'patch') {
             query = generateUpdateQuery(req);
         } else {
-            throw new Error("Unknown request. " + req.method);
+            return {error : "Unknown request. " + req.method};
         }
     } catch (e) {
         return {error :e.message};
