@@ -75,7 +75,7 @@
 </div>
 
 <div class="background__image">
-    <img src="https://parantion.com/cms/wp-content/uploads/2021/05/cropped-PAR_Logo_WT_Parantion-CMYKgroot-2048x428.png" alt="parantion logo">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOtH944W_PsijoUf1522VUMepf1ImPZPjKFnFhnNglAhTwyfJCbuqGBaYVEW9nx5kLzk&usqp=CAU" alt="parantion logo">
 </div>
 </body>
 
