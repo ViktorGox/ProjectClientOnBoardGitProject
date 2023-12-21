@@ -4,17 +4,26 @@
     import Header from "./components/Header.svelte";
 
     import Sidebar from "./components/Sidebar.svelte";
-    import Projects from "./pages/Projects.svelte";
+    import Projects from "./pages/Sprints.svelte";
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
+    import Login from "./pages/Login.svelte";
+    import tokenStore from "./stores/TokenStore";
     let page;
     let params;
     let currentRoute;
 
+
     router('/', (ctx) => {
+        page = Login;
+        // currentRoute = ctx.pathname;
+    });
+
+    router('/testCases', (ctx) => {
         page = TestCaseOverview;
         currentRoute = ctx.pathname;
     });
+
     router('/tests/:id', (ctx) => {
         page = TestCaseDetails;
         currentRoute = ctx.pathname;
@@ -34,12 +43,17 @@
 </script>
 
 <main>
+    {#if $tokenStore.token !== undefined && $tokenStore.token !== ""}
     <Header active={currentRoute}/>
     <div class="main">
         <Sidebar></Sidebar>
         <div class="page">
             <svelte:component this={page} {params}/>
         </div>
+    </div>
+    {/if}
+    <div class="page">
+        <svelte:component this={page} {params}/>
     </div>
 </main>
 

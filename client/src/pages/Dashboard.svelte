@@ -54,7 +54,6 @@
         color: #413f3f;
         width: 300px;
         height: 100px;
-        padding: 5px;
         border-radius: 5px;
     }
 </style>

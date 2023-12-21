@@ -120,8 +120,24 @@ Ruben
 Yaroslav
 
 Absent:
-Justin, had other course
+Justin, at work
 Ferhat
+
+### Meeting 8 - 2.12.2023
+
+In the meeting, we created GitLab issues and discussed them to ensure everyone shares the same understanding.
+
+Present:
+Jafar
+Justin
+Ferhat
+Viktor
+Aleks
+Ruben
+Yaroslav
+
+
+
 
 ## End Of Sprint
 Board at the End Of Sprint
@@ -160,7 +176,12 @@ design and added more information about the meetings.
 ### Yaroslav
 []
 ### Justin
-[]
+
+At the project's start, I worked on documents, like the code of conduct, and tweaked some requirements. In this sprint, I took on designing the database, which you can find in the functional design. It was tricky because everyone had different ideas.
+
+A challenge we faced was communication issues due to different schedules. Personally, I prefer not to work evenings to spend time with family and friends. Unfortunately, this meant missing some Saturday meetings, as I'm committed to work that day.
+
+To improve, I'll be more flexible and plan sessions proactively to ensure I can participate.
 ### Rubén
 []
 ### Ferhat
@@ -170,3 +191,39 @@ added them to Technical Document, explaining the functionality they provide to t
 requirements in the functional design documentation. We've also discussed the project's boundaries and risks, and I've
 documented those in the Plan of Approach. Moving forward, I plan to maintain a balance between work and meetings to enhance
 my productivity for the team, ensuring active participation in our upcoming meetings.
+
+
+
+### Meeting 10 - 12.12.2023 8:30
+
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We
+then worked on the main page and also with database.
+
+We will use status to change issues from one column to another one.
+We decided to split our work in each page. I mean that 2 of us will 
+work in the same page(one doing frontend, another one doing backend).
+
+Present:
+Ruben(Scrum Master)
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav
+Ferhat
+
+### Meeting 11 - 12.12.2023 8:30
+
+In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. 
+We then worked on the main page.
+The database has been created, and from here we can work with the backend and see results.
+Each member of the group has an assigned task, so we have to keep working
+
+Present:
+Ruben(Scrum Master)
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav
+Ferhat(late)

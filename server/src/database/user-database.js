@@ -1,91 +1,96 @@
-import * as queries from './query.js';
-import Database from "better-sqlite3";
+import * as queries from './query/user-query.js'
 import statusCodes from "http-status-codes";
-
-let db = new Database('database.sqlite');
-
-export function createUsers() {
-    let user1 = {
-        username: "admin",
-        password: "$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC",
-        //password: admin
-        role: "Admin"
-    }
-
-    let user2 = {
-        username: "developer",
-        password: "$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS",
-        //password: developer
-        role: "Developer"
-    }
-
-    let user3 = {
-        username: "tester",
-        password: "$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy",
-        //password: tester
-        role: "Tester"
-    }
-
-    let users = [];
-    users.push(user1);
-    users.push(user2);
-    users.push(user3);
-
-    const insert = db.prepare(queries.insertUserQuery);
-
-    for (const user of users) {
-        insert.run(user.username, user.password, user.role);
-    }
-}
+import {performQuery} from "./database.js";
 
 export function getAllUsers() {
-    try {
-        return db.prepare(queries.getAllUsersQuery).all();
-    } catch (e) {
-        console.error("Error while getting all users: ", e);
-        return [];
-    }
+    return performQuery(queries.getAllUsersQuery)
+        .then(result => result.rows)
+        .catch(() => {
+            throw {
+                status: statusCodes.INTERNAL_SERVER_ERROR,
+                message: 'Internal Server Error'
+            };
+        });
 }
 
-export function getUserById(id) {
-    return db.prepare(queries.getUserById).get(id);
+export function getUserById(userId) {
+    return performQuery(queries.getUserById, [userId])
+        .then(result => result.rows[0])
+        .catch(() => {
+            throw {
+                status: statusCodes.INTERNAL_SERVER_ERROR,
+                message: 'Internal Server Error'
+            };
+        })
 }
 
-export function postUser(newUser) {
+export function postNewUser(newUser) {
+    const {email, role, password} = newUser;
     checkUserAttributes(newUser);
-    return db.prepare(queries.insertUserQuery).run(newUser.username, newUser.password, newUser.role);
+
+    return performQuery(queries.createNewUser, [email, role, password])
+        .then(result => result.rows[0])
+        .catch(error => {
+            throw error;
+        })
 }
 
-export function updateUserById(user) {
-    checkUserAttributes(user);
+export function updateUser(userData) {
+    const {email, role, password, userid} = userData;
 
-    if (isIdExist(user.userId)) {
-        return db.prepare(queries.updateUser).run(user.username, user.password, user.role, user.userId);
-    } else {
-        throw {
-            message: `Error while updating user with ${user.userId}`,
-            status: statusCodes.BAD_REQUEST
-        };
-    }
+    return performQuery(queries.updateUser, [
+        email,
+        role,
+        password,
+        userid,
+    ])
+        .then(result => {
+            if (result.rowCount === 0) {
+                throw {
+                    status: statusCodes.NOT_FOUND,
+                    message: `User with ${userid} id not found`
+                };
+            }
+            return result.rows[0];
+        })
+        .catch(error => {
+            throw error;
+        });
 }
 
 export function deleteUserById(userId) {
-    return db.prepare(queries.deleteUser).run(userId);
+    return performQuery(queries.deleteUser, [userId])
+        .then(result => {
+            if (result.rowCount === 0) {
+                throw {
+                    status: statusCodes.NOT_FOUND,
+                    message: `User with ${userid} id not found`
+                };
+            }
+
+            return result.rows[0];
+        })
+        .catch(() => {
+            throw {
+                status: statusCodes.INTERNAL_SERVER_ERROR,
+                message: 'Internal Server Error'
+            };
+        });
 }
 
 function checkUserAttributes(user) {
     const errors = [];
 
-    if (!('username' in user) || user.username == undefined || user.username == '') {
-        errors.push('Required username attribute is missing');
-    }
-
-    if (!('password' in user) || user.password == undefined || user.password == '') {
-        errors.push('Required password attribute is missing');
+    if (!('email' in user) || user.email == undefined || user.email == '') {
+        errors.push('Required email attribute is missing');
     }
 
     if (!('role' in user) || user.role == undefined || user.role == '') {
         errors.push('Required role attribute is missing');
+    }
+
+    if (!('password' in user) || user.password == undefined || user.password == '') {
+        errors.push('Required password attribute is missing');
     }
 
     if (errors.length > 0) {
@@ -94,14 +99,4 @@ function checkUserAttributes(user) {
             status: statusCodes.BAD_REQUEST
         };
     }
-}
-
-function isIdExist(userId) {
-    const allUsers = getAllUsers();
-    for (const user of allUsers) {
-        if (user.userId == userId) {
-            return true;
-        }
-    }
-    return false;
 }
