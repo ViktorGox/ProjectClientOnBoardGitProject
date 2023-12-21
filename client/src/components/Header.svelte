@@ -54,14 +54,13 @@
 </nav>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+
+
 
     .navbar {
         background-color: #343a40; /* Dark background color for the navbar */
         padding: 10px 0;
+        width: 120%
     }
 
     .navbar-brand {
