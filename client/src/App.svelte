@@ -23,6 +23,10 @@
         page = TestCaseOverview;
         currentRoute = ctx.pathname;
     });
+    router('/header', (ctx) => {
+        page = Header;
+        currentRoute = ctx.pathname;
+    });
 
     router('/tests/:id', (ctx) => {
         page = TestCaseDetails;
