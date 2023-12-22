@@ -40,7 +40,7 @@ export async function performQuery(query, answers = []) {
     const client = await pool.connect();
 
     try {
-        const result = await new Promise((resolve, reject) => {
+        return await new Promise((resolve, reject) => {
             client.query(query, answers, (err, result) => {
                 if (err) {
                     console.error('Error executing query', err);
@@ -50,8 +50,6 @@ export async function performQuery(query, answers = []) {
                 }
             });
         });
-
-        return result;
     } finally {
         client.release();
     }
