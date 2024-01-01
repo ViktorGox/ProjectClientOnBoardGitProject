@@ -41,7 +41,6 @@ export async function performQueryFromReq(req) {
     } catch (e) {
         return {error :e.message};
     }
-
     console.log(query);
 
     return await performQuery(query).then((data) => {
@@ -153,9 +152,14 @@ function generateUpdateQuery(req) {
 function generateWhereClause(req) {
     let whereClause = "";
 
-    const paramsKeys = Object.keys(req.params);
-    const queryKeys = Object.keys(req.query);
-
+    let paramsKeys = [];
+    let queryKeys = [];
+    if(req.params) {
+        paramsKeys = Object.keys(req.params);
+    }
+    if(req.query) {
+        queryKeys = Object.keys(req.query);
+    }
     if (queryKeys.length > 0 || paramsKeys.length > 0) {
         whereClause += ' WHERE ';
     }
@@ -172,7 +176,10 @@ function generateWhereClause(req) {
  * Adds a where clause based only on the req.params.
  */
 function whereClauseFromPath(req) {
-    const paramsKeys = Object.keys(req.params);
+    let paramsKeys = [];
+    if(req.params) {
+        paramsKeys = Object.keys(req.params);
+    }
     let whereClause = "";
 
     for (let i = 0; i < paramsKeys.length; i++) {
@@ -192,7 +199,10 @@ function whereClauseFromPath(req) {
  * Adds a where clause based only on the req.query.
  */
 function whereClauseFromQuery(req) {
-    const queryKeys = Object.keys(req.query);
+    let queryKeys = [];
+    if(req.query) {
+        queryKeys = Object.keys(req.query);
+    }
     let whereClause = "";
 
     for (let i = 0; i < queryKeys.length; i++) {
