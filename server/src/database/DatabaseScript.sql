@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS testStatus
 CREATE TABLE IF NOT EXISTS Users
 (
     UserID   integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    Username character varying(32)  NOT NULL UNIQUE,
     Email    character varying(255) NOT NULL UNIQUE,
     RoleID   integer                NOT NULL,
     Password character varying(255) NOT NULL,
@@ -163,10 +162,10 @@ values ('developer');
 insert into userRole (name)
 values ('tester');
 
-INSERT INTO Users (username, email, RoleID, password)
-VALUES ('admin', 'admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC'),
-       ('developer', 'developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS'),
-       ('tester', 'tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy');
+INSERT INTO Users (email, RoleID, password)
+VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC'),
+       ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS'),
+       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy');
 
 insert into module (label)
 values ('LogIn Page');
