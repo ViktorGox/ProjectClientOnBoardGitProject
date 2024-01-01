@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userDb from "../database/user-database.js";
+import {performSimpleOneQuery} from "./generic.js";
 
 export async function checkToken(req, res) {
     const givenEmail = req.body.email;
@@ -8,13 +8,11 @@ export async function checkToken(req, res) {
 
     try {
         const foundUser = await getUser(givenEmail);
-
         if (!foundUser) {
             return res.status(404).json({ error: 'Username not found' });
         }
 
         const storedPassword = foundUser.password;
-
         checkPassword(givenPassword, storedPassword, foundUser, res);
     } catch (error) {
         console.error('Error checking token:', error);
@@ -24,15 +22,11 @@ export async function checkToken(req, res) {
 
 async function getUser(givenEmail) {
     try {
-        const allUsers = await userDb.getAllUsers();
-
-        let foundUser;
-        for (const user of allUsers) {
-            if (user.email === givenEmail) {
-                foundUser = user;
-            }
-        }
-        return foundUser;
+        return performSimpleOneQuery('users','GET','email',givenEmail)
+            .then((result) => {
+                if(result.length === 0) return false;
+                return result[0];
+            });
     } catch (error) {
         throw error;
     }

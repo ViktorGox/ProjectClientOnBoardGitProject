@@ -1,10 +1,10 @@
-import {currentToken} from "../stores/TokenStore.js";
+import {tokenStore} from "../stores/TokenStore.js";
 import {isBlank, stringReplace} from "./Utils.js";
 
 let token;
 export const url = "http://localhost:3000/";
 
-currentToken.subscribe(value => {
+tokenStore.subscribe(value => {
     token = value.token;
 });
 

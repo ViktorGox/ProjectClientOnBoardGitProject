@@ -1,8 +1,9 @@
 <script>
     import router from 'page';
-    import tokenStore from '../stores/TokenStore.js';
     import userStore from '../stores/user';
-    import { onMount } from 'svelte'
+    import {onMount} from 'svelte'
+    import {fetchRequest} from "../lib/Request.js";
+    import {tokenStore} from "../stores/TokenStore.js";
 
     let user = {};
     onMount(async () => {
@@ -12,28 +13,25 @@
     const handleSubmit = async () => {
         const response = await submit();
         if (response) {
-            if (response['status'] === 200 ){
+            if (response['status'] === 200) {
                 router.redirect('/projects');
             }
         }
     };
 
-    let username = '';
+    let email = '';
     let password = '';
+
     async function submit() {
         try {
-            const response = await fetch('http://localhost:3000/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body:JSON.stringify({username, password})
-            });
+            return fetchRequest('token', 'POST', {email, password}).then((result) => {
+                $tokenStore.token = result.token;
+                $userStore = result.user;
+                return result;
+            }).catch((e) => {
+                console.log(e);
+            })
 
-            const data=await response.json();
-            $tokenStore.token =data.token;
-            $userStore = data.user;
-            return await response;
         } catch (e) {
             console.log(e);
             document.querySelector('.error-message').style.display = "block";
@@ -45,12 +43,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Yeseva+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Yeseva+One&display=swap"
+          rel="stylesheet">
 </head>
 
 <body>
 <div class="login__container">
-    <form id="login" action="" on:submit|preventDefault = {handleSubmit}>
+    <form id="login" action="" on:submit|preventDefault={handleSubmit}>
         <div class="form-header">
             <h1 style="text-align:center; margin: 5rem auto;">Login</h1>
             <p class="error-message text-danger">Username or password is incorrect!</p>
@@ -58,7 +57,7 @@
 
 
         <div class="form__control">
-            <input type="text" placeholder="Enter Username" name="uname" id="username" bind:value={username} required>
+            <input type="text" placeholder="Enter Username" name="uname" id="email" bind:value={email} required>
             <small>Error message</small>
         </div>
 
@@ -75,7 +74,8 @@
 </div>
 
 <div class="background__image">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOtH944W_PsijoUf1522VUMepf1ImPZPjKFnFhnNglAhTwyfJCbuqGBaYVEW9nx5kLzk&usqp=CAU" alt="parantion logo">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOtH944W_PsijoUf1522VUMepf1ImPZPjKFnFhnNglAhTwyfJCbuqGBaYVEW9nx5kLzk&usqp=CAU"
+         alt="parantion logo">
 </div>
 </body>
 
@@ -166,11 +166,12 @@
         margin-bottom: 10px;
         padding-bottom: 20px;
     }
-    .form__control.success input{
+
+    .form__control.success input {
         border: 5px solid #2ecc71;
     }
 
-    .form__control.error input{
+    .form__control.error input {
         border: 5px solid #e74c3c;
     }
 

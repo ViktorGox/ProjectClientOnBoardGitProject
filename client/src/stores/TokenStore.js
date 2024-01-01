@@ -1,4 +1,3 @@
-import { writable } from "svelte/store";
-export default writable({
-    token: ""
-})
+import { writable } from 'svelte/store';
+
+export const tokenStore = writable({token: ''});

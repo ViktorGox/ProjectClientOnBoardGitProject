@@ -2,8 +2,8 @@ import * as queries from './query/user-query.js'
 import statusCodes from "http-status-codes";
 import {performQuery} from "./database.js";
 
-export function getAllUsers() {
-    return performQuery(queries.getAllUsersQuery)
+export async function getAllUsers() {
+    return await performQuery(queries.getAllUsersQuery)
         .then(result => result.rows)
         .catch(() => {
             throw {
@@ -81,15 +81,15 @@ export function deleteUserById(userId) {
 function checkUserAttributes(user) {
     const errors = [];
 
-    if (!('email' in user) || user.email == undefined || user.email == '') {
+    if (!('email' in user) || user.email === undefined || user.email === '') {
         errors.push('Required email attribute is missing');
     }
 
-    if (!('role' in user) || user.role == undefined || user.role == '') {
+    if (!('role' in user) || user.role === undefined || user.role === '') {
         errors.push('Required role attribute is missing');
     }
 
-    if (!('password' in user) || user.password == undefined || user.password == '') {
+    if (!('password' in user) || user.password === undefined || user.password === '') {
         errors.push('Required password attribute is missing');
     }
 

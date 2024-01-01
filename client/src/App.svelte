@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import router from 'page';
     import TestCaseOverview from './pages/TestCaseOverview.svelte'
     import Header from "./components/Header.svelte";
@@ -8,15 +8,14 @@
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
-    import tokenStore from "./stores/TokenStore";
+    import {tokenStore} from "./stores/TokenStore";
     let page;
     let params;
     let currentRoute;
 
-
     router('/', (ctx) => {
         page = Login;
-        // currentRoute = ctx.pathname;
+        currentRoute = ctx.pathname;
     });
 
     router('/testCases', (ctx) => {
