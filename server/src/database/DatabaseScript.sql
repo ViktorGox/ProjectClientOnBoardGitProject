@@ -156,11 +156,9 @@ ALTER TABLE IF EXISTS Testmodule
         NOT VALID;
 
 insert into userRole (name)
-values ('admin');
-insert into userRole (name)
-values ('developer');
-insert into userRole (name)
-values ('tester');
+values ('admin'),
+       ('developer'),
+       ('tester');
 
 INSERT INTO Users (email, RoleID, password)
 VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC'),
@@ -168,135 +166,79 @@ VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.Fr
        ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy');
 
 insert into module (label)
-values ('LogIn Page');
-insert into module (label)
-values ('Register Page');
-insert into module (label)
-values ('Home Page');
-insert into module (label)
-values ('Users Page');
+values ('LogIn Page'),
+       ('Register Page'),
+       ('Home Page'),
+       ('Users Page');
 
 insert into teststatus (name)
-values ('To do');
-insert into teststatus (name)
-values ('Passed');
-insert into teststatus (name)
-values ('Blocker');
-insert into teststatus (name)
-values ('Bug');
+values ('To do'),
+       ('Passed'),
+       ('Blocker'),
+       ('Bug');
 
 insert into test(name, userid, description, statusId, completiondate)
-values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct', 2,
-        '14/12/2023');
-
-insert into test(name, userid, description, statusId, completiondate)
-values ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4, '14/12/2023');
-
-insert into test(name, userid, description, statusId, completiondate)
-values ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3, '14/12/2023');
-
-insert into test(name, userid, description, statusId, completiondate)
-values ('Check if background color is not red', 3, 'red background shall not be accepted', 1, '14/12/2023');
+values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct', 2, '14/12/2023'),
+       ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4, '14/12/2023'),
+       ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3, '14/12/2023'),
+       ('Check if background color is not red', 3, 'red background shall not be accepted', 1, '14/12/2023');
 
 insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note', 1);
+values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note', 1),
+       (1, 2, 'Check first name', 'Elaborational description 2', 'nothing to note 2', 1),
+       (1, 3, 'Check last name', 'Elaborational description 3', 'nothing to note 3', 12),
+       (2, 1, 'Open log in page', 'Press on log in text in header', 'emptyness', 0),
+       (2, 2, 'Enter incorrect password', 'enter random characters', 'impossible to guess', 1),
+       (2, 3, 'Press Log in Button', 'Press Log in Button', 'pressed log in button', 20),
+       (2, 4, 'Check error text says incorrect log in', 'Error text shall not say incorrect password', 'chill', 1),
+       (3, 1, 'Open log in page', 'Press on log in text in header', 'some log', 1),
+       (3, 2, 'Enter incorrect username', 'Enter random characters, impossible to guess', 'some log 2', 2),
+       (3, 3, 'Press log in Button', 'Press log in Button', 'pressed log in button', 3),
+       (3, 4, 'Check erro text', 'Error text shall say incorrect log in', 'And nothing else matters', 4),
+       (4, 1, 'Check background is not red', 'It shall never be red', '', 4);
 
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (1, 2, 'Check first name', 'Elaborational description 2', 'nothing to note 2', 1);
 
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (1, 3, 'Check last name', 'Elaborational description 3', 'nothing to note 3', 12);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (2, 1, 'Open log in page', 'Press on log in text in header', 'emptyness', 0);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (2, 2, 'Enter incorrect password', 'enter random characters', 'impossible to guess', 1);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (2, 3, 'Press Log in Button', 'Press Log in Button', 'pressed log in button', 20);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (2, 4, 'Check error text says incorrect log in', 'Error text shall not say incorrect password', 'chill', 1);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (3, 1, 'Open log in page', 'Press on log in text in header', 'some log', 1);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (3, 2, 'Enter incorrect username', 'Enter random characters, impossible to guess', 'some log 2', 2);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (3, 3, 'Press log in Button', 'Press log in Button', 'pressed log in button', 3);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (3, 4, 'Check erro text', 'Error text shall say incorrect log in', 'And nothing else matters', 4);
-
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (4, 1, 'Check background is not red', 'It shall never be red', '', 4);
-
-insert into sprint (title, startdate, duedate) values
-    ('Sprint 0','10/10/2023','20/10/2023');
-
-insert into sprint (title, startdate, duedate) values
-    ('Sprint 1','20/10/2023','30/10/2023');
-
-insert into sprint (title, startdate, duedate) values
-    ('Sprint 2','30/10/2023','10/11/2023');
-
-insert into sprint (title, startdate, duedate) values
-    ('Sprint 3','10/11/2023','20/11/2023');
+insert into sprint (title, startdate, duedate)
+values ('Sprint 0', '10/10/2023', '20/10/2023'),
+       ('Sprint 1', '20/10/2023', '30/10/2023'),
+       ('Sprint 2', '30/10/2023', '10/11/2023'),
+       ('Sprint 3', '10/11/2023', '20/11/2023');
 
 insert into testmodule (testid, moduleid)
-values (1, 1);
-insert into testmodule (testid, moduleid)
-values (2, 2);
-insert into testmodule (testid, moduleid)
-values (3, 3);
-insert into testmodule (testid, moduleid)
-values (4, 4);
+values (1, 1),
+       (1, 4),
+       (2, 2),
+       (2, 3),
+       (3, 3),
+       (4, 1),
+       (4, 2),
+       (4, 3),
+       (4, 4);
 
 insert into testing (sprintid, testid)
-values (1, 1);
-insert into testing (sprintid, testid)
-values (1, 2);
-insert into testing (sprintid, testid)
-values (1, 3);
+values (1, 1),
+       (1, 2),
+       (1, 3),
+       (2, 1),
+       (2, 2),
+       (2, 3),
+       (2, 4),
+       (3, 1),
+       (3, 2),
+       (3, 3),
+       (3, 4),
+       (4, 2),
+       (4, 3),
+       (4, 4);
 
-insert into testing (sprintid, testid)
-values (2, 1);
-insert into testing (sprintid, testid)
-values (2, 2);
-insert into testing (sprintid, testid)
-values (2, 3);
-insert into testing (sprintid, testid)
-values (2, 4);
-
-insert into testing (sprintid, testid)
-values (3, 1);
-insert into testing (sprintid, testid)
-values (3, 2);
-insert into testing (sprintid, testid)
-values (3, 3);
-insert into testing (sprintid, testid)
-values (3, 4);
-
-insert into testing (sprintid, testid)
-values (4, 2);
-insert into testing (sprintid, testid)
-values (4, 3);
-insert into testing (sprintid, testid)
-values (4, 4);
-
-insert into sprintusers (sprintid, userid, roleid) values (1,1,1);
-insert into sprintusers (sprintid, userid, roleid) values (1,2,2);
-insert into sprintusers (sprintid, userid, roleid) values (1,3,3);
-
-insert into sprintusers (sprintid, userid, roleid) values (2,1,3);
-insert into sprintusers (sprintid, userid, roleid) values (2,2,2);
-insert into sprintusers (sprintid, userid, roleid) values (2,3,1);
-
-insert into sprintusers (sprintid, userid, roleid) values (3,2,3);
-insert into sprintusers (sprintid, userid, roleid) values (3,3,3);
-
-insert into sprintusers (sprintid, userid, roleid) values (4,1,1);
-insert into sprintusers (sprintid, userid, roleid) values (4,3,3);
+insert into sprintusers (sprintid, userid, roleid)
+values (1, 1, 1),
+       (1, 2, 2),
+       (1, 3, 3),
+       (2, 1, 3),
+       (2, 2, 2),
+       (2, 3, 1),
+       (3, 2, 3),
+       (3, 3, 3),
+       (4, 1, 1),
+       (4, 3, 3);
