@@ -1,4 +1,5 @@
 import {performQuery} from "../database/database.js";
+import statusCodes from "http-status-codes";
 
 const includes = 'Includes';
 const equals = 'Equals';
@@ -36,10 +37,10 @@ export async function performQueryFromReq(req) {
         } else if (req.method.toLowerCase() === 'put' || req.method.toLowerCase() === 'patch') {
             query = generateUpdateQuery(req);
         } else {
-            return {error : "Unknown request. " + req.method};
+            return {error: "Unknown request. " + req.method};
         }
     } catch (e) {
-        return {error :e.message};
+        return {error: e.message};
     }
     console.log(query);
 
@@ -47,7 +48,7 @@ export async function performQueryFromReq(req) {
         return data;
     }).catch((e) => {
         if (query.error) {
-            return {error :e.message, query: query};
+            return {error: e.message, query: query};
             // return query.error;
         }
         if (e.routine) {
@@ -76,7 +77,7 @@ export async function performQueryFromReq(req) {
                 };
             }
         }
-        return {error :e.message};
+        return {error: e.message};
     });
 }
 
@@ -154,10 +155,10 @@ function generateWhereClause(req) {
 
     let paramsKeys = [];
     let queryKeys = [];
-    if(req.params) {
+    if (req.params) {
         paramsKeys = Object.keys(req.params);
     }
-    if(req.query) {
+    if (req.query) {
         queryKeys = Object.keys(req.query);
     }
     if (queryKeys.length > 0 || paramsKeys.length > 0) {
@@ -177,7 +178,7 @@ function generateWhereClause(req) {
  */
 function whereClauseFromPath(req) {
     let paramsKeys = [];
-    if(req.params) {
+    if (req.params) {
         paramsKeys = Object.keys(req.params);
     }
     let whereClause = "";
@@ -200,7 +201,7 @@ function whereClauseFromPath(req) {
  */
 function whereClauseFromQuery(req) {
     let queryKeys = [];
-    if(req.query) {
+    if (req.query) {
         queryKeys = Object.keys(req.query);
     }
     let whereClause = "";
@@ -428,4 +429,33 @@ function removeLeadingSlash(inputString) {
         return inputString.slice(1);
     }
     return inputString;
+}
+
+/**
+ * Intended purpose of this is if you don't want to do any special
+ * error handling, and you are okay with returning no elements.
+ */
+export async function badRequestOnly(req, res) {
+    return await performQueryFromReq(req).then((response) => {
+        if (response.error) {
+            return res.status(statusCodes.BAD_REQUEST).json(response);
+        }
+        return res.status(statusCodes.OK).json(response);
+    });
+}
+
+/**
+ * Intended purpose of this is if you don't want to do any special
+ * error handling, and you want to return a 404 when nothing is found.
+ */
+export async function notFoundReq(req,res) {
+    return await performQueryFromReq(req).then((response) => {
+        if (response.error) {
+            return res.status(statusCodes.BAD_REQUEST).json(response);
+        }
+        if(response.length === 0) {
+            return res.status(statusCodes.NOT_FOUND).json(response);
+        }
+        return res.status(statusCodes.OK).json(response);
+    });
 }
