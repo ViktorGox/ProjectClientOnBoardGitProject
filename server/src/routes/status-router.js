@@ -1,8 +1,9 @@
 import express from 'express';
-import {getStatus} from "../controllers/status-controller.js";
+import {getStatusById, getStatusQuery} from "../controllers/status-controller.js";
 
 const router = express.Router();
 
-router.get("/", getStatus);
+router.get("/", getStatusQuery);
+router.get("/:statusid", getStatusById);
 
 export default router;

@@ -1,12 +1,11 @@
-import {performQueryFromReq} from "./generic.js";
-import statusCodes from "http-status-codes";
+import {badRequestOnly, notFoundReq} from "./generic.js";
 
-export async function getStatus(req,res) {
+export function getStatusQuery(req, res) {
     req.baseUrl = 'testStatus';
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+    return badRequestOnly(req, res);
+}
+
+export function getStatusById(req,res) {
+    req.baseUrl = 'testStatus';
+    return notFoundReq(req, res);
 }
