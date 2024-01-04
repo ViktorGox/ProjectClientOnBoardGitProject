@@ -4,21 +4,26 @@
     import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
     import {fetchRequest} from "../lib/Request.js";
 
+    let correctTests;
 
     Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
         .then(([statuses, tests, modules]) => {
-            tests.forEach(async (element) => {
-                element.status = statuses.get(element.statusid);
-                delete element.statusid
+            const fetchModulePromises = tests.map(element =>
+                fetchRequest('module/' + element.testid).then(result =>
+                    result.map(moduleData => modules.get(moduleData.moduleid))
+                )
+            );
 
-                element.modules = [];
-                await fetchRequest('module/' + element.testid).then((result) => {
-                    result.forEach((moduleData) => {
-                        element.modules.push(modules.get(moduleData.moduleid));
-                    });
+            return Promise.all(fetchModulePromises).then(modulesData => {
+                tests.forEach((element, index) => {
+                    element.status = statuses.get(element.statusid);
+                    delete element.statusid;
+
+                    element.modules = modulesData[index];
                 });
+
+                correctTests = tests;
             });
-            console.log(tests);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -47,7 +52,6 @@
             throw e;
         })
     }
-
 </script>
 
 <div class="background">
@@ -68,18 +72,12 @@
         </HorizontalSplitContainer>
     </div>
     <div class="bottom">
-        <TestCaseHorizontal status="Blocker"></TestCaseHorizontal>
-        <TestCaseHorizontal status="Successful"></TestCaseHorizontal>
-        <TestCaseHorizontal status="Bug"></TestCaseHorizontal>
-        <TestCaseHorizontal weight="232"></TestCaseHorizontal>
-        <TestCaseHorizontal assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
-        <TestCaseHorizontal weight="232" assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
-        <TestCaseHorizontal module="SomeVeryLongModuleJustABitMore"
-                            name="AVeryVerySuperMuchLongNameForATestCaseToTestTheCSSIfItsWorkingCorrectlyAndItSeemsToBeWorkingCorrectly"></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal isHeader = true test={{name: 'Test Case Title', status: 'Status', modules: ['Modules'], userid: "User", weight: 'Weight'}}></TestCaseHorizontal>
+        {#if correctTests}
+            {#each correctTests as test, i}
+                <TestCaseHorizontal test={test} index={i}></TestCaseHorizontal>
+            {/each}
+        {/if}
     </div>
 </div>
 
