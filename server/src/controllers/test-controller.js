@@ -1,47 +1,21 @@
-import {performQueryFromReq} from "./generic.js";
-import statusCodes from "http-status-codes";
+import {badRequestOnly, notFoundReq} from "./generic.js";
 
-export async function getQuery(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+export function getQuery(req, res) {
+    return badRequestOnly(req, res);
 }
 
-export async function deleteQuery(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+export function deleteQuery(req, res) {
+    return badRequestOnly(req, res);
 }
 
-export async function postQuery(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+export function postQuery(req, res) {
+    return badRequestOnly(req, res);
 }
 
 export async function putQuery(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+    return badRequestOnly(req, res);
 }
 
-export async function getTestById(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if(response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+export function getTestById(req, res) {
+    return notFoundReq(req, res);
 }
