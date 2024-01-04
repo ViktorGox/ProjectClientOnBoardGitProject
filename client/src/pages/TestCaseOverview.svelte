@@ -1,5 +1,4 @@
 <script>
-    import HorizontalSplitContainer from "../components/containers/HorizontalSplitContainer.svelte";
     import Button from "../components/Button.svelte";
     import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
     import {fetchRequest} from "../lib/Request.js";
@@ -56,23 +55,13 @@
 
 <div class="background">
     <div class="top">
-        <HorizontalSplitContainer>
-            <div slot="left">
-                <div class="left">
-                    <Button margin="0 10px 0 10px" text="Open"></Button>
-                    <Button margin="0 10px 0 10px" text="Done"></Button>
-                    <Button margin="0 10px 0 10px" text="All"></Button>
-                </div>
-            </div>
-            <div slot="right">
-                <div class="right">
-                    <Button text="Create"></Button>
-                </div>
-            </div>
-        </HorizontalSplitContainer>
+        <Button margin="0 10px 0 10px" text="Open"></Button>
+        <Button margin="0 10px 0 10px" text="Done"></Button>
+        <Button margin="0 10px 0 10px" text="All"></Button>
     </div>
     <div class="bottom">
-        <TestCaseHorizontal isHeader = true test={{name: 'Test Case Title', status: 'Status', modules: ['Modules'], userid: "User", weight: 'Weight'}}></TestCaseHorizontal>
+        <TestCaseHorizontal isHeader=true
+                            test={{name: 'Test Case Title', status: 'Status', modules: ['Modules'], userid: "User", weight: 'Weight'}}></TestCaseHorizontal>
         {#if correctTests}
             {#each correctTests as test, i}
                 <TestCaseHorizontal test={test} index={i}></TestCaseHorizontal>
@@ -84,7 +73,7 @@
 
 <style>
     .top {
-        background-color: #F3FF00;
+        background-color: #556d7a;
         display: flex;
         justify-content: center;
     }

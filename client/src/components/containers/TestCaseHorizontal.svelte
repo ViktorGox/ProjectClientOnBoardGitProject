@@ -44,7 +44,7 @@
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
         <div class="text-container">
-            {#if test.status !== 'Status'}
+            {#if !isHeader}
                 <img src={imgSrc}>
             {/if}
             {test.status}
@@ -57,10 +57,10 @@
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
         <div class="text-container">
-            {#if test.weight !== 'Weight'}
-                223
-            {:else}
+            {#if isHeader}
                 {test.weight}
+            {:else}
+                233
             {/if}
         </div>
     </div>
