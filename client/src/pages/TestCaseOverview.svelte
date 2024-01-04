@@ -77,6 +77,7 @@
             {#each correctTests as test, i}
                 <TestCaseHorizontal test={test} index={i}></TestCaseHorizontal>
             {/each}
+
         {/if}
     </div>
 </div>
@@ -90,6 +91,10 @@
 
     .bottom {
         margin: 10px;
+        overflow-y: scroll;
+        max-height: 80vh;
+        min-height: 80vh;
+        background: #efefef;
     }
 
     .right {
