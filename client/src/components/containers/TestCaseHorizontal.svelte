@@ -1,8 +1,12 @@
 <script>
     import router from "page";
+    import { afterUpdate } from 'svelte';
+
+
+    export let isHeader;
+    export let headerStatusOnClick;
 
     export let test;
-    export let isHeader;
     export let index;
 
     export let id = 1;
@@ -15,6 +19,10 @@
         router(`/tests/${id}`);
     }
 
+    afterUpdate(() => {
+        determineIcon();
+    })
+
     function determineIcon() {
         if (test.status === "Blocker") {
             imgSrc = "./src/assets/TestStatusIcons/Blocker.png"
@@ -22,12 +30,14 @@
             imgSrc = "./src/assets/TestStatusIcons/Successful.png"
         } else if (test.status === "Bug") {
             imgSrc = "./src/assets/TestStatusIcons/Bug.png"
+        } else {
+            imgSrc = "./src/assets/TestStatusIcons/Awaiting.png"
         }
     }
 </script>
 
 <div class="background {index % 2 === 0 ? 'whiteBG' : 'grayBG'} {isHeader ? 'pageHeader' : ''}"
-     on:click="{handleContainerClick}">
+     on:click="{isHeader ? {} : handleContainerClick}" style="{isHeader ? 'user-select: none' : ''}">
     <div class="data width-30p">
         <div class="text-container">
             {test.name}
@@ -46,9 +56,9 @@
         {/each}
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
-        <div class="text-container">
+        <div class="text-container" on:click="{isHeader ? headerStatusOnClick : {}}">
             {#if !isHeader}
-                <img src={imgSrc}>
+                <img src={imgSrc} alt="status of test case">
             {/if}
             {test.status}
         </div>

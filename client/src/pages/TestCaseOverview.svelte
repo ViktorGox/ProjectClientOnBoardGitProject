@@ -1,10 +1,32 @@
 <script>
-    import Button from "../components/Button.svelte";
     import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
     import {fetchRequest} from "../lib/Request.js";
 
-    let correctTests;
+    let fullTests;
+    let shownTests;
     let showStatusMenu;
+
+    let options = {
+        passed: false,
+        "to do": false,
+        bug: false,
+        blocker: false
+    };
+
+    function handleCheckboxChange(event, option) {
+        options[option] = event.target.checked;
+
+        if(Object.values(options).every(value => !value)) {
+            shownTests = fullTests;
+            return;
+        }
+
+        shownTests = filterElements();
+    }
+
+    function filterElements() {
+        return fullTests.filter(element => options[element.status.toLowerCase()]);
+    }
 
     Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
         .then(([statuses, tests, modules]) => {
@@ -22,7 +44,8 @@
                     element.modules = modulesData[index];
                 });
 
-                correctTests = tests;
+                fullTests = tests;
+                shownTests = tests;
             });
         })
         .catch(error => {
@@ -53,32 +76,28 @@
         })
     }
 
-    function onCLick() {
-        console.log(showStatusMenu);
+    function onStatusClick() {
         showStatusMenu = !showStatusMenu;
     }
 </script>
 
 <div class="background">
-    <div class="top">
-        <Button margin="0 10px 0 10px" text="Open" onClick={onCLick}></Button>
-        <Button margin="0 10px 0 10px" text="Done"></Button>
-        <Button margin="0 10px 0 10px" text="All"></Button>
-    </div>
     <div id="optionsWindow" style="display: {showStatusMenu ? 'flex' : 'none'}">
-        <label><input type="checkbox" id="option1"> Passed</label>
-        <label><input type="checkbox" id="option2"> To do</label>
-        <label><input type="checkbox" id="option3"> Bug</label>
-        <label><input type="checkbox" id="option4"> Blocker</label>
+        <label><input type="checkbox" bind:checked={options.passed}
+                      on:change={(e) => handleCheckboxChange(e, 'passed')}> Passed</label>
+        <label><input type="checkbox" bind:checked={options["to do"]} on:change={(e) => handleCheckboxChange(e, 'to do')}> To
+            do</label>
+        <label><input type="checkbox" bind:checked={options.bug} on:change={(e) => handleCheckboxChange(e, 'bug')}> Bug</label>
+        <label><input type="checkbox" bind:checked={options.blocker}
+                      on:change={(e) => handleCheckboxChange(e, 'blocker')}> Blocker</label>
     </div>
     <div class="bottom">
-        <TestCaseHorizontal isHeader=true
+        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick}
                             test={{name: 'Test Case Title', status: 'Status', modules: ['Modules'], userid: "User", weight: 'Weight'}}></TestCaseHorizontal>
-        {#if correctTests}
-            {#each correctTests as test, i}
+        {#if shownTests}
+            {#each shownTests as test, i}
                 <TestCaseHorizontal test={test} index={i}></TestCaseHorizontal>
             {/each}
-
         {/if}
     </div>
 </div>
@@ -93,12 +112,6 @@
         z-index: 1000;
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .top {
-        background-color: #556d7a;
-        display: flex;
-        justify-content: center;
     }
 
     .bottom {
