@@ -26,12 +26,15 @@
     }
 </script>
 
-<div class="background {index % 2===0 ? 'whiteBG' : 'grayBG'} {isHeader ? 'pageHeader' : ''}"
+<div class="background {index % 2 === 0 ? 'whiteBG' : 'grayBG'} {isHeader ? 'pageHeader' : ''}"
      on:click="{handleContainerClick}">
     <div class="data width-30p">
         <div class="text-container">
             {test.name}
         </div>
+        {#if isHeader}
+            <img class="small-img" src="./src/assets/arrow-down-white.png" alt="order button image">
+        {/if}
     </div>
     <div class="data width-30p wrap">
         {#each test.modules as module}
@@ -114,6 +117,12 @@
         width: 20px;
         height: 20px;
         margin: 0 10px 0 10px;
+    }
+
+    .small-img {
+        width: 15px;
+        height: 15px;
+        margin: 0 5px 0 5px;
     }
 
     .module {
