@@ -2,10 +2,11 @@
     import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
     import {fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
+    import {onMount} from 'svelte';
 
     let fullTests = [];
-    let shownTests = [];
     let statuses;
+    let modules;
     let showStatusMenu = false;
 
     const statusOptions = [];
@@ -20,59 +21,69 @@
         } else {
             statusOptions.push(option);
         }
-        fetchTests()
-        console.log(statusOptions);
+        fullFetch()
     }
 
     function handleModuleClick(module) {
         const index = moduleOptions.indexOf(module);
         if (index !== -1) {
             moduleOptions.splice(index, 1)
-            fetchTests()
-            return;
+        } else {
+            moduleOptions.push(module);
         }
-        moduleOptions.push(module);
-        fetchTests()
+        fullFetch();
     }
 
-    Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
-        .then(([fetchedStatuses, tests, modules]) => {
-            statuses = fetchedStatuses;
-            const fetchModulePromises = tests.map(element =>
-                fetchRequest('module/' + element.testid).then(result =>
-                    result.map(moduleData => modules.get(moduleData.moduleid))
-                )
-            );
+    onMount(() => {
+        fullFetch();
+    });
 
-            return Promise.all(fetchModulePromises).then(modulesData => {
-                tests.forEach((element, index) => {
-                    element.modules = modulesData[index];
-                });
-                fullTests = tests;
-                shownTests = tests;
+    function fullFetch() {
+        Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
+            .then(([fetchedStatuses, fetchedTests, fetchedModules]) => {
+                statuses = fetchedStatuses;
+                modules = fetchedModules;
+
+                const modulePromises = fetchedTests.map(element =>
+                    fetchRequest('testmodule/test/' + element.testid)
+                        .then(result => {
+                            element.modules = result.map(item => item.moduleid);
+                            return element;
+                        })
+                );
+                return Promise.all(modulePromises);
+            })
+            .then(updatedTests => {
+                fullTests = updatedTests;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+    }
 
     function fetchTests() {
-        // if (Object.values(statusOptions).every(value => !value)) {
-        //     shownTests = fullTests;
-        //     fetchTests()
-        //     return;
-        // }
-        const queryProperties = ["statusid", "module"];
-        const queryParams = [arrayToString(statusOptions), arrayToString(moduleOptions)];
+        let testIdQuery;
+        if (moduleOptions.length !== 0) {
+            testIdQuery = generateQuery('testmodule', ['moduleid'], [arrayToString(moduleOptions)], ['Equals']);
+        } else {
+            testIdQuery = 'testmodule';
+        }
 
-        const querySettings = ["Equals", "Equals"];
-        let query = generateQuery('test', queryProperties, queryParams, querySettings);
-        return fetchRequest(query).then((result) => {
-            fullTests = result;
-            return result;
-        }).catch((e) => {
-            throw e;
-        })
+        return fetchRequest(testIdQuery).then((result) => {
+            const moduleIdsArray = result.map(item => item.testid);
+
+            const queryProperties = ["statusid", 'testid'];
+            const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray)];
+
+            const querySettings = ["Equals", "Equals"];
+            let query = generateQuery('test', queryProperties, queryParams, querySettings);
+            return fetchRequest(query).then((result) => {
+                fullTests = result;
+                return result;
+            }).catch((e) => {
+                throw e;
+            })
+        });
     }
 
     function fetchStatuses() {
@@ -95,7 +106,8 @@
         showStatusMenu = !showStatusMenu;
     }
 
-    //TODO: center text in pop up window.
+    //TODO: Center text in pop up window.
+    //TODO: Move status openable window to below status column.
 </script>
 
 <div class="background">
@@ -107,12 +119,11 @@
         {/if}
     </div>
     <div class="bottom">
-        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick}
-                            test={{name: 'Title', status: 'Status', modules: ['Modules'], userid: "User", weight: 'Weight'}}></TestCaseHorizontal>
-        {#if shownTests || statuses}
-            {#each shownTests as test, i}
+        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick}></TestCaseHorizontal>
+        {#if fullTests || statuses}
+            {#each fullTests as test, i}
                 <TestCaseHorizontal test={test} index={i} onModuleClick={handleModuleClick}
-                                    statusesMap={statuses}></TestCaseHorizontal>
+                                    statusesMap={statuses} modulesMap={modules}></TestCaseHorizontal>
             {/each}
         {/if}
     </div>

@@ -6,6 +6,7 @@
     export let headerStatusOnClick;
     export let onModuleClick;
     export let statusesMap;
+    export let modulesMap;
 
     export let test;
     export let index;
@@ -39,46 +40,71 @@
             test.status = 'To do';
         }
     }
+
+    //TODO: scrolled in, the ID is not visible.
 </script>
 
 <div class="background {index % 2 === 0 ? 'whiteBG' : 'grayBG'} {isHeader ? 'pageHeader' : ''}"
      on:click="{isHeader ? {} : handleContainerClick}" style="{isHeader ? 'user-select: none' : ''}">
+    <div class="data width-3p">
+        <div class="text-container">
+            {#if !isHeader}
+                {test.testid}
+            {:else}
+                ID
+            {/if}
+        </div>
+    </div>
     <div class="data width-30p">
         <div class="text-container">
-            {test.name}
+            {#if isHeader}
+                Title
+            {:else}
+                {test.name}
+            {/if}
         </div>
         {#if isHeader}
             <img class="small-img" src="./src/assets/arrow-down-white.png" alt="order button image">
         {/if}
     </div>
     <div class="data width-30p wrap">
-        {#each test.modules as module}
-            <div class="module">
-                <div class="text-container" on:click|stopPropagation={() => {onModuleClick(module)}}>
-                    {module}
+        {#if isHeader}
+            Modules
+        {:else if test.modules && modulesMap}
+            {#each test.modules as module}
+                <div class="module">
+                    <div class="text-container" on:click|stopPropagation={() => {onModuleClick(module)}}>
+                        {modulesMap.get(module)}
+                    </div>
                 </div>
-            </div>
-        {/each}
+            {/each}
+        {/if}
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
         <div class="text-container" on:click="{isHeader ? headerStatusOnClick : {}}">
             {#if !isHeader}
                 <img src={imgSrc} alt="status of test case">
             {/if}
-            {#if test.status}
+            {#if isHeader}
+                Status
+            {:else}
                 {test.status}
             {/if}
         </div>
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
         <div class="text-container">
-            {test.userid}
+            {#if isHeader}
+                Assignee
+            {:else}
+                {test.userid}
+            {/if}
         </div>
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
         <div class="text-container">
             {#if isHeader}
-                {test.weight}
+                Weight
             {:else}
                 233
             {/if}
@@ -97,6 +123,10 @@
 
     .width-10p {
         flex: 0 0 10%;
+    }
+
+    .width-3p {
+        flex: 0 0 3%;
     }
 
     .whiteBG {

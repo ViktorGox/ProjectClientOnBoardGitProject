@@ -86,6 +86,9 @@ export async function fetchRequest(path, fetchType = 'GET', data = {}) {
  * @returns {string} the query with the path.
  */
 export function generateQuery(path, queryProperties, queryParams, querySettings) {
+    if(!Array.isArray(queryParams)) {
+        throw new Error('QueryParams is not an array. If you only have one property, put it in a []')
+    }
     if (queryProperties || queryParams) {
         if (queryProperties.length !== queryParams.length) {
             throw new Error('queryList and queryParams must have the same length! Are you missing a property or a parameter?');
