@@ -5,15 +5,15 @@ import {isAdmin,isDeveloper,isTester,isLoggedIn} from "../middleware/middlewares
 const router = express.Router();
 
 
-router.get("/",isLoggedIn, controller.getSprints);
+router.get("/", controller.getSprints);
 
-router.get("/:id",isLoggedIn, controller.getSprintById);
+router.get("/:sprintId", controller.getSprintById);
 
-router.post("/", isLoggedIn, isAdmin, controller.addNewSprint);
+router.post("/", controller.addNewSprint);
 
-router.put("/:id", isLoggedIn, isAdmin,isDeveloper, controller.editSprintBySprintId);
+router.put("/:sprintId", controller.editSprintBySprintId);
 
-router.delete("/:id", isLoggedIn, isAdmin, controller.removeSprintById);
+router.delete("/:sprintId", controller.removeSprintById);
 
 
 export default router;

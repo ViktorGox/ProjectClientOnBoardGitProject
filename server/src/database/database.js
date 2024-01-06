@@ -12,18 +12,7 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
-export async function getAllUsers() {
-    try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT * FROM users');
-        const users = result.rows;
-        client.release();
-        return users;
-    } catch (error) {
-        console.error('Error retrieving users from the database', error);
-        throw error;
-    }
-}
+
 
 /**
  * Executes a query in the database, and returns the data found. Can be one generated automatically, or custom one
