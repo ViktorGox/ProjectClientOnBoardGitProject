@@ -1,22 +1,22 @@
 <script>
     import router from "page";
-    import { afterUpdate } from 'svelte';
-
+    import {afterUpdate} from 'svelte';
 
     export let isHeader;
     export let headerStatusOnClick;
+    export let onModuleClick;
+    export let statusesMap;
 
     export let test;
     export let index;
 
-    export let id = 1;
     export let height = 30;
     export let unit = "px";
     let imgSrc = "./src/assets/TestStatusIcons/Awaiting.png"
     determineIcon();
 
     function handleContainerClick() {
-        router(`/tests/${id}`);
+        router(`/tests/${test.testid}`);
     }
 
     afterUpdate(() => {
@@ -24,14 +24,19 @@
     })
 
     function determineIcon() {
-        if (test.status === "Blocker") {
+        if (!statusesMap || !test.statusid) return;
+        if (test.statusid === statusesMap.get('Blocker')) {
             imgSrc = "./src/assets/TestStatusIcons/Blocker.png"
-        } else if (test.status === "Passed") {
+            test.status = 'Blocker';
+        } else if (test.statusid === statusesMap.get('Passed')) {
             imgSrc = "./src/assets/TestStatusIcons/Successful.png"
-        } else if (test.status === "Bug") {
+            test.status = 'Passed';
+        } else if (test.statusid === statusesMap.get('Bug')) {
             imgSrc = "./src/assets/TestStatusIcons/Bug.png"
+            test.status = 'Bug';
         } else {
             imgSrc = "./src/assets/TestStatusIcons/Awaiting.png"
+            test.status = 'To do';
         }
     }
 </script>
@@ -49,7 +54,7 @@
     <div class="data width-30p wrap">
         {#each test.modules as module}
             <div class="module">
-                <div class="text-container">
+                <div class="text-container" on:click|stopPropagation={() => {onModuleClick(module)}}>
                     {module}
                 </div>
             </div>
@@ -60,7 +65,9 @@
             {#if !isHeader}
                 <img src={imgSrc} alt="status of test case">
             {/if}
-            {test.status}
+            {#if test.status}
+                {test.status}
+            {/if}
         </div>
     </div>
     <div class="data width-10p" style="height: {height}{unit}">
