@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS SprintUsers
 (
     SprintID integer NOT NULL,
     UserID   integer NOT NULL,
-    RoleId   integer Not Null
+    RoleId   integer Not Null,
+    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Test
@@ -70,7 +71,8 @@ CREATE TABLE IF NOT EXISTS Test
 CREATE TABLE IF NOT EXISTS Testing
 (
     SprintID integer,
-    TestID   integer
+    TestID   integer,
+    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS TestModule
@@ -107,6 +109,7 @@ ALTER TABLE IF EXISTS SprintUsers
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
+
 
 
 ALTER TABLE IF EXISTS SprintUsers
