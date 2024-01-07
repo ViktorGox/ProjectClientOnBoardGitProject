@@ -8,6 +8,7 @@
     let statuses;
     let modules;
     let showStatusMenu = false;
+    let reverseTests = false;
 
     const statusOptions = [];
     const moduleOptions = [];
@@ -54,6 +55,9 @@
                 return Promise.all(modulePromises);
             })
             .then(updatedTests => {
+                if(reverseTests) {
+                    updatedTests.reverse();
+                }
                 fullTests = updatedTests;
             })
             .catch(error => {
@@ -72,13 +76,7 @@
 
         const querySettings = ["Equals", "Equals"];
         let query = generateQuery('test', queryProperties, queryParams, querySettings);
-        console.log(query);
-        return fetchRequest(query).then((result) => {
-            fullTests = result;
-            return result;
-        }).catch((e) => {
-            throw e;
-        })
+        return await fetchRequest(query);
     }
 
     async function fetchTestIds() {
@@ -108,6 +106,12 @@
         showStatusMenu = !showStatusMenu;
     }
 
+    function reverseTestArray() {
+        reverseTests = !reverseTests;
+        fullTests = fullTests.reverse()
+        console.log(fullTests);
+    }
+
     //TODO: Center text in pop up window.
     //TODO: Move status openable window to below status column.
 </script>
@@ -121,7 +125,7 @@
         {/if}
     </div>
     <div class="bottom">
-        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick}></TestCaseHorizontal>
+        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick} onTitleArrowClick={reverseTestArray}></TestCaseHorizontal>
         {#if fullTests || statuses}
             {#each fullTests as test, i}
                 <TestCaseHorizontal test={test} index={i} onModuleClick={handleModuleClick}

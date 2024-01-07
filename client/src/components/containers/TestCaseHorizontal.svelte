@@ -3,8 +3,11 @@
     import {afterUpdate} from 'svelte';
 
     export let isHeader;
+
     export let headerStatusOnClick;
     export let onModuleClick;
+    export let onTitleArrowClick;
+
     export let statusesMap;
     export let modulesMap;
 
@@ -41,7 +44,11 @@
         }
     }
 
-    //TODO: scrolled in, the ID is not visible.
+    let isFlipped = false;
+
+    const toggleRotate = () => {
+        isFlipped = !isFlipped;
+    };
 </script>
 
 <div class="background {index % 2 === 0 ? 'whiteBG' : 'grayBG'} {isHeader ? 'pageHeader' : ''}"
@@ -51,9 +58,12 @@
             {#if !isHeader}
                 {test.testid}
             {:else}
-                ID
             {/if}
         </div>
+        {#if isHeader}
+            <img on:click={toggleRotate} class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png" alt="order button image"
+                 on:click={onTitleArrowClick}>
+        {/if}
     </div>
     <div class="data width-30p">
         <div class="text-container">
@@ -63,11 +73,8 @@
                 {test.name}
             {/if}
         </div>
-        {#if isHeader}
-            <img class="small-img" src="./src/assets/arrow-down-white.png" alt="order button image">
-        {/if}
     </div>
-    <div class="data width-30p wrap">
+    <div class="data width-30p wrap {isHeader ? 'header' : ''}">
         {#if isHeader}
             Modules
         {:else if test.modules && modulesMap}
@@ -80,7 +87,7 @@
             {/each}
         {/if}
     </div>
-    <div class="data width-10p" style="height: {height}{unit}">
+    <div class="data width-10p {isHeader ? 'header' : ''}" style="height: {height}{unit}">
         <div class="text-container" on:click="{isHeader ? headerStatusOnClick : {}}">
             {#if !isHeader}
                 <img src={imgSrc} alt="status of test case">
@@ -92,7 +99,7 @@
             {/if}
         </div>
     </div>
-    <div class="data width-10p" style="height: {height}{unit}">
+    <div class="data width-10p {isHeader ? 'header' : ''}" style="height: {height}{unit}">
         <div class="text-container">
             {#if isHeader}
                 Assignee
@@ -101,7 +108,7 @@
             {/if}
         </div>
     </div>
-    <div class="data width-10p" style="height: {height}{unit}">
+    <div class="data width-7p header" style="height: {height}{unit}">
         <div class="text-container">
             {#if isHeader}
                 Weight
@@ -129,6 +136,10 @@
         flex: 0 0 3%;
     }
 
+    .width-7p {
+        flex: 0 0 7%;
+    }
+
     .whiteBG {
         background: #eeeeee;
     }
@@ -154,6 +165,10 @@
         overflow: hidden;
     }
 
+    .header {
+        justify-content: center;
+    }
+
     .text-container {
         white-space: nowrap;
         overflow: hidden;
@@ -169,7 +184,8 @@
     .small-img {
         width: 15px;
         height: 15px;
-        margin: 0 5px 0 5px;
+        margin: 0;
+        transition: transform 0.3s ease; /* Adjust the duration and timing function as needed */
     }
 
     .module {
@@ -181,5 +197,9 @@
 
     .wrap {
         flex-wrap: wrap;
+    }
+
+    .rotated {
+        transform: rotate(180deg);
     }
 </style>
