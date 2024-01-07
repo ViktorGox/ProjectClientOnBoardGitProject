@@ -106,6 +106,8 @@ export function generateQuery(path, queryProperties, queryParams, querySettings)
         query += querySettings[i];
         query += '&';
     }
-    query += 'columns=' + columnSelection;
+    if(!isBlank(columnSelection)) {
+        query += 'columns=' + columnSelection;
+    }
     return query;
 }
