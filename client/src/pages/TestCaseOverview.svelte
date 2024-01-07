@@ -9,6 +9,7 @@
     let modules;
     let showStatusMenu = false;
     let reverseTests = false;
+    let searchBarValue;
 
     const statusOptions = [];
     const moduleOptions = [];
@@ -71,10 +72,10 @@
             moduleIdsArray = await fetchTestIds();
         }
 
-        const queryProperties = ["statusid", 'testid'];
-        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray)];
+        const queryProperties = ["statusid", 'testid','name'];
+        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray), searchBarValue];
 
-        const querySettings = ["Equals", "Equals"];
+        const querySettings = ["Equals", "Equals", "Includes"];
         let query = generateQuery('test', queryProperties, queryParams, querySettings);
         return await fetchRequest(query);
     }
@@ -117,6 +118,8 @@
 </script>
 
 <div class="background">
+    <input class="search-bar" type="text" bind:value={searchBarValue} placeholder='Search' on:input={fullFetch}/>
+
     <div id="optionsWindow" style="display: {showStatusMenu ? 'flex' : 'none'}">
         {#if statuses}
             {#each Array.from(statuses.entries()) as [statusName, statusId]}
@@ -157,5 +160,10 @@
         max-height: 80vh;
         min-height: 80vh;
         background: #efefef;
+    }
+
+    .search-bar {
+        margin: 8px 0 0 0;
+        width: 90%;
     }
 </style>
