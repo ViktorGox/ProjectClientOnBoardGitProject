@@ -61,29 +61,31 @@
             });
     }
 
-    function fetchTests() {
-        let testIdQuery;
-        if (moduleOptions.length !== 0) {
-            testIdQuery = generateQuery('testmodule', ['moduleid'], [arrayToString(moduleOptions)], ['Equals']);
-        } else {
-            testIdQuery = 'testmodule';
+    async function fetchTests() {
+        let moduleIdsArray = [];
+        if(moduleOptions.length !== 0) {
+            moduleIdsArray = await fetchTestIds();
         }
 
-        return fetchRequest(testIdQuery).then((result) => {
-            const moduleIdsArray = result.map(item => item.testid);
+        const queryProperties = ["statusid", 'testid'];
+        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray)];
 
-            const queryProperties = ["statusid", 'testid'];
-            const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray)];
+        const querySettings = ["Equals", "Equals"];
+        let query = generateQuery('test', queryProperties, queryParams, querySettings);
+        console.log(query);
+        return fetchRequest(query).then((result) => {
+            fullTests = result;
+            return result;
+        }).catch((e) => {
+            throw e;
+        })
+    }
 
-            const querySettings = ["Equals", "Equals"];
-            let query = generateQuery('test', queryProperties, queryParams, querySettings);
-            return fetchRequest(query).then((result) => {
-                fullTests = result;
-                return result;
-            }).catch((e) => {
-                throw e;
-            })
-        });
+    async function fetchTestIds() {
+        let testIdQuery;
+        testIdQuery = generateQuery('testmodule', ['moduleid'], [arrayToString(moduleOptions)], ['Equals']);
+        const result = await fetchRequest(testIdQuery);
+        return result.map(item => item.testid);
     }
 
     function fetchStatuses() {
