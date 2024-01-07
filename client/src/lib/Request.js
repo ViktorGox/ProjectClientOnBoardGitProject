@@ -83,6 +83,7 @@ export async function fetchRequest(path, fetchType = 'GET', data = {}) {
  * @param queryProperties An array of strings for which properties it will be searched.
  * @param queryParams An array of strings that corresponds to the queryProperties array.
  * @param querySettings An array of strings, one for each property, which specifies how the property will be queried.
+ * @param columnSelection String containing wanted columns separated by comma (,). // "userid,name,testid"
  * @returns {string} the query with the path.
  */
 export function generateQuery(path, queryProperties, queryParams, querySettings) {
@@ -105,5 +106,6 @@ export function generateQuery(path, queryProperties, queryParams, querySettings)
         query += querySettings[i];
         query += '&';
     }
+    query += 'columns=' + columnSelection;
     return query;
 }
