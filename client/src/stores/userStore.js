@@ -2,7 +2,7 @@ import {writable} from "svelte/store";
 
 export default writable({
     id: 0,
-    username: "",
+    email: "",
     roles: [],
     iat: 0
 });
