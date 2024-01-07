@@ -86,7 +86,7 @@ export async function fetchRequest(path, fetchType = 'GET', data = {}) {
  * @param columnSelection String containing wanted columns separated by comma (,). // "userid,name,testid"
  * @returns {string} the query with the path.
  */
-export function generateQuery(path, queryProperties, queryParams, querySettings) {
+export function generateQuery(path, queryProperties, queryParams, querySettings, columnSelection = '') {
     if(!Array.isArray(queryParams)) {
         throw new Error('QueryParams is not an array. If you only have one property, put it in a []')
     }
