@@ -17,16 +17,16 @@ const lessOrEqualTo = 'LessEqual';
  * @param req The req is required to have the following sub variables:
  * <p> "baseUrl" for table name</p>
  * <p> "method" for request type</p>
- * <p> "query" for if the request can, and is wanted to have a where clause</p>
+ * <p> "query" for if the request can, and is wanted to have a where clause. If 'columns' is present
+ * as key, it will be taken to generate custom column selection.</p>
  * <p> "params" for if looking for one element particular element (test/:id)</p>
- * <p> "body" for post/put request, the that will actually be inserted/updated</p>
+ * <p> "body" for post/put request, the data that will actually be inserted/updated</p>
  * @returns {Promise<unknown>} the result of the query, or an error object.
  * The error object contains error.message, is text about the message and error.code, which is the possible code
  * you want to return.
  */
 export async function performQueryFromReq(req) {
     let query;
-
     try {
         if (req.method.toLowerCase() === 'get') {
             query = generateGetQuery(req);
@@ -49,7 +49,6 @@ export async function performQueryFromReq(req) {
     }).catch((e) => {
         if (query.error) {
             return {error: e.message, query: query};
-            // return query.error;
         }
         if (e.routine) {
             if (e.routine === "op_error") {
@@ -82,7 +81,7 @@ export async function performQueryFromReq(req) {
 }
 
 function generateGetQuery(req) {
-    let query = 'SELECT * FROM ' + removeLeadingSlash(req.baseUrl);
+    let query = 'SELECT ' + generateColumnSelection(req) + ' FROM ' + removeLeadingSlash(req.baseUrl);
 
     query += generateWhereClause(req);
     return query;
@@ -97,8 +96,6 @@ function generateDeleteQuery(req) {
 
 function generateInsertQuery(req) {
     const keys = Object.keys(req.body);
-
-    // TODO: Handle not all columns filled?
 
     let query = 'INSERT INTO ' + removeLeadingSlash(req.baseUrl) + " (";
 
@@ -145,6 +142,17 @@ function generateUpdateQuery(req) {
 
     query += generateWhereClause(req);
     return query;
+}
+
+/**
+ * Checks whether the body contains a parameter 'columns' and adds the desired columns in the query.
+ * If it is not present a * will be used for selection of all columns.
+ */
+function generateColumnSelection(req) {
+    if (!req.query.columns) return '*';
+    let columnSelection = req.query.columns;
+    delete req.query.columns;
+    return columnSelection;
 }
 
 /**
@@ -448,12 +456,12 @@ export async function badRequestOnly(req, res) {
  * Intended purpose of this is if you don't want to do any special
  * error handling, and you want to return a 404 when nothing is found.
  */
-export async function notFoundReq(req,res) {
+export async function notFoundReq(req, res) {
     return await performQueryFromReq(req).then((response) => {
         if (response.error) {
             return res.status(statusCodes.BAD_REQUEST).json(response);
         }
-        if(response.length === 0) {
+        if (response.length === 0) {
             return res.status(statusCodes.NOT_FOUND).json(response);
         }
         return res.status(statusCodes.OK).json(response);
