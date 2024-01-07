@@ -132,7 +132,7 @@
         {#if fullTests || statuses}
             {#each fullTests as test, i}
                 <TestCaseHorizontal test={test} index={i} onModuleClick={handleModuleClick}
-                                    statusesMap={statuses} modulesMap={modules}></TestCaseHorizontal>
+                                    statusesMap={statuses} modulesMap={modules} moduleOptions={moduleOptions}></TestCaseHorizontal>
             {/each}
         {/if}
     </div>

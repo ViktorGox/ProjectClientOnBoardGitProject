@@ -10,6 +10,7 @@
 
     export let statusesMap;
     export let modulesMap;
+    export let moduleOptions = [];
 
     export let test;
     export let index;
@@ -79,7 +80,7 @@
             Modules
         {:else if test.modules && modulesMap}
             {#each test.modules as module}
-                <div class="module">
+                <div class="module {moduleOptions.includes(module) ? 'chosen-module' : ''}">
                     <div class="text-container" on:click|stopPropagation={() => {onModuleClick(module)}}>
                         {modulesMap.get(module)}
                     </div>
@@ -120,6 +121,11 @@
 </div>
 
 <style>
+
+    .chosen-module {
+        background-color: rgba(0, 0, 0, 0.4) !important;
+    }
+
     * {
         align-items: center;
     }
