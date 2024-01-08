@@ -1,6 +1,6 @@
 <script>
     import router from 'page';
-    import userStore from '../stores/user';
+    import userStore from '../stores/userStore.js';
     import {onMount} from 'svelte'
     import {fetchRequest} from "../lib/Request.js";
     import {tokenStore} from "../stores/TokenStore.js";
@@ -12,8 +12,9 @@
 
     const handleSubmit = async () => {
         const response = await submit();
+        console.log(response);
         if (response) {
-            if (response['status'] === 200) {
+            if (response.token) {
                 router.redirect('/projects');
             }
         }

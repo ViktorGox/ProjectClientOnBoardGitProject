@@ -8,7 +8,6 @@
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
-    import {tokenStore} from "./stores/TokenStore";
 
     let page;
     let params;
@@ -47,17 +46,19 @@
 </script>
 
 <main>
-    {#if $tokenStore.token !== undefined && $tokenStore.token !== ""}
+    {#if currentRoute === '/'}
+        <div class="main">
+            <div class="page">
+                <svelte:component this={page} {params}/>
+            </div>
+        </div>
+    {:else}
         <Header active={currentRoute}/>
         <div class="main">
             <Sidebar></Sidebar>
             <div class="page">
                 <svelte:component this={page} {params}/>
             </div>
-        </div>
-    {:else}
-        <div class="page">
-            <svelte:component this={page} {params}/>
         </div>
     {/if}
 </main>
