@@ -13,7 +13,7 @@
     const handleSubmit = async () => {
         const response = await submit();
         if (response) {
-            if (response['status'] === 200) {
+            if (response.token) {
                 router.redirect('/projects');
             }
         }
