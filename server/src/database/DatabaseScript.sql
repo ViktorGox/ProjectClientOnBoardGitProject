@@ -190,16 +190,16 @@ values ('Bug');
 
 insert into test(name, userid, description, statusId, completiondate)
 values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct', 2,
-        '14/12/2023');
+        '12/14/2023');
 
 insert into test(name, userid, description, statusId, completiondate)
-values ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4, '14/12/2023');
+values ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4, '12/14/2023');
 
 insert into test(name, userid, description, statusId, completiondate)
-values ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3, '14/12/2023');
+values ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3, '12/14/2023');
 
 insert into test(name, userid, description, statusId, completiondate)
-values ('Check if background color is not red', 3, 'red background shall not be accepted', 1, '14/12/2023');
+values ('Check if background color is not red', 3, 'red background shall not be accepted', 1, '12/14/2023');
 
 insert into teststep (testid, stepnr, title, description, testlog, weight)
 values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note', 1);
@@ -238,16 +238,16 @@ insert into teststep (testid, stepnr, title, description, testlog, weight)
 values (4, 1, 'Check background is not red', 'It shall never be red', '', 4);
 
 insert into sprint (title, startdate, duedate) values
-    ('Sprint 0','10/10/2023','20/10/2023');
+    ('Sprint 0','10/10/2023','10/20/2023');
 
 insert into sprint (title, startdate, duedate) values
-    ('Sprint 1','20/10/2023','30/10/2023');
+    ('Sprint 1','10/20/2023','10/30/2023');
 
 insert into sprint (title, startdate, duedate) values
-    ('Sprint 2','30/10/2023','10/11/2023');
+    ('Sprint 2','10/30/2023','11/10/2023');
 
 insert into sprint (title, startdate, duedate) values
-    ('Sprint 3','10/11/2023','20/11/2023');
+    ('Sprint 3','11/10/2023','11/20/2023');
 
 insert into testmodule (testid, moduleid)
 values (1, 1);
