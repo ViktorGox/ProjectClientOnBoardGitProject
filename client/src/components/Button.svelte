@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     export let onClick;
     export let text = "Button";
     export let width = 50;

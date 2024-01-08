@@ -1,63 +1,169 @@
-<script lang="ts">
-    import HorizontalSplitContainer from "../components/containers/HorizontalSplitContainer.svelte";
-    import Button from "../components/Button.svelte";
+<script>
     import TestCaseHorizontal from "../components/containers/TestCaseHorizontal.svelte";
+    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {arrayToString} from "../lib/Utils.js";
+    import {onMount} from 'svelte';
 
-    function a() {
+    let fullTests = [];
+    let statuses;
+    let modules;
+    let showStatusMenu = false;
+    let reverseTests = false;
+    let searchBarValue;
 
+    const statusOptions = [];
+    const moduleOptions = [];
+
+    function handleCheckboxChange(event, option) {
+        if (!event.target.checked) {
+            const index = statusOptions.indexOf(option);
+            if (index !== -1) {
+                statusOptions.splice(index, 1)
+            }
+        } else {
+            statusOptions.push(option);
+        }
+        fullFetch()
     }
+
+    function handleModuleClick(module) {
+        const index = moduleOptions.indexOf(module);
+        if (index !== -1) {
+            moduleOptions.splice(index, 1)
+        } else {
+            moduleOptions.push(module);
+        }
+        fullFetch();
+    }
+
+    onMount(() => {
+        fullFetch();
+    });
+
+    function fullFetch() {
+        Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
+            .then(([fetchedStatuses, fetchedTests, fetchedModules]) => {
+                statuses = fetchedStatuses;
+                modules = fetchedModules;
+
+                const modulePromises = fetchedTests.map(element =>
+                    fetchRequest('testmodule/test/' + element.testid)
+                        .then(result => {
+                            element.modules = result.map(item => item.moduleid);
+                            return element;
+                        })
+                );
+                return Promise.all(modulePromises);
+            })
+            .then(updatedTests => {
+                if(reverseTests) {
+                    updatedTests.reverse();
+                }
+                fullTests = updatedTests;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    async function fetchTests() {
+        let moduleIdsArray = [];
+        if(moduleOptions.length !== 0) {
+            moduleIdsArray = await fetchTestIds();
+        }
+
+        const queryProperties = ["statusid", 'testid','name'];
+        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray), searchBarValue];
+
+        const querySettings = ["Equals", "Equals", "Includes"];
+        let query = generateQuery('test', queryProperties, queryParams, querySettings);
+        return await fetchRequest(query);
+    }
+
+    async function fetchTestIds() {
+        let testIdQuery;
+        testIdQuery = generateQuery('testmodule', ['moduleid'], [arrayToString(moduleOptions)], ['Equals']);
+        const result = await fetchRequest(testIdQuery);
+        return result.map(item => item.testid);
+    }
+
+    function fetchStatuses() {
+        return fetchRequest('status').then((result) => {
+            return new Map(result.map(status => [status.name, status.statusid]));
+        }).catch((e) => {
+            throw e;
+        })
+    }
+
+    function fetchModules() {
+        return fetchRequest('module').then((result) => {
+            return new Map(result.map(module => [module.moduleid, module.label]));
+        }).catch((e) => {
+            throw e;
+        })
+    }
+
+    function onStatusClick() {
+        showStatusMenu = !showStatusMenu;
+    }
+
+    function reverseTestArray() {
+        reverseTests = !reverseTests;
+        fullTests = fullTests.reverse()
+        console.log(fullTests);
+    }
+
+    //TODO: Center text in pop up window.
+    //TODO: Move status openable window to below status column.
 </script>
 
 <div class="background">
-    <div class="top">
-        <HorizontalSplitContainer>
-            <div slot="left">
-                <div class="left">
-                    <Button margin="0 10px 0 10px" text="Open"></Button>
-                    <Button margin="0 10px 0 10px" text="Done"></Button>
-                    <Button margin="0 10px 0 10px" text="All"></Button>
-                </div>
-            </div>
-            <div slot="right">
-                <div class="right">
-                    <Button text="Create"></Button>
-                </div>
-            </div>
-        </HorizontalSplitContainer>
+    <input class="search-bar" type="text" bind:value={searchBarValue} placeholder='Search' on:input={fullFetch}/>
+
+    <div id="optionsWindow" style="display: {showStatusMenu ? 'flex' : 'none'}">
+        {#if statuses}
+            {#each Array.from(statuses.entries()) as [statusName, statusId]}
+                <label><input type="checkbox" on:change={(e) => handleCheckboxChange(e, statusId)}>{statusName}</label>
+            {/each}
+        {/if}
     </div>
     <div class="bottom">
-        <TestCaseHorizontal status="Blocker"></TestCaseHorizontal>
-        <TestCaseHorizontal status="Successful"></TestCaseHorizontal>
-        <TestCaseHorizontal status="Bug"></TestCaseHorizontal>
-        <TestCaseHorizontal weight="232"></TestCaseHorizontal>
-        <TestCaseHorizontal assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
-        <TestCaseHorizontal weight="232" assignee="SuperVeryLongNameForAnAssignee"></TestCaseHorizontal>
-        <TestCaseHorizontal module="SomeVeryLongModuleJustABitMore" name="AVeryVerySuperMuchLongNameForATestCaseToTestTheCSSIfItsWorkingCorrectlyAndItSeemsToBeWorkingCorrectly"></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
-        <TestCaseHorizontal></TestCaseHorizontal>
+        <TestCaseHorizontal isHeader=true headerStatusOnClick={onStatusClick} onTitleArrowClick={reverseTestArray}></TestCaseHorizontal>
+        {#if fullTests || statuses}
+            {#each fullTests as test, i}
+                <TestCaseHorizontal test={test} index={i} onModuleClick={handleModuleClick}
+                                    statusesMap={statuses} modulesMap={modules} moduleOptions={moduleOptions}></TestCaseHorizontal>
+            {/each}
+        {/if}
     </div>
 </div>
 
 <style>
-    .top {
-        background-color: #F3FF00;
-        display: flex;
-        justify-content: center;
+    #optionsWindow {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    input {
+        margin-right: 5px;
     }
 
     .bottom {
         margin: 10px;
+        overflow-y: scroll;
+        max-height: 80vh;
+        min-height: 80vh;
+        background: #efefef;
     }
 
-    .right {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .left {
-        display: flex;
-        flex-wrap: nowrap;
+    .search-bar {
+        margin: 8px 0 0 0;
+        width: 90%;
     }
 </style>
