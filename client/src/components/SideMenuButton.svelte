@@ -16,24 +16,33 @@
 </a>
 
 <style>
-    .background {
+    .button{
+        text-align: left;
         width: 100%;
+        min-width: 170px;
+        padding: 0.5rem;
+    }
+    .background {
         height: 30px;
         display: flex;
-        padding: 0 0 0 1.5rem;
         align-items: center;
         text-decoration: none;
         color: white;
+        margin-top: 2.5rem;
+        padding-left: 0.5rem;
+        font-size: 1.1rem;
+        padding-right: 1rem;
     }
 
     img {
-        height: 15px;
-        width: 15px;
+        height: 50px;
+        width: 50px;
         margin-top: 0;
     }
 
     .background:hover {
-        transition: opacity 0.9s ease-in-out;
+        transition: opacity 12.9s ease-in-out;
         transform: scale(1.05);
+        -webkit-transition-duration: 10s;
     }
 </style>
