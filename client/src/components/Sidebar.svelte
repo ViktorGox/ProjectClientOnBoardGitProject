@@ -13,17 +13,18 @@
 </script>
 
 <div class="background">
-    <SideMenuButton text="Dashboard" href="/testCases" image="./src/assets/svelte.png"></SideMenuButton>
-    <SideMenuButton text="Projects" href="projects" image="./src/assets/svelte.png"></SideMenuButton>
-    <VerticalButtonMenu name="Test Cases" links={hrefsTestCases} titles={titlesTestCases}></VerticalButtonMenu>
-    <VerticalButtonMenu name="Analytics" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesAll}></VerticalButtonMenu>
-    <VerticalButtonMenu name="ThirdOneForExample" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesHalf}></VerticalButtonMenu>
+    <SideMenuButton text="Test cases overview" href="/testCases" image="./src/assets/SidebarIcons/overviewIcon1.png"></SideMenuButton>
+    <SideMenuButton text="Sprints" href="projects" image="./src/assets/SidebarIcons/sprintIcon1.png"></SideMenuButton>
+<!--    <VerticalButtonMenu name="Test Cases" links={hrefsTestCases} titles={titlesTestCases}></VerticalButtonMenu>-->
+<!--    <VerticalButtonMenu name="Analytics" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesAll}></VerticalButtonMenu>-->
+<!--    <VerticalButtonMenu name="ThirdOneForExample" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesHalf}></VerticalButtonMenu>-->
 </div>
 
 <style>
     .background {
-        background: #607D8B;
-        width: 250px;
+        background: #248B8B;
+        max-width: 100%;
         height: 100vh;
+        overflow-x: hidden;
     }
 </style>
