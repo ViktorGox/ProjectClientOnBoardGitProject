@@ -12,7 +12,6 @@
 
     const handleSubmit = async () => {
         const response = await submit();
-        console.log(response);
         if (response) {
             if (response.token) {
                 router.redirect('/projects');
@@ -22,49 +21,46 @@
 
     let email = '';
     let password = '';
+    let incorrectCredentials = false;
 
     async function submit() {
         try {
             return fetchRequest('token', 'POST', {email, password}).then((result) => {
+                incorrectCredentials = false;
                 $tokenStore.token = result.token;
                 $userStore = result.user;
                 return result;
             }).catch((e) => {
+                incorrectCredentials = true;
                 console.log(e);
             })
 
         } catch (e) {
             console.log(e);
-            document.querySelector('.error-message').style.display = "block";
+            incorrectCredentials = true;
+
         }
     }
 </script>
-
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Yeseva+One&display=swap"
-          rel="stylesheet">
-</head>
 
 <body>
 <div class="login__container">
     <form id="login" action="" on:submit|preventDefault={handleSubmit}>
         <div class="form-header">
             <h1 style="text-align:center; margin: 5rem auto;">Login</h1>
-            <p class="error-message text-danger">Username or password is incorrect!</p>
+
+            {#if incorrectCredentials}
+                <p class="error-message text-danger">Username or password is incorrect!</p>
+            {/if}
         </div>
 
 
         <div class="form__control">
             <input type="text" placeholder="Enter Username" name="uname" id="email" bind:value={email} required>
-            <small>Error message</small>
         </div>
 
         <div class="form__control">
             <input type="password" placeholder="Enter Password" name="psw" id="password" bind:value={password} required>
-            <small>Error message</small>
         </div>
 
         <div class="submit__button">
@@ -90,10 +86,6 @@
         font-family: 'Montserrat', sans-serif;
     }
 
-    .error-message {
-        display: none;
-    }
-
     .background__image {
         position: absolute;
         max-width: 100%;
@@ -103,19 +95,19 @@
     .login__container {
         display: block;
         position: absolute;
-        width: 623px;
-        height: 80%;
+        width: 39rem;
+        height: 48rem;
         z-index: 10;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0px 10px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 10px 4px rgba(0, 0, 0, 0.25);
         border-radius: 70px;
     }
 
     h1, p {
-        font-family: 'Yeseva One', cursive;
+        font-family: 'Yeseva One';
     }
 
     h1 {
@@ -141,11 +133,6 @@
         border: 1px solid #ccc;
         border-radius: 50px;
         box-sizing: border-box;
-    }
-
-    input[type=checkbox] {
-        margin-top: 2rem;
-        margin-left: 8px;
     }
 
     .submit__button {
@@ -192,7 +179,7 @@
     @media screen and (max-width: 768px) {
         .login__container {
             width: 500px;
-            height: 70%;
+            height: 40rem;
         }
 
         h1 {
@@ -201,11 +188,6 @@
 
         button {
             margin-top: 1rem;
-        }
-
-        input[type=checkbox] {
-            margin-top: 1rem;
-            margin-left: 8px;
         }
     }
 

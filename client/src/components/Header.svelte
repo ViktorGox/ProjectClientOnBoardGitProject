@@ -60,7 +60,7 @@
     .navbar {
         background-color: #343a40; /* Dark background color for the navbar */
         padding: 10px 0;
-        width: 120%
+        width: 100%;
     }
 
     .navbar-brand {
