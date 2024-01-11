@@ -27,15 +27,7 @@ export function isAdmin(req, res, next) {
 }
 
 export function isDeveloper(req, res, next) {
-    if (req.user && req.user.roleid == '2') {
-        next();
-    } else {
-        res.status(403).json({error: 'Permission denied'});
-    }
-}
-
-export function isTester(req, res, next) {
-    if (req.user && req.user.roleid == '3') {
+    if (req.user && req.user.roleid == '2' || req.user.roleid == '1') {
         next();
     } else {
         res.status(403).json({error: 'Permission denied'});
