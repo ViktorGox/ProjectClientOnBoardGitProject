@@ -67,7 +67,7 @@
     {:else}
         <Header active={currentRoute}/>
         <div class="main">
-            <Sidebar></Sidebar>
+            <Sidebar active={currentRoute}></Sidebar>
             <div class="page">
                 <svelte:component this={page} {params}/>
             </div>
@@ -83,6 +83,7 @@
     }
 
     main {
+        background-color: #19191d;
         text-align: center;
         margin: 0 auto;
         padding: 0;
@@ -99,5 +100,10 @@
 
     .page {
         width: 85%;
+        margin-left: auto;
+        min-height: 100vh;
+        height: fit-content;
+        padding: 98px 2rem 2rem 2rem;
     }
+
 </style>
