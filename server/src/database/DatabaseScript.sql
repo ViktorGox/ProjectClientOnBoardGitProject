@@ -184,7 +184,10 @@ insert into test(name, userid, description, statusId)
 values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct', 2),
        ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4),
        ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3),
-       ('Check if background color is not red', 3, 'red background shall not be accepted', 1);
+       ('Check if background color is not red', 3, 'red background shall not be accepted', 1),
+       ('Verify the sidebar is on the side', 1, 'sidebar shall be on the side', 4),
+       ('Confirm confirmation works correctly', 1, 'confirmation shall work', 1),
+       ('Verify all data is shown', 1, 'data stored shall be shown', 1);
 
 insert into teststep (testid, stepnr, title, description, testlog, weight)
 values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note', 1),
@@ -202,12 +205,10 @@ values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note',
 
 
 INSERT INTO sprint (title, startdate, duedate)
-    VALUES ('Sprint 0', CURRENT_DATE - INTERVAL '5 days', CURRENT_DATE + INTERVAL '5 days'),
+VALUES ('Sprint 0', CURRENT_DATE - INTERVAL '5 days', CURRENT_DATE + INTERVAL '5 days'),
        ('Sprint 1', CURRENT_DATE + INTERVAL '6 days', CURRENT_DATE + INTERVAL '11 days'),
        ('Sprint 2', CURRENT_DATE + INTERVAL '12 days', CURRENT_DATE + INTERVAL '41 days'),
        ('Sprint 3', CURRENT_DATE + INTERVAL '42 days', CURRENT_DATE + INTERVAL '44 days');
-
-
 
 insert into testmodule (testid, moduleid)
 values (1, 1),
@@ -218,23 +219,54 @@ values (1, 1),
        (4, 1),
        (4, 2),
        (4, 3),
-       (4, 4);
+       (4, 4),
+       (5, 3),
+       (5, 4),
+       (6, 2),
+       (7, 3),
+       (7, 4);
 
 insert into testing (sprintid, testid)
-values (1, 1),
-       (1, 2),
+values (1, 4),
+       (1, 4),
+       (1, 6),
+       (1, 7),
+       (1, 1),
        (1, 3),
+       (1, 3),
+
        (2, 1),
-       (2, 2),
        (2, 3),
-       (2, 4),
-       (3, 1),
-       (3, 2),
-       (3, 3),
+       (2, 3),
+       (2, 5),
+       (2, 2),
+       (2, 5),
+
        (3, 4),
-       (4, 2),
+       (3, 6),
+       (3, 6),
+       (3, 7),
+       (3, 1),
+       (3, 1),
+       (3, 1),
+       (3, 3),
+       (3, 3),
+       (3, 5),
+
+       (4, 4),
+       (4, 6),
+       (4, 7),
+       (4, 1),
+       (4, 1),
+       (4, 1),
+       (4, 1),
        (4, 3),
-       (4, 4);
+       (4, 3),
+       (4, 2),
+       (4, 2),
+       (4, 2),
+       (4, 2),
+       (4, 2);
 
 insert into sprintusers (sprintid, userid, roleid)
 values (1, 1, 1),
