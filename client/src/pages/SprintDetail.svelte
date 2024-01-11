@@ -4,15 +4,14 @@
     import router from "page";
     import userStore from "../stores/userStore.js";
     import SprintInfo from "../components/SprintInfo.svelte";
-
+    import Button from "../components/Button.svelte";
     import JafarButton from "../components/JafarButton.svelte";
-    import { fetchRequest, generateQuery } from "../lib/Request.js";
+
     export let params;
-    console.log(params);
-    let sprintid = params.id;
+    let sprintid = params ? params.sprintid : null;
     let email = $userStore ? $userStore.email : null;
 
-    let sprint=[];
+    let sprint;
     let title;
     let startDate;
     let dueDate;
@@ -20,45 +19,42 @@
 
     async function getSprintById() {
         console.log(sprintid);
-
-        // Use fetchRequest from Request.js
-        const path = `sprint/${sprintid}`;
-        const response = await fetchRequest(path, 'GET');
-        sprint = response;
-        console.log("Sprint:",sprint);
+        const response = await fetch(`http://localhost:3000/sprint/${sprintid}`);
+        sprint = await response.json();
+        console.log(sprint);
     }
 
-
     onMount(async () => {
-        if (sprintid && sprintid !== 'new') {
+        if (sprintid) {
             await getSprintById(sprintid);
-            if (sprint.length > 0) {
-                title = sprint[0].title;
-                startDate = sprint[0].startdate;
-                dueDate = sprint[0].duedate;
-            }
+
         } else {
-            // Handle the case when it's a new sprint
-            sprint = [{
+            sprint = {
                 sprintId: 0,
                 title: "Sprint 1",
-                startdate: "2021-01-01",
-                duedate: "2021-01-15"
-            }];
-            title = sprint[0].title;
-            startDate = sprint[0].startdate;
-            dueDate = sprint[0].duedate;
+                startDate: "2021-01-01",
+                dueDate: "2021-01-15"
+            };
         }
-        console.log("Title:", title);
-        console.log("StartDate:", startDate);
-        console.log("DueDate:", dueDate);
+        title = sprint.title;
+        console.log(title);
+        startDate = sprint.startDate;
+        console.log(startDate);
+        dueDate = sprint.dueDate;
+        console.log(dueDate);
     });
-    async function editSprint(sprintid, sprintInfo) {
-        const path = `sprint/${sprintid}`;
 
-        // Use fetchRequest from Request.js
-        const response = await fetchRequest(path, 'PUT', sprintInfo);
-        console.log(response);
+    async function editSprint(sprintid, sprintInfo) {
+        const response = await fetch(`http://localhost:3000/sprint/${sprintid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${$tokenStore}`
+            },
+            body: JSON.stringify(sprintInfo)
+        });
+        const result = await response.json();
+        console.log(result);
     }
 
     async function addNewSprint(sprintInfo) {
@@ -92,21 +88,20 @@
 
     function submitNewInfo() {
         if (checkInputs()) {
+
             let sprintInfo = {
                 title: title,
                 startDate: startDate,
                 dueDate: dueDate
             }
-
-            if (sprintid && sprintid !== 'new') {
+            if (sprintid)
                 editSprint(sprintid, sprintInfo);
-            } else {
+            else
                 addNewSprint(sprintInfo);
-            }
 
             router(`/projects/${email}`);
         } else {
-            alert("One or many inputs are not correctly inputted!");
+            alert("One or many inputs is not correctly inputted!");
         }
     }
 
@@ -120,15 +115,15 @@
 </script>
 
 <main>
-    {#if sprint && sprintid !== undefined}
+    {#if sprint}
         <section id="informationPreview">
             <img src={logoImageLink} alt={logoImageLink}>
 
-            <label class="lighter-text">Title: {title}</label>
+            <label>Title: {title}</label>
 
             <div>
-                <label class="lighter-text">Start Date: {startDate} </label>
-                <label class="lighter-text">Due Date: {dueDate}</label>
+                <label>Start Date: {startDate} </label>
+                <label>Due Date: {dueDate}</label>
             </div>
 
         </section>
@@ -163,7 +158,7 @@
         width: 100%;
         border-radius: 10px;
 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Adjust the shadow properties */
     }
 
     div {
@@ -171,10 +166,7 @@
         justify-content: space-between;
         gap: 0.5rem;
     }
-    label.lighter-text {
-        color: #b3b3b3;
-        font-weight: lighter;
-    }
+
     textarea {
         flex: 1;
         width: 96%;
