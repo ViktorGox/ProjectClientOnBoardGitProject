@@ -8,8 +8,8 @@
     <div class="navbar navbar-dark bg-dark">
         <div class="container">
             <a
-                    class:active={active === (loggedIn ? "/projects" : "/login")}
-                    href={loggedIn ? "/projects" : "/login"}
+                    class:active={active === (loggedIn ? "/testCases" : "/login")}
+                    href={loggedIn ? "/testCases" : "/login"}
                     class="navbar-brand"
             >
                 {#if loggedIn}

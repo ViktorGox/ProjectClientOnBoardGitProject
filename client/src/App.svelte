@@ -8,6 +8,8 @@
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
+    import SprintDetail from "./pages/SprintDetail.svelte";
+    import Sprints from "./pages/Sprints.svelte";
 
     let page;
     let params;
@@ -29,15 +31,25 @@
 
     router('/tests/:id', (ctx) => {
         page = TestCaseDetails;
+        params = ctx.params;
         currentRoute = ctx.pathname;
     });
 
     router('/projects', (ctx) => {
-        page = Projects;
+        page = Sprints;
         currentRoute = ctx.pathname;
     });
     router('/projects/:id', (ctx) => {
         page = Dashboard;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+    router('/SprintDetail', (ctx) => {
+        page = SprintDetail;
+        currentRoute = ctx.pathname;
+    });
+    router('/SprintDetail/:id', (ctx) => {
+        page = SprintDetail;
         params = ctx.params;
         currentRoute = ctx.pathname;
     });

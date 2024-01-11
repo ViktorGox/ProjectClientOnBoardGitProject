@@ -14,7 +14,7 @@
 
 <div class="background">
     <SideMenuButton text="Test cases overview" href="/testCases" image="./src/assets/SidebarIcons/overviewIcon1.png"></SideMenuButton>
-    <SideMenuButton text="Sprints" href="projects" image="./src/assets/SidebarIcons/sprintIcon1.png"></SideMenuButton>
+    <SideMenuButton text="Sprints" href="/projects" image="./src/assets/SidebarIcons/sprintIcon1.png"></SideMenuButton>
 <!--    <VerticalButtonMenu name="Test Cases" links={hrefsTestCases} titles={titlesTestCases}></VerticalButtonMenu>-->
 <!--    <VerticalButtonMenu name="Analytics" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesAll}></VerticalButtonMenu>-->
 <!--    <VerticalButtonMenu name="ThirdOneForExample" links={hrefsAnalytics} titles={titlesAnalytics} images={imagesHalf}></VerticalButtonMenu>-->

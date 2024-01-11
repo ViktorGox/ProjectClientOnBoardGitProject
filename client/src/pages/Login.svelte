@@ -14,7 +14,7 @@
         const response = await submit();
         if (response) {
             if (response.token) {
-                router.redirect('/projects');
+                router('/testCases');
             }
         }
     };
@@ -30,6 +30,7 @@
                 $tokenStore.token = result.token;
                 $userStore = result.user;
                 return result;
+                console.log(result);
             }).catch((e) => {
                 incorrectCredentials = true;
                 console.log(e);
