@@ -19,7 +19,7 @@ export function isLoggedIn(req, res, next) {
 }
 
 export function isAdmin(req, res, next) {
-    if (req.user && req.user.role == 'admin') {
+    if (req.user && req.user.roleid == '1') {
         next();
     } else {
         res.status(403).json({error: 'Permission denied'});
@@ -27,7 +27,7 @@ export function isAdmin(req, res, next) {
 }
 
 export function isDeveloper(req, res, next) {
-    if (req.user && req.user.role == 'developer') {
+    if (req.user && req.user.roleid == '2') {
         next();
     } else {
         res.status(403).json({error: 'Permission denied'});
@@ -35,7 +35,7 @@ export function isDeveloper(req, res, next) {
 }
 
 export function isTester(req, res, next) {
-    if (req.user && req.user.role == 'tester') {
+    if (req.user && req.user.roleid == '3') {
         next();
     } else {
         res.status(403).json({error: 'Permission denied'});
