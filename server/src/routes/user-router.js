@@ -5,9 +5,11 @@ import {isLoggedIn, isAdmin} from "../middleware/middlewares.js";
 const router = express.Router();
 
 router.get("/", isLoggedIn, isAdmin, userController.getAllUsers);
-router.get("/:id", isLoggedIn, isAdmin, userController.getUserById);
+router.get("/allUsernames", userController.getAllUsernames);
+router.get("/:userid", isLoggedIn, isAdmin, userController.getUserById);
 router.post("/", isLoggedIn, isAdmin, userController.postUser);
-router.put("/:id", isLoggedIn, isAdmin, userController.updateUser);
-router.delete("/:id", isLoggedIn, isAdmin, userController.deleteUserById);
+router.put("/:userid/password", isLoggedIn, isAdmin, userController.updateUserPassword);
+router.put("/:userid/email", isLoggedIn, isAdmin, userController.updateUserEmail);
+router.delete("/:userid", isLoggedIn, isAdmin, userController.deleteUserById);
 
 export default router;
