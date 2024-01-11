@@ -18,6 +18,7 @@
 
 
     async function getSprintById() {
+        console.log(sprintid);
         const response = await fetch(`http://localhost:3000/sprint/${sprintid}`);
         sprint = await response.json();
         console.log(sprint);
@@ -98,7 +99,7 @@
             else
                 addNewSprint(sprintInfo);
 
-            router(`/sprint/${email}`);
+            router(`/projects/${email}`);
         } else {
             alert("One or many inputs is not correctly inputted!");
         }

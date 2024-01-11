@@ -1,6 +1,6 @@
 import express from 'express';
 import * as controller from '../controllers/sprint-controller.js';
-import {isAdmin,isDeveloper,isTester,isLoggedIn} from "../middleware/middlewares.js";
+
 
 const router = express.Router();
 
