@@ -2,16 +2,15 @@
     import router from 'page';
     import TestCaseOverview from './pages/TestCaseOverview.svelte'
     import Header from "./components/Header.svelte";
-    import {tokenStore} from "../src/stores/TokenStore.js";
 
     import Sidebar from "./components/Sidebar.svelte";
+    import Projects from "./pages/Sprints.svelte";
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
     import SprintDetail from "./pages/SprintDetail.svelte";
     import Sprints from "./pages/Sprints.svelte";
 
-    const token = $tokenStore.token;
     let page;
     let params;
     let currentRoute;
@@ -46,13 +45,7 @@
         currentRoute = ctx.pathname;
     });
     router('/SprintDetail', (ctx) => {
-        // Handle the case when it's a new sprint
-        if (ctx.querystring === 'new') {
-            page = SprintDetail;
-            params = {id: 'new'};
-        } else {
-            page = Sprints;
-        }
+        page = SprintDetail;
         currentRoute = ctx.pathname;
     });
     router('/SprintDetail/:id', (ctx) => {
@@ -65,9 +58,6 @@
 </script>
 
 <main>
-    <!--{#if !token}-->
-    <!--    {router(`/`)}-->
-    <!--{/if}-->
     {#if currentRoute === '/'}
         <div class="main">
             <div class="page">
@@ -78,7 +68,7 @@
         <Header active={currentRoute}/>
         <div class="main">
             <Sidebar active={currentRoute}></Sidebar>
-            <div class="page" style="{page==='/tests'?'':'padding: 1px 0 2rem 1rem'}">
+            <div class="page">
                 <svelte:component this={page} {params}/>
             </div>
         </div>
