@@ -4,61 +4,54 @@
     let showUserMenu = false; // Flag to control user menu visibility
 </script>
 
-<nav>
-    <div class="navbar navbar-dark bg-dark">
-        <div class="container">
-            <a
-                    class:active={active === (loggedIn ? "/testCases" : "/login")}
-                    href={loggedIn ? "/testCases" : "/login"}
-                    class="navbar-brand"
-            >
-                {#if loggedIn}
-                    Home
-                {:else}
-                    Login
-                {/if}
-            </a>
+<nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg justify-content-between">
+    <a
+            class:active={active === (loggedIn ? "/testCases" : "/login")}
+            href={loggedIn ? "/testCases" : "/login"}
+            class="navbar-brand"
+    >
+        {#if loggedIn}
+            Home
+        {:else}
+            Login
+        {/if}
+    </a>
 
-            <ul class="nav col-12 col-lg-auto">
-                {#if loggedIn}
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="bi bi-bell d-inline-block mx-2"></i>
-                            Notifications
-                        </a>
-                    </li>
-                    <li
-                            class="nav-item user-menu"
-                            on:click={() => showUserMenu = !showUserMenu}
+    <ul class="nav">
+        {#if loggedIn}
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-bell d-inline-block mx-2"></i>
+                    Notifications
+                </a>
+            </li>
+            <li
+                    class="nav-item user-menu"
+                    on:click={() => showUserMenu = !showUserMenu}
+            >
+                <a class="nav-link">
+                    <i class="bi bi-person d-inline-block mx-2"></i>
+                    User
+                </a>
+                {#if showUserMenu}
+                    <div
+                            class="user-menu-dropdown"
+                            on:mouseleave={() => showUserMenu = false}
                     >
-                        <a class="nav-link">
-                            <i class="bi bi-person d-inline-block mx-2"></i>
-                            User
-                        </a>
-                        {#if showUserMenu}
-                            <div
-                                    class="user-menu-dropdown"
-                                    on:mouseleave={() => showUserMenu = false}
-                            >
-                                <!-- Dropdown content goes here -->
-                                <a href="#" class="user-menu-item">Profile</a>
-                                <a href="#" class="user-menu-item">Settings</a>
-                                <a href="#" class="user-menu-item">Logout</a>
-                            </div>
-                        {/if}
-                    </li>
+                        <!-- Dropdown content goes here -->
+                        <a href="#" class="user-menu-item">Profile</a>
+                        <a href="#" class="user-menu-item">Settings</a>
+                        <a href="#" class="user-menu-item">Logout</a>
+                    </div>
                 {/if}
-            </ul>
-        </div>
-    </div>
+            </li>
+        {/if}
+    </ul>
 </nav>
 
 <style>
-
-
-
     .navbar {
-        background-color: #343a40; /* Dark background color for the navbar */
+        background-color: #25252b !important; /* Dark background color for the navbar */
         padding: 10px 0;
         width: 100%;
     }
@@ -69,6 +62,7 @@
         color: #fff; /* White text color for the brand */
         text-decoration: none;
         transition: color 0.3s ease-in-out; /* Smooth color transition on hover */
+        margin-left: 4rem;
     }
 
     .navbar-brand:hover {
@@ -100,7 +94,6 @@
 
     .nav-link:hover {
         color: #486080; /* Grey color on hover */
-        text-decoration: underline;
     }
 
     .user-menu {

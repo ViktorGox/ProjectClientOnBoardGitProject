@@ -225,7 +225,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card mb-5">
             <div class="card-header">
 
             </div>
@@ -243,74 +243,77 @@
             </div>
         </div>
 
-        <table class="table custom-table mt-5">
-            <thead>
-            <tr>
-                <th scope="col">
-                    <label class="control">
-                        <input type="checkbox" on:click={checkAll}>
-                        <span class="checkmark"></span>
-                    </label>
-                </th>
-                <th scope="col" class="order-header" on:click={toggleRotate}  on:click={reverseTestArray}>
-                    ID
-                    <img  class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
-                          alt="order button image">
-                </th>
-                <th scope="col">Title</th>
-                <th scope="col">Modules</th>
-                <th scope="col">Status</th>
-                <th scope="col">Assignee</th>
-                <th scope="col">Weight</th>
-            </tr>
-            </thead>
-            <tbody>
-            {#if fullTests || statuses}
-                {#each fullTests as test, i}
-                    <tr>
-                        <th scope="row">
-                            <label class="control">
-                                <input type="checkbox" on:change={() => console.log('checked')}> <!--change console.log to function that collects this test-->
-                                <span class="checkmark"></span>
-                            </label>
-                        </th>
-                        <td>
-                            {test.testid}
-                        </td>
-                        <td><a href="/tests/{test.testid}">{test.name}</a></td>
-                        <td>
-                            {#if test.modules && modules}
-                                {#each test.modules as module}
-                                    <div class="module" class:chosen-module={moduleOptions.includes(module)}>
-                                        <div class="text-container" on:click|stopPropagation={() => {handleModuleClick(module)}}>
-                                            {modules.get(module)}
-                                        </div>
-                                    </div>
-                                {/each}
-                            {/if}
-                        </td>
-                        <td>
-                            <img src={getImage(test)} alt="status of test case">
-                            {getStatus(test)}
-                        </td>
-                        <td>
-                            {test.userid}
-                        </td>
-                        <td>233</td>
-                    </tr>
-                    <tr class="spacer">
-                        <td colspan="100"></td>
-                    </tr>
-                {/each}
-            {:else}
+        <div class="scrollable-div">
+            <table class="table custom-table">
+                <thead>
                 <tr>
-                    <td>
-                        No tests here yet.
-                    </td>
+                    <th scope="col">
+                        <label class="control">
+                            <input type="checkbox" on:click={checkAll}>
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th scope="col" class="order-header" on:click={toggleRotate}  on:click={reverseTestArray}>
+                        ID
+                        <img  class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
+                              alt="order button image">
+                    </th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Modules</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">Weight</th>
                 </tr>
-            {/if}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {#if fullTests || statuses}
+                    {#each fullTests as test, i}
+                        <tr>
+                            <th scope="row">
+                                <label class="control">
+                                    <input type="checkbox" on:change={() => console.log('checked')}> <!--change console.log to function that collects this test-->
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <td>
+                                {test.testid}
+                            </td>
+                            <td><a href="/tests/{test.testid}">{test.name}</a></td>
+                            <td>
+                                {#if test.modules && modules}
+                                    {#each test.modules as module}
+                                        <div class="module" class:chosen-module={moduleOptions.includes(module)}>
+                                            <div class="text-container" on:click|stopPropagation={() => {handleModuleClick(module)}}>
+                                                {modules.get(module)}
+                                            </div>
+                                        </div>
+                                    {/each}
+                                {/if}
+                            </td>
+                            <td>
+                                <img src={getImage(test)} alt="status of test case">
+                                {getStatus(test)}
+                            </td>
+                            <td>
+                                {test.userid}
+                            </td>
+                            <td>233</td>
+                        </tr>
+                        <tr class="spacer">
+                            <td colspan="100"></td>
+                        </tr>
+                    {/each}
+                {:else}
+                    <tr>
+                        <td>
+                            No tests here yet.
+                        </td>
+                    </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
 </div>
@@ -318,12 +321,6 @@
 <style>
     input {
         margin-right: 5px;
-    }
-
-    .background {
-        height: 100vh;
-        padding: 2rem;
-        background-color: #19191d;
     }
 
     .card {
@@ -376,10 +373,35 @@
         margin-bottom: 10rem;
     }
 
+    .scrollable-div {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .scrollable-div::-webkit-scrollbar {
+        width: 5px;
+    }
+    .scrollable-div::-webkit-scrollbar-track {
+        background : rgba(179, 179, 179, 0.3);
+        border-radius: 10px;
+    }
+    .scrollable-div::-webkit-scrollbar-thumb {
+        background : rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        box-shadow:  0 0 6px rgba(0, 0, 0, 0.5);
+    }
+
+    tbody {
+
+    }
+
     .custom-table thead tr, .custom-table thead th {
+        position: sticky;
+        top: 0;
         border-top: none;
         border-bottom: none !important;
         color: #fff;
+        background-color: #19191d;
     }
 
     .custom-table tbody th, .custom-table tbody td {

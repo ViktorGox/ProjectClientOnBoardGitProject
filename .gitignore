@@ -1,6 +1,7 @@
 # Default ignored files
 ./server/package.json
-./server/package-lock.json
+./server/.env
+./client/package.json
 /shelf/
 /workspace.xml
 /out/
@@ -19,13 +20,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Runtime data
-.env
 node_modules
 dist
 dist-ssr
 *.local
-package-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -36,5 +35,3 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
-
-
