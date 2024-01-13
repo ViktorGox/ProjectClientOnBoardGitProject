@@ -89,7 +89,7 @@
     }
 
     main {
-        /*background-color: #19191d;*/
+        background-color: #19191d;
         text-align: center;
         margin: 0 auto;
         padding: 0;
