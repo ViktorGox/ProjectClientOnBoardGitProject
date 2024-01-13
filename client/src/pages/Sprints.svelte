@@ -41,7 +41,7 @@
     }
 
     async function addNewSprint() {
-        router("/SprintDetail");
+        router("/SprintDetail/new");
     }
 
 

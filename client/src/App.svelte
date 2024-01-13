@@ -45,7 +45,13 @@
         currentRoute = ctx.pathname;
     });
     router('/SprintDetail', (ctx) => {
-        page = SprintDetail;
+        // Handle the case when it's a new sprint
+        if (ctx.querystring === 'new') {
+            page = SprintDetail;
+            params = { id: 'new' };
+        } else {
+            page = Sprints;
+        }
         currentRoute = ctx.pathname;
     });
     router('/SprintDetail/:id', (ctx) => {
@@ -83,7 +89,7 @@
     }
 
     main {
-        background-color: #19191d;
+        /*background-color: #19191d;*/
         text-align: center;
         margin: 0 auto;
         padding: 0;
