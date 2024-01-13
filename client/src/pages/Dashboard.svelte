@@ -17,11 +17,11 @@
     }
 
     onMount(() => {
-        // Obtén los valores y etiquetas para el gráfico
+        // Get values and labels 
         const valores = dashboardBoxes.map(box => box.value);
         const etiquetas = dashboardBoxes.map(box => box.title);
 
-        // Datos para el gráfico
+        // Data for graphs
         const data = {
             labels: etiquetas,
             datasets: [{
@@ -49,7 +49,7 @@
             }]
         };
 
-        // Configuración del gráfico
+        // Graph configuration
         const opciones = {
             responsive: true,
             maintainAspectRatio: false,
@@ -60,10 +60,10 @@
             }
         };
 
-        // Obtén el contexto del lienzo
+        // Get canvas context
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        // Crea el gráfico de dona
+        // create graph
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: data,
@@ -85,7 +85,7 @@
                                 <i class={box.icon} style="font-size: 60px;"></i>
                             </div>
                             <div class="col-8">
-                                <p class="fw-bold mb-0 fs-4">{box.value} seconds</p>
+                                <p class="fw-bold mb-0 fs-4">{box.value}</p>
                                 <p>{box.title}</p>
                             </div>
                         </div>
