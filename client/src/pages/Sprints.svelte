@@ -75,10 +75,26 @@
 {/if}
 
 <style>
+    :root {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
 
     main {
+        background-color: #19191d;
+        text-align: center;
+        margin: 0 auto;
+        padding: 0;
+
         display: flex;
         justify-content: space-evenly;
+    }
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow: auto;
+        max-height: 70vh;
     }
 
     ul {
@@ -92,8 +108,15 @@
     li {
         display: flex;
         gap: 1rem;
+        background-color: #2e2e36;
+        padding: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
-
+    li:hover {
+        background-color: #45454f;
+    }
     img {
         border: 1px solid gray;
         padding: 0.4rem;
@@ -106,6 +129,7 @@
         overflow: auto;
         max-height: 20vh;
         text-align: left;
+        color: #fff;
     }
 
 </style>

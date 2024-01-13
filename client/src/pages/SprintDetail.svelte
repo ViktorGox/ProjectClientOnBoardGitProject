@@ -124,11 +124,11 @@
         <section id="informationPreview">
             <img src={logoImageLink} alt={logoImageLink}>
 
-            <label>Title: {title}</label>
+            <label class="lighter-text">Title: {title}</label>
 
             <div>
-                <label>Start Date: {startDate} </label>
-                <label>Due Date: {dueDate}</label>
+                <label class="lighter-text">Start Date: {startDate} </label>
+                <label class="lighter-text">Due Date: {dueDate}</label>
             </div>
 
         </section>
@@ -163,7 +163,7 @@
         width: 100%;
         border-radius: 10px;
 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Adjust the shadow properties */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
     }
 
     div {
@@ -171,7 +171,10 @@
         justify-content: space-between;
         gap: 0.5rem;
     }
-
+    label.lighter-text {
+        color: #b3b3b3;
+        font-weight: lighter;
+    }
     textarea {
         flex: 1;
         width: 96%;
