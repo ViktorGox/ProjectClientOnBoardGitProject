@@ -194,7 +194,7 @@ my productivity for the team, ensuring active participation in our upcoming meet
 
 
 
-### Meeting 10 - 12.12.2023 8:30
+### Meeting 10 - 12.12.2023 9:30
 
 In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. We
 then worked on the main page and also with database.
@@ -212,7 +212,7 @@ Aleks
 Yaroslav
 Ferhat
 
-### Meeting 11 - 12.12.2023 8:30
+### Meeting 11 - 14.12.2023 10:00
 
 In this meeting, discussed what we did on the tasks that we assigned to each other and what else needs to be done. 
 We then worked on the main page.
@@ -226,4 +226,7 @@ Viktor
 Justin
 Aleks
 Yaroslav
-Ferhat(late)
+Ferhat
+
+### Meeting 12 - 19.12.2023
+### Meeting 13 - 21.12.2023
