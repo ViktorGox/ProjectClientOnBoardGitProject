@@ -17,16 +17,16 @@
     }
 
     onMount(() => {
-        // Get values and labels 
-        const valores = dashboardBoxes.map(box => box.value);
-        const etiquetas = dashboardBoxes.map(box => box.title);
+        // Get values and labels for the chart
+        const values = dashboardBoxes.map(box => box.value);
+        const labels = dashboardBoxes.map(box => box.title);
 
-        // Data for graphs
+        // Chart data
         const data = {
-            labels: etiquetas,
+            labels: labels,
             datasets: [{
-                label: 'Valores',
-                data: valores,
+                label: 'Values',
+                data: values,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -49,25 +49,23 @@
             }]
         };
 
-        // Graph configuration
-        const opciones = {
+        // Chart configuration
+        const options = {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+
             }
         };
 
         // Get canvas context
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        // create graph
+        // Create doughnut chart
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: data,
-            options: opciones
+            options: options
         });
     });
 </script>
@@ -85,7 +83,7 @@
                                 <i class={box.icon} style="font-size: 60px;"></i>
                             </div>
                             <div class="col-8">
-                                <p class="fw-bold mb-0 fs-4">{box.value}</p>
+                                <p class="fw-bold mb-0 fs-4">{box.value} seconds</p>
                                 <p>{box.title}</p>
                             </div>
                         </div>
@@ -113,7 +111,7 @@
         background: #BDBDBD;
         box-sizing: border-box;
         text-align: center;
-        margin-bottom: 20px; /* Espacio entre el contenido y el gráfico */
+        margin-bottom: 20px; /* Space between content and chart */
     }
 
     .dash-box {
