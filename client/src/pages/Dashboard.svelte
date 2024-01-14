@@ -3,7 +3,7 @@
     import Chart from 'chart.js/auto';
 
     let dashboardBoxes = [
-        { icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 4000 },
+        { icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400 },
         { icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52 },
         { icon: 'bi bi-list-ul text-primary', title: 'Tests', value: 410 },
         { icon: 'bi bi-check-square text-success', title: 'Passed', value: 60 },
@@ -53,8 +53,13 @@
         const options = {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-
+            scales: {},
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white' // Cambia el color de las etiquetas del gráfico a blanco
+                    }
+                }
             }
         };
 
@@ -71,19 +76,19 @@
 </script>
 
 <main>
-    <div class="dash">
+    <div class="dash dark-bg text-light">
         <button on:click={goBack} class="btn btn-success btn-lg">Return</button>
 
         <div class="container px-4 py-5" id="icon-grid">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
-                        <div class="row dash-box">
+                        <div class="row dash-box dark-bg text-light">
                             <div class="col-4">
                                 <i class={box.icon} style="font-size: 60px;"></i>
                             </div>
                             <div class="col-8">
-                                <p class="fw-bold mb-0 fs-4">{box.value} seconds</p>
+                                <p class="fw-bold mb-0 fs-4">{box.value}</p>
                                 <p>{box.title}</p>
                             </div>
                         </div>
@@ -93,7 +98,7 @@
         </div>
     </div>
 
-    <section class="graph">
+    <section class="graph dark-bg">
         <div class="chart-container">
             <canvas id="myChart"></canvas>
         </div>
@@ -102,26 +107,25 @@
 
 <style>
     .chart-container {
-        width: 70%;
-        max-width: 500px;
+        width: 100%; /* Utiliza el 100% del ancho disponible */
+        max-width: 500px; /* Limita el ancho máximo a 500px si es necesario */
         margin: 0 auto;
     }
 
     .dash {
-        background: #BDBDBD;
+        background: #1a1a1a; /* Fondo oscuro */
         box-sizing: border-box;
         text-align: center;
-        margin-bottom: 20px; /* Space between content and chart */
+        /* Se eliminó el margen inferior para quitar el espacio blanco en el medio */
     }
 
     .dash-box {
         margin-left: -6px;
         margin-right: -6px;
-        border: 1px solid rgb(232, 232, 232);
+        border: 1px solid rgb(42, 42, 42); /* Bordes oscuros */
         padding: 3px;
-        background: #BDBDBD;
-        background: rgb(255, 255, 255);
-        color: #413f3f;
+        background: #1a1a1a; /* Fondo oscuro */
+        color: #ffffff; /* Texto blanco */
         width: 400px;
         height: 100px;
         border-radius: 20px;
@@ -136,5 +140,14 @@
         align-items: center;
         display: flex;
         justify-content: center;
+    }
+
+    .dark-bg {
+        background-color: #1a1a1a; /* Fondo oscuro */
+        color: #ffffff; /* Texto blanco */
+    }
+
+    .text-light {
+        color: #ffffff; /* Texto blanco */
     }
 </style>
