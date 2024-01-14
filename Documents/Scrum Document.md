@@ -310,7 +310,9 @@ Ferhat
 
 ### Meeting 15 - 11.01.2024 16:00
 
-...
+In our 15th meeting, we continued making significant progress on both the front-end and the remaining backend tasks. 
+The changes made during the holiday period were reviewed, and the team acknowledged the improvements in frontend design with a more cohesive and shared style across pages.
+However, it was noted that there was still work to be done to enhance the overall user-friendliness and appearance.
 
 Present:
 Ruben
