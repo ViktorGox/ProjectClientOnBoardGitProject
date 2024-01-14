@@ -123,13 +123,37 @@ Absent:
 Justin, at work
 Ferhat
 
-### Meeting 8 - 2.12.2023
+### Meeting 8 - 5.12.2023
 
-In the meeting, we created GitLab issues and discussed them to ensure everyone shares the same understanding.
+During this meeting we discussed our progress and problems that each member encountered during the work.
+Main problem was that we all focused on creating basic frontend for all the pages we have planned. As a result, big 
+components were created that were only suitable for one specific page and could not be used for other pages, which
+lead to lots of code duplications. For backend, we kept working on the database and built some starting routers for
+the server. We were only about to switch to basic js instead of typescript, so some system files and js files
+which had typescript code should be changed in the backend.
 
 Present:
 Jafar
+Justin (Scrum master)
+Ferhat
+Viktor
+Aleks
+Ruben
+Yaroslav
+
+Absent:
 Justin
+
+### Meeting 9 - 7.12.2023
+
+At this meeting some of our members shared that they have problems using bootstrap library for frontend styling. So
+we grouped up and helped each other to understand some basic principles of bootstrap. It made code with bootstrap 
+readable for everyone and we moved on splitting our tasks. About three main pages were ready, and we had to finalize 
+database design to know if we were missing something.
+
+Present:
+Jafar
+Justin (Scrum master)
 Ferhat
 Viktor
 Aleks
@@ -176,7 +200,13 @@ design and added more information about the meetings.
 During Sprint 1, I focused on enhancing requirements, overseeing our GitLab repository, and assisting in creating documentation. While my teammates didn't specifically mention it in their retrospectives, I personally acknowledged the importance of communication for successful collaboration. The obstacles we encountered, like conflicting schedules and gaps in communication, have encouraged me to be more adaptable, proactively organize meetings, and actively engage in the upcoming stages. The favorable results we achieved, such as finished documentation and a well-organized codebase, inspire me to continually strive for improvement in the next sprint.
 
 ### Yaroslav
-[]
+
+At the start of this project, I was working on our project documentation. I build several diagrams
+for our frontend pages, also added functional and non-functional requirements. I was not present on our first class, as
+I got a flu, but still I worked actively during this sprint. During our meetings I explained that we had a
+misunderstanding in our requirements and functional design, which lead whole team to study materials about requirements
+and then we built them correctly.
+
 ### Justin
 
 At the project's start, I worked on documents, like the code of conduct, and tweaked some requirements. In this sprint, I took on designing the database, which you can find in the functional design. It was tricky because everyone had different ideas.
@@ -230,5 +260,63 @@ Aleks
 Yaroslav
 Ferhat
 
-### Meeting 12 - 19.12.2023
-### Meeting 13 - 21.12.2023
+### Meeting 12 - 19.12.2023 10:00
+
+During meeting 12 we discussed front and back end implementations that we have achieved. Viktor generified work
+for requests for backend and frontend. We still saw that this generic solution has to be improved to be used with ease.
+We progressed with test overview, sprint overview, and test edit pages on frontend. For backend we had some issues
+with the database, so we decided to fix it and keep working on database controllers.
+
+Present:
+Ruben
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav(Scrum Master)
+Ferhat
+
+### Meeting 13 - 21.12.2023 16:00
+
+Generic functions were improved, so it was possible to use them for controllers in the backend. Our team had troubles
+with frontend pages design, as each page had its own style. We had to work on creating similar design for all pages, 
+so that style would not be that different. We started building nice controllers/routers for backend and
+frontend, using generic functionality for fetch requests. We split tasks to be done for holidays.
+
+Present:
+Ruben
+Jafar
+Viktor
+Justin
+Aleks
+Yaroslav(Scrum Master)
+Ferhat
+
+### Meeting 14 - 09.01.2024 16:00
+
+This was our first meeting after holidays. We analysed what has been done. Frontend design was more shared between the
+pages, there were still a lot of work to do to make it look better and make it more user-friendly. For backend, most
+parts were done, some members had issues with the database queries, so we fixed them together. We decided to focus
+on optimizing our code further.
+
+Present:
+Ruben
+Jafar
+Viktor
+Justin
+Aleks(Scrum Master)
+Yaroslav
+Ferhat
+
+### Meeting 15 - 11.01.2024 16:00
+
+...
+
+Present:
+Ruben
+Jafar
+Viktor
+Justin
+Aleks(Scrum Master)
+Yaroslav
+Ferhat
