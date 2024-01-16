@@ -6,8 +6,8 @@
     let fullTests = [];
     let statuses;
     let modules;
-    let showStatusMenu = false;
     let reverseTests = false;
+    let weightOrder = false;
     let searchBarValue;
 
     let statusOptions = [];
@@ -52,12 +52,16 @@
                     fetchRequest('testmodule/test/' + element.testid)
                         .then(result => {
                             element.modules = result.map(item => item.moduleid);
+                            element.weight = Math.floor(Math.random() * 25) + 1;
                             return element;
                         })
                 );
                 return Promise.all(modulePromises);
             })
             .then(updatedTests => {
+                if (weightOrder) {
+                    updatedTests.sort((a, b) => a.weight - b.weight)
+                }
                 if (reverseTests) {
                     updatedTests.reverse();
                 }
@@ -106,27 +110,25 @@
         })
     }
 
-    function onStatusClick() {
-        showStatusMenu = !showStatusMenu;
-    }
-
     function reverseTestArray() {
         reverseTests = !reverseTests;
         fullTests = fullTests.reverse()
-        console.log(fullTests);
     }
 
-    //TODO: Center text in pop up window.
-    //TODO: Move status openable window to below status column.
+    function orderByWeight() {
+        weightOrder = !weightOrder;
+        if(weightOrder) {
+            fullTests = fullTests.sort((a, b) => a.weight - b.weight)
+        }
+        else {
+            fullTests = fullTests.sort((a, b) => a.testid - b.testid)
+        }
+    }
 
     let checkboxes = [];
 
     function checkAll() {
         checkboxes.forEach((checked) => true);
-    }
-
-    function check() {
-
     }
 
     function getImage(test) {
@@ -177,7 +179,8 @@
             <div class="row align-items-center">
                 <div class="col">
                     <div class="input-group input-group-flush input-group-merge input-group-reverse">
-                        <span class="search-icon input-group-text"><i class="bi bi-search" on:click={fullFetch}></i></span>
+                        <span class="search-icon input-group-text"><i class="bi bi-search"
+                                                                      on:click={fullFetch}></i></span>
                         <input class="form-control list-search" type="text" placeholder="Search"
                                bind:value={searchBarValue} on:input={fullFetch}>
                     </div>
@@ -185,8 +188,10 @@
                 <div class="col-auto">
                     <div class="dropdown">
 
-                        <button class="btn filter" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                            <i class="bi bi-sliders"></i>  Filter <span class="badge bg-primary ms-1">{statusOptions.length}</span>
+                        <button class="btn filter" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="bi bi-sliders"></i> Filter <span
+                                class="badge bg-primary ms-1">{statusOptions.length}</span>
                         </button>
 
                         <form name="formSelect" class="dropdown-menu dropdown-menu-end dropdown-menu-card mt-2">
@@ -208,7 +213,10 @@
                                             <div class="col-auto">
                                                 {#if statuses}
                                                     {#each Array.from(statuses.entries()) as [statusName, statusId]}
-                                                        <label class="form-check-label" for="{statusId}"><input id={statusId} type="checkbox" class="form-check-input" on:change={(e) => handleCheckboxChange(e, statusId)}>{statusName}</label>
+                                                        <label class="form-check-label" for="{statusId}"><input
+                                                                id={statusId} type="checkbox" class="form-check-input"
+                                                                on:change={(e) => handleCheckboxChange(e, statusId)}>{statusName}
+                                                        </label>
                                                     {/each}
                                                 {/if}
                                             </div>
@@ -253,16 +261,19 @@
                             <span class="checkmark"></span>
                         </label>
                     </th>
-                    <th scope="col" class="order-header" on:click={toggleRotate}  on:click={reverseTestArray}>
+                    <th scope="col" class="order-header" on:click={toggleRotate} on:click={reverseTestArray}>
                         ID
-                        <img  class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
-                              alt="order button image">
+                        <img class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
+                             alt="order button image">
                     </th>
                     <th scope="col">Title</th>
                     <th scope="col">Modules</th>
                     <th scope="col">Status</th>
                     <th scope="col">Assignee</th>
-                    <th scope="col">Weight</th>
+                    <th scope="col" on:click={toggleRotate} on:click={orderByWeight}>Weight
+                        <img class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
+                             alt="order button image">
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -271,7 +282,8 @@
                         <tr>
                             <th scope="row">
                                 <label class="control">
-                                    <input type="checkbox" on:change={() => console.log('checked')}> <!--change console.log to function that collects this test-->
+                                    <input type="checkbox" on:change={() => console.log('checked')}>
+                                    <!--change console.log to function that collects this test-->
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -283,7 +295,8 @@
                                 {#if test.modules && modules}
                                     {#each test.modules as module}
                                         <div class="module" class:chosen-module={moduleOptions.includes(module)}>
-                                            <div class="text-container" on:click|stopPropagation={() => {handleModuleClick(module)}}>
+                                            <div class="text-container"
+                                                 on:click|stopPropagation={() => {handleModuleClick(module)}}>
                                                 {modules.get(module)}
                                             </div>
                                         </div>
@@ -297,7 +310,7 @@
                             <td>
                                 {test.userid}
                             </td>
-                            <td>233</td>
+                            <td>{test.weight}</td>
                         </tr>
                         <tr class="spacer">
                             <td colspan="100"></td>
@@ -334,7 +347,7 @@
         border: none;
     }
 
-    .dropdown-menu h6{
+    .dropdown-menu h6 {
         font-size: 1.2rem;
     }
 
@@ -351,7 +364,7 @@
         color: white;
     }
 
-    .search-icon{
+    .search-icon {
         border: none;
         cursor: pointer;
         background-color: #2e2e36;
@@ -381,14 +394,16 @@
     .scrollable-div::-webkit-scrollbar {
         width: 5px;
     }
+
     .scrollable-div::-webkit-scrollbar-track {
-        background : rgba(179, 179, 179, 0.3);
+        background: rgba(179, 179, 179, 0.3);
         border-radius: 10px;
     }
+
     .scrollable-div::-webkit-scrollbar-thumb {
-        background : rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.2);
         border-radius: 10px;
-        box-shadow:  0 0 6px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
     }
 
     tbody {
@@ -472,9 +487,12 @@
     a {
         -webkit-transition: .3s all ease;
         -o-transition: .3s all ease;
-        transition: .3s all ease; }
+        transition: .3s all ease;
+    }
+
     a, a:hover {
-        text-decoration: none !important; }
+        text-decoration: none !important;
+    }
 
     input[type='checkbox'] {
         height: 1rem;
