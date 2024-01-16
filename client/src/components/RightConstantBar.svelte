@@ -16,13 +16,16 @@
 
 <style>
     .right-constant-bar {
-        position: relative;
-        top: 5px;
+
+        position: fixed;
+        z-index: 11;
+        top: 66px;
         right: 0;
         height: 100vh;
-        width: 20%;
-        background-color: #f0f0f0;
-        border-left: 1px solid #ccc;
+        width: 15%;
+        color: #ffffff;
+
+        background-color: #25252b;
         overflow-y: auto;
     }
 

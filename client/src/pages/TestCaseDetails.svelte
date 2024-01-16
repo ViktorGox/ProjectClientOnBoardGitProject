@@ -29,10 +29,11 @@
     }
 
     .main-content {
-        width: 70%;
+        margin-top: 80px;
+        margin-right: 15%;
+        width: 50%;
         flex-grow: 1;
         padding: 20px;
-        border-right: 1px solid #ccc;
-
+        color: white;
     }
 </style>

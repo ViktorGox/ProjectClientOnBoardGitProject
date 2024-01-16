@@ -1,11 +1,29 @@
 <script>
-    export let testName;
+    import {onMount} from "svelte";
+    import {fetchRequest, generateQuery} from "../lib/Request.js";
+
+    export let testName, testId;
 
     let testSteps = [
-        { id: 1, name: 'Step 1', weight: 1, completed: true },
-        { id: 2, name: 'Step 2', weight: 2, completed: false },
-        { id: 3, name: 'Step 3', weight: 3, completed: true },
+        {id: 1, name: 'Step 1', weight: 1, completed: true},
+        {id: 2, name: 'Step 2', weight: 2, completed: false},
+        {id: 3, name: 'Step 3', weight: 3, completed: true},
     ];
+
+    async function fetchTestSteps() {
+        const queryProperties = ['testid'];
+        const querySettings = ["Equals"];
+        const queryParams = [testId];
+
+        return await fetchRequest('test/'+'/'+testId);
+    }
+
+    onMount(() => {
+        const pathArray = window.location.pathname.split('/');
+        testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
+      //  testSteps=fetchTestSteps();
+        console.log('test steps' +testSteps);
+    });
 </script>
 
 <div class="test-case-details">
@@ -17,22 +35,22 @@
     <div class="test-steps">
         <table>
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Weight</th>
-                    <th>Completion State</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Weight</th>
+                <th>Completion State</th>
+            </tr>
             </thead>
             <tbody>
-                {#each testSteps as step (step.id)}
-                    <tr>
-                        <td>{step.id}</td>
-                        <td>{step.name}</td>
-                        <td>{step.weight}</td>
-                        <td>{step.completed ? 'Completed' : 'Incomplete'}</td>
-                    </tr>
-                {/each}
+            {#each testSteps as step (step.id)}
+                <tr>
+                    <td>{step.id}</td>
+                    <td>{step.name}</td>
+                    <td>{step.weight}</td>
+                    <td>{step.completed ? 'Completed' : 'Incomplete'}</td>
+                </tr>
+            {/each}
             </tbody>
         </table>
     </div>
