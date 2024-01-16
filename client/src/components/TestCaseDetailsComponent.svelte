@@ -65,6 +65,11 @@
         text-align: left;
     }
 
+    td {
+        color: white;
+
+    }
+
     th {
         background-color: #f2f2f2;
     }
