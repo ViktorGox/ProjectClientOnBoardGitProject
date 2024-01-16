@@ -1,12 +1,26 @@
 <script>
+    import {onMount} from "svelte";
+    import {fetchRequest} from "../lib/Request.js";
+
     export let assigneeName;
     export let assigneeProfilePicture;
     export let dueDate;
+    export let testId;
+    async function fetchData() {
+        const response = await fetchRequest('test/' + testId + '/');
+        console.log(response[0].userid, ' user id');
+        const username = await fetchRequest('users/' + response[0].userid);
+        assigneeName=username[0].email;
+    }
+
+    onMount(async () => {
+        await fetchData();
+    });
 </script>
 
 <div class="right-constant-bar">
     <div class="assignee-info">
-        <img src={assigneeProfilePicture} alt="Assignee Profile Picture" />
+        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>
         <p>{assigneeName}</p>
     </div>
     <div class="due-date">

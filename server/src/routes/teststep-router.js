@@ -3,7 +3,7 @@ import tokenRouter from "./token-router.js";
 import {deleteQuery, getQuery, getTestStepById, postQuery, putQuery} from "../controllers/teststep-controller.js";
 import {isDeveloper} from "../middleware/middlewares.js";
 
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 
 router.get('/', getQuery);

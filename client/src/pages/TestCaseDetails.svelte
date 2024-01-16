@@ -7,17 +7,16 @@
     const currentRoute = router.current;
     const parts = currentRoute.split('/');
     let testId = parts[parts.length - 1];
-    let testName = "Test case name";
 </script>
 
 
 {#if testId}
     <div class="container">
         <div class="main-content">
-            <TestCaseDetailsComponent {testName}/>
+            <TestCaseDetailsComponent {testId}/>
             <CommentsSection/>
         </div>
-        <RightConstantBar/>
+        <RightConstantBar {testId}/>
     </div>
 {:else}
     <p>No test case selected.</p>

@@ -2,32 +2,32 @@
     import {onMount} from "svelte";
     import {fetchRequest, generateQuery} from "../lib/Request.js";
 
-    export let testName, testId;
+    export let testId;
+    let testCaseName;
 
-    let testSteps = [
-        {id: 1, name: 'Step 1', weight: 1, completed: true},
-        {id: 2, name: 'Step 2', weight: 2, completed: false},
-        {id: 3, name: 'Step 3', weight: 3, completed: true},
-    ];
+    let testSteps = [];
 
     async function fetchTestSteps() {
         const queryProperties = ['testid'];
         const querySettings = ["Equals"];
-        const queryParams = [testId];
-
-        return await fetchRequest('test/'+'/'+testId);
+        const response = await fetch('http://localhost:3000/test/' + testId+'/teststeps');
+        testSteps = await response.json();
+        testCaseName= await fetch('http://localhost:3000/test/' + testId+'/');
+        testCaseName = await testCaseName.json();
+        testCaseName= testCaseName[0].name;
+        console.log(testCaseName)
     }
 
-    onMount(() => {
+    onMount(async () => {
         const pathArray = window.location.pathname.split('/');
         testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
-      //  testSteps=fetchTestSteps();
-        console.log('test steps' +testSteps);
+        await fetchTestSteps();
+        console.log(testSteps);
     });
 </script>
 
 <div class="test-case-details">
-    <h1>{testName}</h1>
+    <h1>{testCaseName}</h1>
     <button class="edit-button">Edit</button>
     <div class="header">
 
@@ -43,12 +43,12 @@
             </tr>
             </thead>
             <tbody>
-            {#each testSteps as step (step.id)}
+            {#each testSteps as step (step.stepid)}
                 <tr>
-                    <td>{step.id}</td>
-                    <td>{step.name}</td>
+                    <td>{step.stepid}</td>
+                    <td>{step.title}</td>
                     <td>{step.weight}</td>
-                    <td>{step.completed ? 'Completed' : 'Incomplete'}</td>
+                    <td>{step.completion ? 'Completed' : 'Incomplete'}</td>
                 </tr>
             {/each}
             </tbody>
@@ -89,6 +89,5 @@
     }
 
     th {
-        background-color: #f2f2f2;
     }
 </style>

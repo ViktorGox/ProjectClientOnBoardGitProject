@@ -3,8 +3,7 @@ import * as userController from '../controllers/user-controller.js';
 import {isLoggedIn, isAdmin} from "../middleware/middlewares.js";
 
 const router = express.Router();
-
-router.get("/", isLoggedIn, isAdmin, userController.getAllUsers);
+router.get("/",  userController.getAllUsers);
 router.get("/allUsernames", userController.getAllUsernames);
 router.get("/:userid", isLoggedIn, isAdmin, userController.getUserById);
 router.post("/", isLoggedIn, isAdmin, userController.postUser);
