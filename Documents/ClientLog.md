@@ -91,3 +91,24 @@ Online here in discord?
 During the meeting we showed them what we have so far. Nick noted that they do not want
 per day test counter, which we thought of doing. Gave us an example test case to use
 Gave some feedback on front end.
+
+## Sprint 2
+
+**Nick**: How is it going guys?
+
+**Viktor**: We have done a bunch of work for the back end, its mostly done now. So we will be focusing on front end and connecting them now.
+we have a question actually, since we are goning to send emails for notifications, we need to save the emails. But do you want log in to be with that same email? Or should we also include a username, to be used for log in?
+
+**Randy**: Since Nick is not working today here is an answer: if there are no mayjor co ncerns I would prefer to have the email adres as username also.
+
+**Jafar**: @Nick Happy new year,
+Would it be possible to arrange a meeting either this week or next week?
+Would Tuesday or Thursday be convenient for you?
+
+**Nick**: doe you want this in person or online in teams
+
+**Alex**: In person is preferred
+
+**Nick**: Tuesday is ok someware.  between 11 and 16:00
+
+**Viktor**: We agreed on Tuesday 11:15 in person

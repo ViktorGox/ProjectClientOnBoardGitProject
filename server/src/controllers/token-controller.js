@@ -9,7 +9,7 @@ export async function checkToken(req, res) {
     try {
         const foundUser = await getUser(givenEmail);
         if (!foundUser) {
-            return res.status(404).json({ error: 'Username not found' });
+            return res.status(404).json({ error: 'Email not found' });
         }
 
         const storedPassword = foundUser.password;
@@ -45,10 +45,11 @@ function checkPassword(givenPassword, storedPassword, user, res) {
 }
 
 function createToken(user, res) {
-    jwt.sign({
-        username: user.username,
-        role: user.role
-    }, 'secretKey', { expiresIn: '12h' }, (err, token) => {
+    const payload = {
+        email: user.email,
+        roleid: user.roleid
+    };
+    jwt.sign(payload, 'secretKey', { expiresIn: '12h' }, (err, token) => {
         if (err) {
             return res.status(500).json({ error: 'Token generation failed' });
         } else {

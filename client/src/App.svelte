@@ -8,6 +8,8 @@
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
+    import SprintDetail from "./pages/SprintDetail.svelte";
+    import Sprints from "./pages/Sprints.svelte";
 
     let page;
     let params;
@@ -29,15 +31,31 @@
 
     router('/tests/:id', (ctx) => {
         page = TestCaseDetails;
+        params = ctx.params;
         currentRoute = ctx.pathname;
     });
 
     router('/projects', (ctx) => {
-        page = Projects;
+        page = Sprints;
         currentRoute = ctx.pathname;
     });
     router('/projects/:id', (ctx) => {
         page = Dashboard;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+    router('/SprintDetail', (ctx) => {
+        // Handle the case when it's a new sprint
+        if (ctx.querystring === 'new') {
+            page = SprintDetail;
+            params = { id: 'new' };
+        } else {
+            page = Sprints;
+        }
+        currentRoute = ctx.pathname;
+    });
+    router('/SprintDetail/:id', (ctx) => {
+        page = SprintDetail;
         params = ctx.params;
         currentRoute = ctx.pathname;
     });
@@ -55,7 +73,7 @@
     {:else}
         <Header active={currentRoute}/>
         <div class="main">
-            <Sidebar></Sidebar>
+            <Sidebar active={currentRoute}></Sidebar>
             <div class="page">
                 <svelte:component this={page} {params}/>
             </div>
@@ -71,6 +89,7 @@
     }
 
     main {
+        background-color: #19191d;
         text-align: center;
         margin: 0 auto;
         padding: 0;
@@ -87,5 +106,10 @@
 
     .page {
         width: 85%;
+        margin-left: auto;
+        min-height: 100vh;
+        height: fit-content;
+        padding: 98px 2rem 2rem 2rem;
     }
+
 </style>
