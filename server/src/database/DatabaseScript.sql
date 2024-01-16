@@ -1,3 +1,5 @@
+BEGIN;
+
 DO
 $$
     DECLARE
@@ -13,8 +15,6 @@ $$
     END
 $$;
 
-BEGIN;
-
 CREATE TABLE IF NOT EXISTS userRole
 (
     roleID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -27,6 +27,14 @@ CREATE TABLE IF NOT EXISTS testStatus
     statusID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
     name     character varying(255) NOT NULL,
     PRIMARY KEY (statusID)
+);
+
+CREATE TABLE IF NOT EXISTS Module
+(
+    ModuleID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    Label    character varying(255) NOT NULL,
+    PRIMARY KEY (ModuleID)
+
 );
 
 CREATE TABLE IF NOT EXISTS Users
@@ -48,15 +56,6 @@ CREATE TABLE IF NOT EXISTS Sprint
     PRIMARY KEY (SprintID)
 );
 
-
-CREATE TABLE IF NOT EXISTS SprintUsers
-(
-    SprintID integer NOT NULL,
-    UserID   integer NOT NULL,
-    RoleId   integer Not Null,
-    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS Test
 (
     TestID      SERIAL PRIMARY KEY,
@@ -64,29 +63,26 @@ CREATE TABLE IF NOT EXISTS Test
     UserID      INTEGER               DEFAULT NULL,
     Description VARCHAR(255)          DEFAULT NULL,
     StatusId    INTEGER      NOT NULL DEFAULT 1,
-    lastUpdate  DATE                  DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE)
+    lastUpdate  DATE                  DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE),
+    FOREIGN KEY (UserID) REFERENCES Users (Userid) MATCH SIMPLE
 );
-
 
 CREATE TABLE IF NOT EXISTS Testing
 (
     SprintID integer,
     TestID   integer,
-    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID) ON DELETE CASCADE
+    StatusID integer,
+    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID)  MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (TestID) REFERENCES Test (TestId)  MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE
 );
 
 CREATE TABLE IF NOT EXISTS TestModule
 (
     TestID   integer NOT NULL,
-    ModuleID integer NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Module
-(
-    ModuleID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    Label    character varying(255) NOT NULL,
-    PRIMARY KEY (ModuleID)
-
+    ModuleID integer NOT NULL,
+    FOREIGN KEY (TestID) REFERENCES Test (TestID)  MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (ModuleID) REFERENCES Module (ModuleID)  MATCH SIMPLE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS TestStep
@@ -98,65 +94,28 @@ CREATE TABLE IF NOT EXISTS TestStep
     Description character varying(255) DEFAULT null,
     TestLog     character varying(255) DEFAULT null,
     weight      integer                NOT NULL,
+    completion 		boolean 			NOT NULL DEFAULT FALSE,
     PRIMARY KEY (StepID),
     UNIQUE (TestID, StepNR),
     FOREIGN KEY (TestID) REFERENCES Test (TestID) ON DELETE CASCADE
 );
 
-ALTER TABLE IF EXISTS SprintUsers
-    ADD CONSTRAINT SprintID FOREIGN KEY (SprintID)
-        REFERENCES Sprint (SprintID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+CREATE TABLE IF NOT EXISTS Attachment
+(
+    AttachmentID integer NOT NULL GENERATED ALWAYS AS IDENTITY,
+    path character varying(255) NOT NULL,
+    Primary key (AttachmentID)
+);
 
-
-
-ALTER TABLE IF EXISTS SprintUsers
-    ADD CONSTRAINT UserID FOREIGN KEY (UserID)
-        REFERENCES Users (UserID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS Test
-    ADD CONSTRAINT UserID FOREIGN KEY (UserID)
-        REFERENCES Users (UserID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS Testing
-    ADD CONSTRAINT SprintID FOREIGN KEY (SprintID)
-        REFERENCES Sprint (SprintID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS Testing
-    ADD CONSTRAINT TestID FOREIGN KEY (TestID)
-        REFERENCES Test (TestID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+CREATE TABLE IF NOT EXISTS TestStepAttachemnt
+(
+    StepID   integer NOT NULL,
+    AttachmentID integer NOT NULL,
+    FOREIGN KEY (StepID) REFERENCES TestStep (StepID)  MATCH SIMPLE,
+    FOREIGN KEY (AttachmentID) REFERENCES Attachment (AttachmentID)  MATCH SIMPLE
+);
 
 END;
-
-ALTER TABLE IF EXISTS Testmodule
-    ADD CONSTRAINT testID FOREIGN KEY (TestID)
-        REFERENCES Test (TestID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-ALTER TABLE IF EXISTS Testmodule
-    ADD CONSTRAINT ModuleID FOREIGN KEY (ModuleID)
-        REFERENCES Module (ModuleID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
 
 insert into userRole (name)
 values ('admin'),
@@ -267,15 +226,3 @@ values (1, 4),
        (4, 2),
        (4, 2),
        (4, 2);
-
-insert into sprintusers (sprintid, userid, roleid)
-values (1, 1, 1),
-       (1, 2, 2),
-       (1, 3, 3),
-       (2, 1, 3),
-       (2, 2, 2),
-       (2, 3, 1),
-       (3, 2, 3),
-       (3, 3, 3),
-       (4, 1, 1),
-       (4, 3, 3);
