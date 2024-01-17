@@ -91,7 +91,6 @@ CREATE TABLE IF NOT EXISTS TestStep
     TestID      integer                NOT NULL,
     StepNR      integer                NOT NULL,
     Title       character varying(255) NOT NULL,
-    Description character varying(255) DEFAULT null,
     TestLog     character varying(255) DEFAULT null,
     weight      integer                NOT NULL,
     completion 		boolean 			NOT NULL DEFAULT FALSE,
@@ -148,19 +147,19 @@ values ('Check if first and last name are added correctly', 3, 'first and last n
        ('Confirm confirmation works correctly', 1, 'confirmation shall work', 1),
        ('Verify all data is shown', 1, 'data stored shall be shown', 1);
 
-insert into teststep (testid, stepnr, title, description, testlog, weight)
-values (1, 1, 'Open users page', 'Elaborational description', 'nothing to note', 1),
-       (1, 2, 'Check first name', 'Elaborational description 2', 'nothing to note 2', 1),
-       (1, 3, 'Check last name', 'Elaborational description 3', 'nothing to note 3', 12),
-       (2, 1, 'Open log in page', 'Press on log in text in header', 'emptyness', 0),
-       (2, 2, 'Enter incorrect password', 'enter random characters', 'impossible to guess', 1),
-       (2, 3, 'Press Log in Button', 'Press Log in Button', 'pressed log in button', 20),
-       (2, 4, 'Check error text says incorrect log in', 'Error text shall not say incorrect password', 'chill', 1),
-       (3, 1, 'Open log in page', 'Press on log in text in header', 'some log', 1),
-       (3, 2, 'Enter incorrect username', 'Enter random characters, impossible to guess', 'some log 2', 2),
-       (3, 3, 'Press log in Button', 'Press log in Button', 'pressed log in button', 3),
-       (3, 4, 'Check erro text', 'Error text shall say incorrect log in', 'And nothing else matters', 4),
-       (4, 1, 'Check background is not red', 'It shall never be red', '', 4);
+insert into teststep (testid, stepnr, title, testlog, weight)
+values (1, 1, 'Open users page', 'nothing to note', 1),
+       (1, 2, 'Check first name', 'nothing to note 2', 1),
+       (1, 3, 'Check last name', 'nothing to note 3', 12),
+       (2, 1, 'Open log in page', 'emptyness', 0),
+       (2, 2, 'Enter incorrect password', 'impossible to guess', 1),
+       (2, 3, 'Press Log in Button', 'pressed log in button', 20),
+       (2, 4, 'Check error text says incorrect log in', 'chill', 1),
+       (3, 1, 'Open log in page', 'some log', 1),
+       (3, 2, 'Enter incorrect username', 'some log 2', 2),
+       (3, 3, 'Press log in Button', 'pressed log in button', 3),
+       (3, 4, 'Check erro text', 'And nothing else matters', 4),
+       (4, 1, 'Check background is not red', '', 4);
 
 
 INSERT INTO sprint (title, startdate, duedate)
