@@ -11,7 +11,8 @@
     let sprintid = params ? params.sprintid : null;
 
     let email = $userStore ? $userStore.email : null;
-    let role = $userStore ? $userStore.roles : 'user';
+    let role = $userStore ? $userStore.roleid : 'user';
+    console.log("role: ",role);
 
     let sprints = [];
     let fullTests = [];
@@ -209,22 +210,21 @@
                         Start Date: {sprint.startdate} <br>
                         Due Date: {sprint.duedate} <br>
                     </p>
-                    <!--{#if role === 'admin' || role === 'developer'}-->
+                    {#if role == 1 || role == 2}
                         <JafarButton text="Edit" clickHandler={() => {editSprintWithId(sprint.sprintid)}}/>
-                    <!--{/if}-->
-                    <!--{#if role === 'admin' || role === 'developer'}-->
+                    {/if}
+                    {#if role == 1 || role == 2}
                     <JafarButton text="Delete" clickHandler={() => deleteSprintWithId(sprint.sprintid)}/>
-                    <!--{/if}-->
-<!--                    <JafarButton text="Delete" clickHandler={async () => {await deleteSprintWithId(sprint.sprintid)}}/>-->
+                    {/if}
                     <JafarButton text="View Details" clickHandler={() => navigateToProject(sprint.sprintid)}/>
                     <JafarButton text="Create Report" clickHandler={() => generateReport(sprint.sprintid)} />
                 </li>
             {/each}
 
         </ul>
-        <!--{#if role === 'admin' || role === 'developer'}-->
+        {#if role == 1 || role == 2}
         <JafarButton text="Add Sprint" clickHandler={addNewSprint}/>
-        <!--{/if}-->
+        {/if}
     </main>
 {/if}
 

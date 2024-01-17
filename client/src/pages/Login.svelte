@@ -14,6 +14,7 @@
         const response = await submit();
         if (response) {
             if (response.token) {
+                $tokenStore.token = response.token;
                 router('/testCases');
             }
         }
@@ -23,14 +24,17 @@
     let password = '';
     let incorrectCredentials = false;
 
+
     async function submit() {
         try {
             return fetchRequest('token', 'POST', {email, password}).then((result) => {
+                console.log(result);
                 incorrectCredentials = false;
                 $tokenStore.token = result.token;
-                $userStore = result.user;
+                $userStore=result.user;
+                console.log($userStore);
                 return result;
-                console.log(result);
+
             }).catch((e) => {
                 incorrectCredentials = true;
                 console.log(e);
@@ -42,6 +46,7 @@
 
         }
     }
+
 </script>
 
 <body>
