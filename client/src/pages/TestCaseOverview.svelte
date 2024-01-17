@@ -2,6 +2,7 @@
     import {fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import {onMount} from 'svelte';
+    import router from "page";
 
     let fullTests = [];
     let statuses;
@@ -12,19 +13,6 @@
 
     let statusOptions = [];
     let moduleOptions = [];
-
-    function handleCheckboxChange(event, option) {
-        if (!event.target.checked) {
-            const index = statusOptions.indexOf(option);
-            if (index !== -1) {
-                statusOptions.splice(index, 1);
-                statusOptions = statusOptions;
-            }
-        } else {
-            statusOptions = [...statusOptions, option];
-        }
-        fullFetch();
-    }
 
     function handleModuleClick(module) {
         const index = moduleOptions.indexOf(module);
@@ -112,64 +100,36 @@
 
     function reverseTestArray() {
         reverseTests = !reverseTests;
-        fullTests = fullTests.reverse()
+        if (reverseTests) {
+            fullTests = fullTests.sort((a, b) => a.testid - b.testid);
+        } else {
+            fullTests = fullTests.sort((a, b) => b.testid - a.testid);
+        }
     }
 
     function orderByWeight() {
         weightOrder = !weightOrder;
-        if(weightOrder) {
-            fullTests = fullTests.sort((a, b) => a.weight - b.weight)
-        }
-        else {
-            fullTests = fullTests.sort((a, b) => a.testid - b.testid)
-        }
-    }
-
-    let checkboxes = [];
-
-    function checkAll() {
-        checkboxes.forEach((checked) => true);
-    }
-
-    function getImage(test) {
-        let imgSrc = "./src/assets/TestStatusIcons/Awaiting.png";
-
-        if (!statuses || !test.statusid) return;
-        if (test.statusid === statuses.get('Blocker')) {
-            imgSrc = "./src/assets/TestStatusIcons/Blocker.png"
-        } else if (test.statusid === statuses.get('Passed')) {
-            imgSrc = "./src/assets/TestStatusIcons/Successful.png"
-        } else if (test.statusid === statuses.get('Bug')) {
-            imgSrc = "./src/assets/TestStatusIcons/Bug.png"
+        if (weightOrder) {
+            fullTests = fullTests.sort((a, b) => a.weight - b.weight);
         } else {
-            imgSrc = "./src/assets/TestStatusIcons/Awaiting.png"
+            fullTests = fullTests.sort((a, b) => b.weight - a.weight);
         }
-
-        return imgSrc;
     }
 
-    function getStatus(test) {
-        let status;
+    let isFlippedID = false;
+    let isFlippedWeight = false;
 
-        if (!statuses || !test.statusid) return;
-        if (test.statusid === statuses.get('Blocker')) {
-            status = 'Blocker';
-        } else if (test.statusid === statuses.get('Passed')) {
-            status = 'Passed';
-        } else if (test.statusid === statuses.get('Bug')) {
-            status = 'Bug';
-        } else {
-            status = 'To do';
-        }
-
-        return status;
-    }
-
-    let isFlipped = false;
-
-    const toggleRotate = () => {
-        isFlipped = !isFlipped;
+    const toggleRotateID = () => {
+        isFlippedID = !isFlippedID;
     };
+
+    const toggleRotateWeight = () => {
+        isFlippedWeight = !isFlippedWeight;
+    };
+
+    const openTestPage = (id) => {
+        router("/tests/" + id);
+    }
 </script>
 
 <div class="background">
@@ -186,49 +146,9 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <div class="dropdown">
-
-                        <button class="btn filter" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
-                                aria-haspopup="true" aria-expanded="false">
-                            <i class="bi bi-sliders"></i> Filter <span
-                                class="badge bg-primary ms-1">{statusOptions.length}</span>
-                        </button>
-
-                        <form name="formSelect" class="dropdown-menu dropdown-menu-end dropdown-menu-card mt-2">
-
-                            <div class="card-header">
-                                <h4 class="">Filters</h4>
-                            </div>
-
-                            <div class="card-body">
-
-                                <div class="list-group list-group-flush mt-n4 mb-4">
-                                    <div class="list-group-item">
-                                        <div class="row">
-                                            <div class="col">
-
-                                                <h6>Status</h6>
-
-                                            </div>
-                                            <div class="col-auto">
-                                                {#if statuses}
-                                                    {#each Array.from(statuses.entries()) as [statusName, statusId]}
-                                                        <label class="form-check-label" for="{statusId}"><input
-                                                                id={statusId} type="checkbox" class="form-check-input"
-                                                                on:change={(e) => handleCheckboxChange(e, statusId)}>{statusName}
-                                                        </label>
-                                                    {/each}
-                                                {/if}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </form>
-
-                    </div>
+                    <button class="btn btn-primary">
+                        Add Test
+                    </button>
                 </div>
             </div>
         </div>
@@ -255,23 +175,16 @@
             <table class="table custom-table">
                 <thead>
                 <tr>
-                    <th scope="col">
-                        <label class="control">
-                            <input type="checkbox" on:click={checkAll}>
-                            <span class="checkmark"></span>
-                        </label>
-                    </th>
-                    <th scope="col" class="order-header" on:click={toggleRotate} on:click={reverseTestArray}>
+                    <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
                         ID
-                        <img class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
+                        <img class:rotated={isFlippedID} class="small-img" src="./src/assets/arrow-down-white.png"
                              alt="order button image">
                     </th>
                     <th scope="col">Title</th>
                     <th scope="col">Modules</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Assignee</th>
-                    <th scope="col" on:click={toggleRotate} on:click={orderByWeight}>Weight
-                        <img class:rotated={isFlipped} class="small-img" src="./src/assets/arrow-down-white.png"
+                    <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
+                        <img class:rotated={isFlippedWeight} class="small-img" src="./src/assets/arrow-down-white.png"
                              alt="order button image">
                     </th>
                 </tr>
@@ -279,15 +192,8 @@
                 <tbody>
                 {#if fullTests || statuses}
                     {#each fullTests as test, i}
-                        <tr>
-                            <th scope="row">
-                                <label class="control">
-                                    <input type="checkbox" on:change={() => console.log('checked')}>
-                                    <!--change console.log to function that collects this test-->
-                                    <span class="checkmark"></span>
-                                </label>
-                            </th>
-                            <td>
+                        <tr class="test-page" on:click={openTestPage(test.testid)}>
+                            <td scope="row">
                                 {test.testid}
                             </td>
                             <td><a href="/tests/{test.testid}">{test.name}</a></td>
@@ -302,10 +208,6 @@
                                         </div>
                                     {/each}
                                 {/if}
-                            </td>
-                            <td>
-                                <img src={getImage(test)} alt="status of test case">
-                                {getStatus(test)}
                             </td>
                             <td>
                                 {test.userid}
@@ -555,7 +457,7 @@
         transition: transform 0.3s ease;
     }
 
-    .order-header {
+    .order-header, .test-page {
         cursor: pointer;
     }
 
