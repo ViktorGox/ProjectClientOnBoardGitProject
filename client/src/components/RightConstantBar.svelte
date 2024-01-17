@@ -9,8 +9,10 @@
     async function fetchData() {
         const response = await fetchRequest('test/' + testId + '/');
         console.log(response[0].userid, ' user id');
-        const username = await fetchRequest('users/' + response[0].userid);
-        assigneeName=username[0].email;
+        let username = await fetchRequest('users/allUsernames');
+        username = await username.usernames[(response[0].userid-1)];
+        console.log(username);
+        assigneeName=username.email;
     }
 
     onMount(async () => {
@@ -20,8 +22,8 @@
 
 <div class="right-constant-bar">
     <div class="assignee-info">
-        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>
-        <p>{assigneeName}</p>
+<!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
+        <p> Assignee: {assigneeName}</p>
     </div>
     <div class="due-date">
         <p>Due Date: {dueDate}</p>
@@ -44,9 +46,10 @@
     }
 
     .assignee-info {
-        display: flex;
         align-items: center;
         margin-bottom: 20px;
+        text-align: center;
+
     }
 
     img {
