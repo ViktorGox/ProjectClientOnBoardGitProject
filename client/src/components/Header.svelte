@@ -1,7 +1,12 @@
 <script lang="ts">
+    import { blockerStore } from '../stores/blockerStore';
+
     export let active;
     let loggedIn = true; // Set to true or false based on your logic
     let showUserMenu = false; // Flag to control user menu visibility
+    $: AmountOfBlockers = $blockerStore.blockers.length;
+
+
 </script>
 
 <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg justify-content-between">
@@ -20,10 +25,9 @@
     <ul class="nav">
         {#if loggedIn}
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="notifications" class="nav-link">
                     <i class="bi bi-bell d-inline-block mx-2"></i>
-                    Notifications
-                </a>
+                    Notifications {AmountOfBlockers > 0 ? `(${AmountOfBlockers})` : ''}                </a>
             </li>
             <li
                     class="nav-item user-menu"
@@ -39,9 +43,7 @@
                             on:mouseleave={() => showUserMenu = false}
                     >
                         <!-- Dropdown content goes here -->
-                        <a href="#" class="user-menu-item">Profile</a>
-                        <a href="#" class="user-menu-item">Settings</a>
-                        <a href="#" class="user-menu-item">Logout</a>
+                        <a href="/" class="user-menu-item">Logout</a>
                     </div>
                 {/if}
             </li>

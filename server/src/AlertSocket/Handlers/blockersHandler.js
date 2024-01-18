@@ -11,7 +11,7 @@ export async function sendBlockers() {
         });
 
         let data = await response.json();
-        data = data.filter(test => test.statusid === 3 || test.statusid === 4);
+        data = data.filter(test => test.statusid === 3);
 
         const clients = Array.from(subscribedSockets);
         clients.forEach(client => {
