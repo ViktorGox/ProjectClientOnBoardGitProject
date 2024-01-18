@@ -11,7 +11,9 @@
     let sprintid = params ? params.sprintid : null;
 
     let email = $userStore ? $userStore.email : null;
-    let role = $userStore ? $userStore.roles : null;
+    let role = $userStore ? $userStore.roleid : 'user';
+    console.log("role: ",role);
+
     let sprints = [];
     let fullTests = [];
     let statuses;
@@ -22,10 +24,36 @@
     let statusOptions = [];
     let moduleOptions = [];
     let selectedSprintId=null;
+    let deletingSprintId = null;
+    let showDeleteConfirmation = false;
     async function getSprints() {
         const response = await fetch(`http://localhost:3000/sprint`);
         sprints = await response.json();
         console.log(sprints);
+    }
+    async function deleteSprintWithId(sprintid) {
+        deletingSprintId = sprintid;
+        showDeleteConfirmation = true;
+    }
+    async function confirmDeleteSprint() {
+        const response = await fetch(`http://localhost:3000/sprint/${deletingSprintId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${$tokenStore}` // Replace 'token' with the actual token
+            }
+        });
+        const result = await response.json();
+        console.log(result);
+        await getSprints();
+
+        // Reset variables after deletion
+        deletingSprintId = null;
+        showDeleteConfirmation = false;
+    }
+    function cancelDeleteSprint() {
+        deletingSprintId = null;
+        showDeleteConfirmation = false;
     }
 
     function fullFetch() {
@@ -101,18 +129,6 @@
         router(`/SprintDetail/${sprintid}`);
     }
 
-    async function deleteSprintWithId(sprintid) {
-        const response = await fetch(`http://localhost:3000/sprint/${sprintid}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}` // Replace 'token' with the actual token
-            }
-        });
-        const result = await response.json();
-        console.log(result);
-        await getSprints();
-    }
 
     async function addNewSprint() {
         router("/SprintDetail/new");
@@ -174,6 +190,15 @@
 
 
 </script>
+{#if showDeleteConfirmation}
+    <div class="overlay">
+        <div class="delete-confirmation">
+            <p>Are you sure you want to delete this sprint?</p>
+            <button class="confirm-btn" on:click={confirmDeleteSprint}>Yes</button>
+            <button class="cancel-btn" on:click={cancelDeleteSprint}>No</button>
+        </div>
+    </div>
+{/if}
 
 {#if sprints.length > 0}
     <main>
@@ -182,22 +207,24 @@
             {#each sprints as sprint}
                 <li>
                     <p> Name: {sprint.title} <br>
-
                         Start Date: {sprint.startdate} <br>
                         Due Date: {sprint.duedate} <br>
                     </p>
-                    <JafarButton text="Edit" clickHandler={() => {editSprintWithId(sprint.sprintid)}}/>
-                    <JafarButton text="Delete" clickHandler={async () => {await deleteSprintWithId(sprint.sprintid)}}/>
+                    {#if role == 1 || role == 2}
+                        <JafarButton text="Edit" clickHandler={() => {editSprintWithId(sprint.sprintid)}}/>
+                    {/if}
+                    {#if role == 1 || role == 2}
+                    <JafarButton text="Delete" clickHandler={() => deleteSprintWithId(sprint.sprintid)}/>
+                    {/if}
                     <JafarButton text="View Details" clickHandler={() => navigateToProject(sprint.sprintid)}/>
                     <JafarButton text="Create Report" clickHandler={() => generateReport(sprint.sprintid)} />
-
                 </li>
-
             {/each}
+
         </ul>
-
+        {#if role == 1 || role == 2}
         <JafarButton text="Add Sprint" clickHandler={addNewSprint}/>
-
+        {/if}
     </main>
 {/if}
 
@@ -258,5 +285,58 @@
         text-align: left;
         color: #fff;
     }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
 
+    .delete-confirmation {
+        background-color: #19191d;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 300px;
+    }
+
+    .delete-confirmation p {
+        margin-bottom: 1rem;
+    }
+
+    .confirm-btn,
+    .cancel-btn {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .confirm-btn {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+    .confirm-btn:hover {
+        background-color: #45a049;
+    }
+
+    .cancel-btn {
+        background-color: #f44336;
+        color: #fff;
+    }
+
+    .cancel-btn:hover {
+        background-color: #d32f2f;
+    }
 </style>

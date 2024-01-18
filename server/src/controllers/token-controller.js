@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import {performSimpleOneQuery} from "./generic.js";
+import { performSimpleOneQuery} from "./generic.js";
+
+
+
 
 export async function checkToken(req, res) {
     const givenEmail = req.body.email;
@@ -54,7 +57,7 @@ function createToken(user, res) {
             return res.status(500).json({ error: 'Token generation failed' });
         } else {
             console.log("Token generation is successful");
-            return res.status(200).json({ token });
+            return res.status(200).json({ token, user: jwt.decode(token) });
         }
     });
 }
