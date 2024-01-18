@@ -68,7 +68,6 @@ export async function login(email, password, socket) {
 
             if (data.response === "blockers") {
                 blockerStore.set({blockers: data.data});
-                console.log(get(blockerStore).blockers);
             } else {
                 console.log(data);
             }
