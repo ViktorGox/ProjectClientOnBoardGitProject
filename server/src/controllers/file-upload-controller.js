@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 import * as path from 'path';
 
-console.log('Resolved Path:', path.join(__dirname, '../../uploads'));
+// console.log('Resolved Path:', path.join(__dirname, '../../uploads'));
 
 export async function handleFileUpload(req, res) {
     if (!req.file) {
@@ -19,10 +19,9 @@ export async function handleFileUpload(req, res) {
         path: req.file.filename
     }
 
-    const response = await performInnerQuery('attachment', 'post', {}, body)
-    console.log(response);
+    await performInnerQuery('attachment', 'post', {}, body)
 
-    res.status(statusCodes.OK).json();
+    res.status(statusCodes.CREATED).json({message: "File added."});
 }
 
 export async function getAttachment(req, res) {
