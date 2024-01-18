@@ -28,30 +28,41 @@ export const lessOrEqualTo = 'LessEqual';
  * @returns {Promise<Response<any, Record<string, any>, number>>}
  */
 export async function fetchRequest(path, fetchType = 'GET', data = {}) {
+    // Request settings handling.
     const headers = {};
-
     path = url + path;
 
-    headers['Content-Type'] = 'application/json'
-
     if (token) {
-        headers.Authorization = `Bearer ${token}`
+        headers.Authorization = `Bearer ${token}`;
     }
+
     const options = {
         method: fetchType,
-        headers: headers
+        headers: headers,
+        body: null, // Initialize body to null
     };
 
-    if (fetchType !== 'GET' && fetchType !== 'DELETE') {
+    if (data instanceof FormData) {
+        options.body = data;
+    } else if (fetchType !== 'GET' && fetchType !== 'DELETE') {
+        headers['Content-Type'] = 'application/json';
         options.body = JSON.stringify(data);
     }
 
+    // The request.
     const response = await fetch(path, options);
+
+    // Handing response.
 
     let responseData;
 
     if (fetchType !== 'DELETE') {
-        responseData = await response.json();
+        const contentLength = response.headers.get('Content-Length');
+        if(contentLength !== '0') {
+            responseData = await response.json();
+        } else {
+            responseData = '';
+        }
     }
 
     if (response.ok) {
@@ -87,7 +98,7 @@ export async function fetchRequest(path, fetchType = 'GET', data = {}) {
  * @returns {string} the query with the path.
  */
 export function generateQuery(path, queryProperties, queryParams, querySettings, columnSelection = '') {
-    if(!Array.isArray(queryParams)) {
+    if (!Array.isArray(queryParams)) {
         throw new Error('QueryParams is not an array. If you only have one property, put it in a []')
     }
     if (queryProperties || queryParams) {
@@ -106,7 +117,7 @@ export function generateQuery(path, queryProperties, queryParams, querySettings,
         query += querySettings[i];
         query += '&';
     }
-    if(!isBlank(columnSelection)) {
+    if (!isBlank(columnSelection)) {
         query += 'columns=' + columnSelection;
     }
     return query;

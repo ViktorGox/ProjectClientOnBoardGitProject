@@ -22,7 +22,6 @@
         } else {
             moduleOptions = [...moduleOptions, module];
         }
-        console.log('modules: ', moduleOptions);
         fullFetch();
     }
 
@@ -54,7 +53,6 @@
                     updatedTests.reverse();
                 }
                 fullTests = updatedTests;
-                console.log(fullTests);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
