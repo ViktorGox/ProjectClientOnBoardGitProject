@@ -20,7 +20,7 @@ export async function handleAuthentication(parsedData, ws) {
 
         if (data.token) {
             wsTokenMap.set(ws, data.token);
-            ws.send(JSON.stringify({ response: "success", message: "Authentication successful" }));
+            ws.send(JSON.stringify({ response: "login_success", message: "Authentication successful" }));
             console.log(`user connected as ${parsedData.email} `);
         } else {
             ws.send(JSON.stringify({ response: "error", message: "Authentication failed" }));

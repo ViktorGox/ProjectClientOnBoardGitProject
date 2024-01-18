@@ -5,11 +5,13 @@
     import {tokenStore} from "../src/stores/TokenStore.js";
 
     import Sidebar from "./components/Sidebar.svelte";
+    import Projects from "./pages/Sprints.svelte";
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
     import SprintDetail from "./pages/SprintDetail.svelte";
     import Sprints from "./pages/Sprints.svelte";
+    import Notifications from "./pages/Notifications.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -27,6 +29,10 @@
     });
     router('/header', (ctx) => {
         page = Header;
+        currentRoute = ctx.pathname;
+    });
+    router('/notifications', (ctx) => {
+        page = Notifications;
         currentRoute = ctx.pathname;
     });
 

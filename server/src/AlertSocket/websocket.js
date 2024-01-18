@@ -1,7 +1,8 @@
 import { WebSocketServer } from 'ws';
 import { handleAuthentication } from './handlers/authenticationHandler.js';
 import { handleSubscription } from './handlers/subscriptionHandler.js';
-import { sendBlockers } from './handlers/blockersHandler.js';
+
+import {sendPushmessage,sendinternalPushmessage} from "./Handlers/PushMessage.js";
 
 const wss = new WebSocketServer({ port: 3001 });
 export const wsTokenMap = new Map();
@@ -18,13 +19,18 @@ wss.on('connection', (ws) => {
                     await handleAuthentication(parsedData, ws);
                     break;
                 case "subscribe":
-                    handleSubscription(parsedData, ws);
+                     handleSubscription(parsedData, ws);
                     break;
-                default:
+
+                case "notify":
+                    await sendPushmessage(parsedData,ws)
+                    break;
+
+                    default:
                     ws.send(JSON.stringify({ response: "error", message: "Invalid command" }));
             }
         } catch (error) {
-            ws.send(JSON.stringify({ response: "error", message: "Invalid JSON format" }));
+            ws.send(JSON.stringify({ response: "error", message: error }));
         }
     });
 
@@ -36,4 +42,5 @@ wss.on('connection', (ws) => {
     });
 });
 
-setInterval(sendBlockers, 10000); // Send blockers every 10 seconds
+setInterval(sendinternalPushmessage,3000)
+
