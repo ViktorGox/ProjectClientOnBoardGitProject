@@ -1,8 +1,8 @@
 import express from 'express';
 import multer from "multer";
-import {get, handleFileUpload} from "../controllers/file-upload-controller.js";
+import {getAttachment, handleFileUpload} from "../controllers/file-upload-controller.js";
 
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -16,6 +16,5 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/', upload.single('file'), handleFileUpload);
-router.get('/:attachmentid', get);
-
+router.get('/', getAttachment);
 export default router;
