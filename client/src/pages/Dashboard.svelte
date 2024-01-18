@@ -13,23 +13,26 @@
         { icon: 'bi bi-x-circle text-danger', title: 'Failed', value: 88 },
         { icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: 100 },
         { icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97 },
+        { icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0 }
     ];
+    let totalTests = 500;
+    let chartValues = [totalTests, 480, 460, 400, 390, 365, 300, 290, 248, 230, 180, 130, 60, 0];
+    let chartLabels = ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '13', '14'];
+    let chartCanvas;
 
     function goBack() {
         window.history.back();
     }
 
     onMount(() => {
-        // Get values and labels for the chart
-        const values = dashboardBoxes.map(box => box.value);
-        const labels = dashboardBoxes.map(box => box.title);
+        const doughnutValues = dashboardBoxes.map(box => box.value);
+        const doughnutLabels = dashboardBoxes.map(box => box.title);
 
-        // Chart data
-        const data = {
-            labels: labels,
+        const doughnutData = {
+            labels: doughnutLabels,
             datasets: [{
                 label: 'Values',
-                data: values,
+                data: doughnutValues,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -52,28 +55,39 @@
             }]
         };
 
-        // Chart configuration
-        const options = {
+        const doughnutOptions = {
             responsive: true,
             maintainAspectRatio: false,
             scales: {},
             plugins: {
                 legend: {
+                    position: 'left',
                     labels: {
-                        color: 'white' // Cambia el color de las etiquetas del gráfico a blanco
+                        color: 'white'
                     }
                 }
             }
         };
 
-        // Get canvas context
-        const ctx = document.getElementById('myChart').getContext('2d');
-
-        // Create doughnut chart
-        const myChart = new Chart(ctx, {
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        const doughnutChart = new Chart(doughnutCtx, {
             type: 'doughnut',
-            data: data,
-            options: options
+            data: doughnutData,
+            options: doughnutOptions
+        });
+
+        const lineCtx = chartCanvas.getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Tests to do',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: chartValues
+                }]
+            }
         });
     });
 
@@ -287,6 +301,7 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
+            <h1 style="margin-top: -20px;" >SPRINT EXAMPLE</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
@@ -305,9 +320,14 @@
         </div>
     </div>
 
-    <section class="graph dark-bg">
+    <section class="graph dark-bg" >
         <div class="chart-container">
-            <canvas id="myChart"></canvas>
+            <div class="chart-column" style="margin-top: -60px;">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+            <div class="chart-column" style="margin-top: -30px;">
+                <canvas bind:this={chartCanvas} id="lineChart"></canvas>
+            </div>
         </div>
     </section>
 
@@ -482,48 +502,41 @@
 
 <style>
     .chart-container {
-        width: 100%; /* Utiliza el 100% del ancho disponible */
-        max-width: 500px; /* Limita el ancho máximo a 500px si es necesario */
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 900px;
         margin: 0 auto;
     }
-
+    .chart-column {
+        width: 48%;
+    }
     .dash {
-        background: #1a1a1a; /* Fondo oscuro */
+        background: #1a1a1a;
         box-sizing: border-box;
         text-align: center;
-        /* Se eliminó el margen inferior para quitar el espacio blanco en el medio */
+
     }
 
     .dash-box {
         margin-left: -6px;
         margin-right: -6px;
-        border: 1px solid rgb(42, 42, 42); /* Bordes oscuros */
+        border: 1px solid rgb(42, 42, 42);
         padding: 3px;
-        background: #1a1a1a; /* Fondo oscuro */
-        color: #ffffff; /* Texto blanco */
+        background: #1a1a1a;
+        color: #ffffff;
         width: 400px;
         height: 100px;
         border-radius: 20px;
     }
 
-    .button {
-        cursor: pointer;
-        background-color: #B7C100;
-        border-radius: 5px;
-        border: black solid 2px;
-        padding: 7px 20px 7px 20px;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-    }
-
     .dark-bg {
-        background-color: #1a1a1a; /* Fondo oscuro */
-        color: #ffffff; /* Texto blanco */
+        background-color: #1a1a1a;
+        color: #ffffff;
     }
 
     .text-light {
-        color: #ffffff; /* Texto blanco */
+        color: #ffffff;
     }
 
     /*TEST TABLE SECTION*/
