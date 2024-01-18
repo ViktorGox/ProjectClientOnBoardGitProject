@@ -22,3 +22,6 @@ export async function putQuery(req, res) {
 export function getTestById(req, res) {
     return notFoundReq(req, res);
 }
+export function putTestById(req, res) {
+    return notFoundReq(req, res);
+}

@@ -14,7 +14,7 @@
     <div class="container">
         <div class="main-content">
             <TestCaseDetailsComponent {testId}/>
-            <CommentsSection/>
+            <CommentsSection {testId}/>
         </div>
         <RightConstantBar {testId}/>
     </div>
