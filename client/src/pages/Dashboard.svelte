@@ -13,23 +13,26 @@
         { icon: 'bi bi-x-circle text-danger', title: 'Failed', value: 88 },
         { icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: 100 },
         { icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97 },
+        { icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0 }
     ];
+    let totalTests = 500;
+    let chartValues = [totalTests, 480, 460, 400, 390, 365, 300, 290, 248, 230, 180, 130, 60, 0];
+    let chartLabels = ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '13', '14'];
+    let chartCanvas;
 
     function goBack() {
         window.history.back();
     }
 
     onMount(() => {
-        // Get values and labels for the chart
-        const values = dashboardBoxes.map(box => box.value);
-        const labels = dashboardBoxes.map(box => box.title);
+        const doughnutValues = dashboardBoxes.map(box => box.value);
+        const doughnutLabels = dashboardBoxes.map(box => box.title);
 
-        // Chart data
-        const data = {
-            labels: labels,
+        const doughnutData = {
+            labels: doughnutLabels,
             datasets: [{
                 label: 'Values',
-                data: values,
+                data: doughnutValues,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -52,28 +55,39 @@
             }]
         };
 
-        // Chart configuration
-        const options = {
+        const doughnutOptions = {
             responsive: true,
             maintainAspectRatio: false,
             scales: {},
             plugins: {
                 legend: {
+                    position: 'left',
                     labels: {
-                        color: 'white' // Cambia el color de las etiquetas del gráfico a blanco
+                        color: 'white'
                     }
                 }
             }
         };
 
-        // Get canvas context
-        const ctx = document.getElementById('myChart').getContext('2d');
-
-        // Create doughnut chart
-        const myChart = new Chart(ctx, {
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        const doughnutChart = new Chart(doughnutCtx, {
             type: 'doughnut',
-            data: data,
-            options: options
+            data: doughnutData,
+            options: doughnutOptions
+        });
+
+        const lineCtx = chartCanvas.getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Tests to do',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: chartValues
+                }]
+            }
         });
     });
 
@@ -287,6 +301,7 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
+            <h1 style="margin-top: -20px;" >SPRINT EXAMPLE</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
@@ -305,9 +320,14 @@
         </div>
     </div>
 
-    <section class="graph dark-bg">
+    <section class="graph dark-bg" >
         <div class="chart-container">
-            <canvas id="myChart"></canvas>
+            <div class="chart-column" style="margin-top: -60px;">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+            <div class="chart-column">
+                <canvas bind:this={chartCanvas} id="lineChart"></canvas>
+            </div>
         </div>
     </section>
 
