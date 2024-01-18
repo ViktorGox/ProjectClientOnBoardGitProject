@@ -4,14 +4,24 @@
     import {onMount} from 'svelte'
     import {fetchRequest} from "../lib/Request.js";
     import {tokenStore} from "../stores/TokenStore.js";
+    import {connect,login} from "../lib/clientSocket.js";
 
     let user = {};
+    let socket;
+
     onMount(async () => {
-        userStore.subscribe(value => user = value);
+        try {
+            socket = await connect();
+            userStore.subscribe(value => user = value);
+        } catch (error) {
+            console.error("WebSocket connection failed:", error);
+        }
     });
 
     const handleSubmit = async () => {
         const response = await submit();
+        await login(email, password, socket)
+
         if (response) {
             if (response.token) {
                 $tokenStore.token = response.token;

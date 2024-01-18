@@ -10,6 +10,7 @@
     import Login from "./pages/Login.svelte";
     import SprintDetail from "./pages/SprintDetail.svelte";
     import Sprints from "./pages/Sprints.svelte";
+    import Notifications from "./pages/Notifications.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -27,6 +28,10 @@
     });
     router('/header', (ctx) => {
         page = Header;
+        currentRoute = ctx.pathname;
+    });
+    router('/notifications', (ctx) => {
+        page = Notifications;
         currentRoute = ctx.pathname;
     });
 
@@ -63,6 +68,9 @@
 
     router.start();
 </script>
+<svelte:head>
+    <title>{"Regressor"}</title>
+</svelte:head>
 
 <main>
     <!--{#if !token}-->
@@ -78,7 +86,7 @@
         <Header active={currentRoute}/>
         <div class="main">
             <Sidebar active={currentRoute}></Sidebar>
-            <div class="page">
+            <div class="page" style=" {currentRoute === undefined ? '' : !currentRoute.includes('/tests') ? '' : 'padding: 1px 0 2rem 1rem'}">
                 <svelte:component this={page} {params}/>
             </div>
         </div>

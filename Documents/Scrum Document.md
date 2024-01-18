@@ -162,9 +162,7 @@ meeting on saturday where we finalized the documentation, I made the technical
 design and added more information about the meetings.
 
 ### Aleks
-
-During Sprint 1, I focused on enhancing requirements, overseeing our GitLab repository, and assisting in creating documentation. While my teammates didn't specifically mention it in their retrospectives, I personally acknowledged the importance of communication for successful collaboration. The obstacles we encountered, like conflicting schedules and gaps in communication, have encouraged me to be more adaptable, proactively organize meetings, and actively engage in the upcoming stages. The favorable results we achieved, such as finished documentation and a well-organized codebase, inspire me to continually strive for improvement in the next sprint.
-
+[]
 ### Yaroslav
 
 At the start of this project, I was working on our project documentation. I build several diagrams

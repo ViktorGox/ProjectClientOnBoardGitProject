@@ -43,7 +43,7 @@
             </tr>
             </thead>
             <tbody>
-            {#each testSteps as step (step.stepid)}
+            {#each testSteps as step (step.stepnr)}
                 <tr>
                     <td>{step.stepid}</td>
                     <td>{step.title}</td>
