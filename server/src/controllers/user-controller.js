@@ -1,6 +1,5 @@
 import statusCodes from "http-status-codes";
 import {badRequestOnly, notFoundReq, performSimpleOneQuery} from "./generic.js";
-import {performQuery} from "../database/database.js";
 import bcrypt from "bcrypt";
 
 export function getAllUsers(req, res) {
@@ -8,10 +7,13 @@ export function getAllUsers(req, res) {
 }
 
 export function getAllUsernames(req, res) {
-    performQuery('SELECT email FROM users')
-        .then(data => {
-            return res.status(200).json({usernames: data});
-        })
+    req.query.columns = 'email,userid'
+    return badRequestOnly(req, res);
+}
+
+export function getUsername(req,res) {
+    req.query.columns = 'email'
+    return badRequestOnly(req, res);
 }
 
 export function getUserById(req, res) {
