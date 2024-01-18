@@ -13,15 +13,23 @@
         test = await fetchRequest('test/' + testId + '/');
         test=test[0];
         console.log(test);
-        username = await fetchRequest('users/allUsernames');
-        users=username.usernames;
+        users = await fetchRequest('users/allUsernames');
+
         console.log(users);
-        username = await username.usernames[(test.userid-1)];
-        assigneeName=username.email;
+        assigneeName=users.find(user => user.userid === test.userid).email;
+
+        username = await username.users[(test.userid-1)];
+        // assigneeName=username.email;
     }
     function changeAssignee() {
         // Handle the change in test status here
         console.log("Selected status:", test.userid);
+        const body ={
+            userid: (test.userid),
+        };
+        console.log(JSON.stringify(body));
+        assigneeName=users.find(user => user.userid === test.userid).email;
+        const response = fetchRequest('test/'+testId,'PUT', body)
     }
     onMount(async () => {
         await fetchData();
