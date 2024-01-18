@@ -325,7 +325,7 @@
             <div class="chart-column" style="margin-top: -60px;">
                 <canvas id="doughnutChart"></canvas>
             </div>
-            <div class="chart-column">
+            <div class="chart-column" style="margin-top: -30px;">
                 <canvas bind:this={chartCanvas} id="lineChart"></canvas>
             </div>
         </div>
@@ -502,48 +502,41 @@
 
 <style>
     .chart-container {
-        width: 100%; /* Utiliza el 100% del ancho disponible */
-        max-width: 500px; /* Limita el ancho máximo a 500px si es necesario */
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 900px;
         margin: 0 auto;
     }
-
+    .chart-column {
+        width: 48%;
+    }
     .dash {
-        background: #1a1a1a; /* Fondo oscuro */
+        background: #1a1a1a;
         box-sizing: border-box;
         text-align: center;
-        /* Se eliminó el margen inferior para quitar el espacio blanco en el medio */
+
     }
 
     .dash-box {
         margin-left: -6px;
         margin-right: -6px;
-        border: 1px solid rgb(42, 42, 42); /* Bordes oscuros */
+        border: 1px solid rgb(42, 42, 42);
         padding: 3px;
-        background: #1a1a1a; /* Fondo oscuro */
-        color: #ffffff; /* Texto blanco */
+        background: #1a1a1a;
+        color: #ffffff;
         width: 400px;
         height: 100px;
         border-radius: 20px;
     }
 
-    .button {
-        cursor: pointer;
-        background-color: #B7C100;
-        border-radius: 5px;
-        border: black solid 2px;
-        padding: 7px 20px 7px 20px;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-    }
-
     .dark-bg {
-        background-color: #1a1a1a; /* Fondo oscuro */
-        color: #ffffff; /* Texto blanco */
+        background-color: #1a1a1a;
+        color: #ffffff;
     }
 
     .text-light {
-        color: #ffffff; /* Texto blanco */
+        color: #ffffff;
     }
 
     /*TEST TABLE SECTION*/
