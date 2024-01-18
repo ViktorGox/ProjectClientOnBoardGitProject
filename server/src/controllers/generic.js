@@ -457,13 +457,15 @@ export async function badRequestOnly(req, res) {
  * error handling, and you want to return a 404 when nothing is found.
  */
 export async function notFoundReq(req, res) {
-    return await performQueryFromReq(req).then((response) => {
-        if (response.error) {
-            return res.status(statusCodes.BAD_REQUEST).json(response);
+    if (req.method.toLowerCase() !== 'get') {
+        const oldMethod = req.method;
+        req.method = 'get'
+
+        const result = await performQueryFromReq(req);
+        if (result.length === 0) {
+            return res.status(statusCodes.NOT_FOUND).json({error: "Nothing was found."});
         }
-        if (response.length === 0) {
-            return res.status(statusCodes.NOT_FOUND).json(response);
-        }
-        return res.status(statusCodes.OK).json(response);
-    });
+        req.method = oldMethod;
+    }
+    return await badRequestOnly(req, res);
 }
