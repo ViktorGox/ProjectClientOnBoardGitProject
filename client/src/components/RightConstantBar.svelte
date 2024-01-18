@@ -6,15 +6,23 @@
     export let assigneeProfilePicture;
     export let dueDate;
     export let testId;
+    let users=[];
+    let username;
+    let test={};
     async function fetchData() {
-        const response = await fetchRequest('test/' + testId + '/');
-        console.log(response[0].userid, ' user id');
-        let username = await fetchRequest('users/allUsernames');
-        username = await username.usernames[(response[0].userid-1)];
-        console.log(username);
+        test = await fetchRequest('test/' + testId + '/');
+        test=test[0];
+        console.log(test);
+        username = await fetchRequest('users/allUsernames');
+        users=username.usernames;
+        console.log(users);
+        username = await username.usernames[(test.userid-1)];
         assigneeName=username.email;
     }
-
+    function changeAssignee() {
+        // Handle the change in test status here
+        console.log("Selected status:", test.userid);
+    }
     onMount(async () => {
         await fetchData();
     });
@@ -24,6 +32,14 @@
     <div class="assignee-info">
 <!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
         <p> Assignee: {assigneeName}</p>
+        <select bind:value={test.userid} on:change={changeAssignee}
+                class="form-select form-select-sm bg-dark">
+            {#each users as {email,userid}}
+                <option value="{userid}">
+                    {email}
+                </option>
+            {/each}
+        </select>
     </div>
     <div class="due-date">
         <p>Due Date: {dueDate}</p>
@@ -61,5 +77,21 @@
 
     .due-date {
         text-align: center;
+    }
+    .form-select-sm {
+        /*width: 60%;*/
+        cursor: pointer;
+        border: none;
+        background-color: #2e2e36 !important;
+        color: #b3b3b3;
+    }
+
+    .form-select-sm:hover {
+        background-color: #45454f !important;
+        color: white;
+    }
+
+    .form-select-sm:focus {
+        box-shadow: none;
     }
 </style>

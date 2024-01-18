@@ -1,5 +1,40 @@
 <script>
+    import {fetchRequest} from "../lib/Request.js";
+export let testId,stepId;
     export let comments = [];
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const image = (formData.get('image'));
+        // const requestFileBody={
+        //     file: image
+        // }
+        const requestCommentBody ={
+            testlog: formData.get('comment'),
+        };
+        const text = JSON.stringify(requestCommentBody);
+        console.log(image);
+        try {
+            const imageResponse = await fetchRequest('/test/'+testId+'/teststeps/', {
+                method: 'POST',
+                body: image,
+            });
+            const textResponse= await fetchRequest('/test/'+testId+'/teststeps/'+stepId , {
+                method:'PUT',
+                body: text,
+            });
+
+            if (imageResponse.ok&&textResponse.ok) {
+                console.log('Comment submitted successfully');
+            } else {
+                // Handle error
+                console.error('Failed to submit comment');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 </script>
 
 <div class="comments-section">
@@ -18,9 +53,9 @@
             </li>
         {/each}
     </ul>
-    <form>
-        <textarea placeholder="Add a comment..."></textarea>
-        <input type="file" accept="image/*" />
+    <form on:submit={handleSubmit}>
+        <textarea name="comment" placeholder="Add a comment..."></textarea>
+        <input type="file" accept="image/*" name="image" />
         <button type="submit">Submit</button>
     </form>
 </div>
