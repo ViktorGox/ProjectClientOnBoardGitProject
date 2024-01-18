@@ -5,7 +5,6 @@
     import {tokenStore} from "../src/stores/TokenStore.js";
 
     import Sidebar from "./components/Sidebar.svelte";
-    import Projects from "./pages/Sprints.svelte";
     import Dashboard from "./pages/Dashboard.svelte";
     import TestCaseDetails from "./pages/TestCaseDetails.svelte";
     import Login from "./pages/Login.svelte";
@@ -69,6 +68,9 @@
 
     router.start();
 </script>
+<svelte:head>
+    <title>{"Regressor"}</title>
+</svelte:head>
 
 <main>
     <!--{#if !token}-->

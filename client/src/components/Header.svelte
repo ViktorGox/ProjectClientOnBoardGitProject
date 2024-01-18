@@ -1,10 +1,15 @@
-<script lang="ts">
+<script>
     import { blockerStore } from '../stores/blockerStore';
-
+    import userStore from "../stores/userStore.js";
     export let active;
-    let loggedIn = true; // Set to true or false based on your logic
+
+
+
+    $: loggedIn = true; // Set to true or false based on your logic
     let showUserMenu = false; // Flag to control user menu visibility
     $: AmountOfBlockers = $blockerStore.blockers.length;
+    $: email = $userStore.email;
+
 
 
 </script>
@@ -35,7 +40,7 @@
             >
                 <a class="nav-link">
                     <i class="bi bi-person d-inline-block mx-2"></i>
-                    User
+                    {email}
                 </a>
                 {#if showUserMenu}
                     <div
