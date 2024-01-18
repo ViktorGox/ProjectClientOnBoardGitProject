@@ -84,7 +84,7 @@
         <Header active={currentRoute}/>
         <div class="main">
             <Sidebar active={currentRoute}></Sidebar>
-            <div class="page">
+            <div class="page" style=" {currentRoute === undefined ? '' : !currentRoute.includes('/tests') ? '' : 'padding: 1px 0 2rem 1rem'}">
                 <svelte:component this={page} {params}/>
             </div>
         </div>
