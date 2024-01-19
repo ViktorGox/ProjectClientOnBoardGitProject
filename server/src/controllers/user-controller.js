@@ -2,10 +2,15 @@ import statusCodes from "http-status-codes";
 import {badRequestOnly, notFoundReq, performSimpleOneQuery} from "./generic.js";
 import bcrypt from "bcrypt";
 
+
+
+
 export function getAllUsers(req, res) {
     return badRequestOnly(req, res);
 }
-
+export function editUserByUserId(req, res) {
+    return badRequestOnly(req, res);
+}
 export function getAllUsernames(req, res) {
     req.query.columns = 'email,userid'
     return badRequestOnly(req, res);

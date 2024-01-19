@@ -11,6 +11,7 @@
     import SprintDetail from "./pages/SprintDetail.svelte";
     import Sprints from "./pages/Sprints.svelte";
     import Notifications from "./pages/Notifications.svelte";
+    import AccountManager from "./pages/AccountManager.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -51,7 +52,6 @@
         currentRoute = ctx.pathname;
     });
     router('/SprintDetail', (ctx) => {
-        // Handle the case when it's a new sprint
         if (ctx.querystring === 'new') {
             page = SprintDetail;
             params = {id: 'new'};
@@ -65,11 +65,16 @@
         params = ctx.params;
         currentRoute = ctx.pathname;
     });
+    router('/account', (ctx) => {
+        page = AccountManager;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
 
     router.start();
 </script>
 <svelte:head>
-    <title>{"Regressor"}</title>
+    <title>{"Scorion Regression test management"}</title>
 </svelte:head>
 
 <main>

@@ -50,7 +50,8 @@ function checkPassword(givenPassword, storedPassword, user, res) {
 function createToken(user, res) {
     const payload = {
         email: user.email,
-        roleid: user.roleid
+        roleid: user.roleid,
+        role: user.role
     };
     jwt.sign(payload, 'secretKey', { expiresIn: '12h' }, (err, token) => {
         if (err) {

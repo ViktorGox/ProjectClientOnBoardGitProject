@@ -42,7 +42,6 @@
                 incorrectCredentials = false;
                 $tokenStore.token = result.token;
                 $userStore=result.user;
-                console.log($userStore);
                 return result;
 
             }).catch((e) => {

@@ -1,4 +1,5 @@
 <script>
+    import userStore from "../stores/userStore.js";
     import SideMenuButton from "./SideMenuButton.svelte";
     import VerticalButtonMenu from "./containers/VerticalButtonMenu.svelte";
 
@@ -37,6 +38,18 @@
                 </div>
             </a>
         </li>
+        {#if $userStore.role === 'admin'}
+            <li>
+                <a href="/account" class="nav-link" class:active={active === '/account'}>
+                    <div class="row menu-row">
+                    <span class="menu-icon">
+                       <i class="bi bi-view-list"></i>
+                    </span>
+                        Users and Roles
+                    </div>
+                </a>
+            </li>
+        {/if}
     </ul>
 </div>
 

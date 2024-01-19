@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS Users
     Email    character varying(255) NOT NULL UNIQUE,
     RoleID   integer                NOT NULL,
     Password character varying(255) NOT NULL,
+    Role     character varying(255) NOT NULL,
     PRIMARY KEY (UserID),
     FOREIGN KEY (RoleID) REFERENCES userRole (RoleID) ON DELETE CASCADE
 );
@@ -115,10 +116,12 @@ values ('admin'),
        ('developer'),
        ('tester');
 
-INSERT INTO Users (email, RoleID, password)
-VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC'),
-       ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS'),
-       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy');
+INSERT INTO Users (email, RoleID, password, role)
+VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC', 'admin'),
+       ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS', 'developer'),
+       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester'),
+       ('tester2', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester');
+
 
 insert into module (label)
 values ('LogIn Page'),
