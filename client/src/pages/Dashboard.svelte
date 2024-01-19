@@ -16,6 +16,12 @@
         { icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97 },
         { icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0 }
     ];
+
+    export let params;
+    let sprintid = params ? params.id : null;
+    sprintid --; 
+
+    //VALUES
     let totalTests = 500;
     let chartValues = [totalTests, 480, 460, 400, 390, 365, 300, 290, 248, 230, 180, 130, 60, 0];
     let chartLabels = ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '13', '14'];
@@ -97,7 +103,7 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
-            <h1 style="margin-top: -20px;" >SPRINT EXAMPLE</h1>
+            <h1 style="margin-top: -20px;" >SPRINT {sprintid}</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">

@@ -1,5 +1,4 @@
 import express from "express";
-//import morgan from 'morgan';
 import cors from 'cors';
 import * as fs from "fs";
 
@@ -14,11 +13,9 @@ import testModuleRouter from "./routes/test-module-router.js";
 
 const port = 3000;
 const app = express();
-const morganFormat = ':method :url :status :res[content-length] - :response-time ms';
 
 app.use(cors());
 app.use(express.json());
-// app.use(morgan(morganFormat));
 
 app.use('/token', tokenRouter);
 app.use('/users', userRouter);
@@ -27,8 +24,6 @@ app.use('/status', statusRouter);
 app.use('/module', moduleRouter)
 app.use('/testmodule', testModuleRouter)
 app.use('/sprint', sprintRouter);
-
-
 
 const sqlFile = fs.readFileSync('../server/src/database/DatabaseScript.sql', 'utf8');
 void performQuery(sqlFile);

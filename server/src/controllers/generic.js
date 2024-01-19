@@ -42,7 +42,10 @@ export async function performQueryFromReq(req) {
     } catch (e) {
         return {error: e.message};
     }
-    console.log(query);
+    // This is just test printing.
+    if(query !== 'SELECT * FROM test') {
+        console.log(query);
+    }
 
     return await performQuery(query).then((data) => {
         return data;

@@ -102,16 +102,10 @@ CREATE TABLE IF NOT EXISTS TestStep
 CREATE TABLE IF NOT EXISTS Attachment
 (
     AttachmentID integer NOT NULL GENERATED ALWAYS AS IDENTITY,
+    TestStepId integer NOT NULL,
     path character varying(255) NOT NULL,
-    Primary key (AttachmentID)
-);
-
-CREATE TABLE IF NOT EXISTS TestStepAttachemnt
-(
-    StepID   integer NOT NULL,
-    AttachmentID integer NOT NULL,
-    FOREIGN KEY (StepID) REFERENCES TestStep (StepID)  MATCH SIMPLE,
-    FOREIGN KEY (AttachmentID) REFERENCES Attachment (AttachmentID)  MATCH SIMPLE
+    Primary key (AttachmentID),
+    FOREIGN KEY (TestStepId) REFERENCES TestStep (StepID)  MATCH SIMPLE
 );
 
 END;
