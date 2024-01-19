@@ -18,6 +18,7 @@
 
     export let params;
     let sprintid = params ? params.id : null;
+    sprintid --; 
 
     //VALUES
     let totalTests = 500;
