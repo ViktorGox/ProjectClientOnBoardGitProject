@@ -6,13 +6,14 @@
     import JafarButton from "../components/JafarButton.svelte";
     import {fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
+    import SprintTable from "../components/SprintTable.svelte";
 
     export let params;
     let sprintid = params ? params.sprintid : null;
 
     let email = $userStore ? $userStore.email : null;
     let role = $userStore ? $userStore.roleid : 'user';
-    console.log("role: ",role);
+    console.log("role: ", role);
 
     let sprints = [];
     let fullTests = [];
@@ -23,18 +24,26 @@
     let searchBarValue;
     let statusOptions = [];
     let moduleOptions = [];
-    let selectedSprintId=null;
+    let selectedSprintId = null;
     let deletingSprintId = null;
     let showDeleteConfirmation = false;
+
     async function getSprints() {
         const response = await fetch(`http://localhost:3000/sprint`);
         sprints = await response.json();
         console.log(sprints);
+        return sprints;
     }
+
+    function updateSprints() {
+        getSprints();
+    }
+
     async function deleteSprintWithId(sprintid) {
         deletingSprintId = sprintid;
         showDeleteConfirmation = true;
     }
+
     async function confirmDeleteSprint() {
         const response = await fetch(`http://localhost:3000/sprint/${deletingSprintId}`, {
             method: 'DELETE',
@@ -51,6 +60,7 @@
         deletingSprintId = null;
         showDeleteConfirmation = false;
     }
+
     function cancelDeleteSprint() {
         deletingSprintId = null;
         showDeleteConfirmation = false;
@@ -187,9 +197,8 @@
             return value;
         }
     }
-
-
 </script>
+
 {#if showDeleteConfirmation}
     <div class="overlay">
         <div class="delete-confirmation">
@@ -202,29 +211,11 @@
 
 {#if sprints.length > 0}
     <main>
-        <ul>
+        <SprintTable promiseSprints={sprints} addNewSprint={addNewSprint} role={role}
+        deleteSprintWithId={deleteSprintWithId} editSprintWithId={editSprintWithId}
+        generateReport={generateReport} update={updateSprints}>
 
-            {#each sprints as sprint}
-                <li>
-                    <p> Name: {sprint.title} <br>
-                        Start Date: {sprint.startdate} <br>
-                        Due Date: {sprint.duedate} <br>
-                    </p>
-                    {#if role == 1 || role == 2}
-                        <JafarButton text="Edit" clickHandler={() => {editSprintWithId(sprint.sprintid)}}/>
-                    {/if}
-                    {#if role == 1 || role == 2}
-                    <JafarButton text="Delete" clickHandler={() => deleteSprintWithId(sprint.sprintid)}/>
-                    {/if}
-                    <JafarButton text="View Details" clickHandler={() => navigateToProject(sprint.sprintid)}/>
-                    <JafarButton text="Create Report" clickHandler={() => generateReport(sprint.sprintid)} />
-                </li>
-            {/each}
-
-        </ul>
-        {#if role == 1 || role == 2}
-        <JafarButton text="Add Sprint" clickHandler={addNewSprint}/>
-        {/if}
+        </SprintTable>
     </main>
 {/if}
 
@@ -239,10 +230,8 @@
         text-align: center;
         margin: 0 auto;
         padding: 0;
-
-        display: flex;
-        justify-content: space-evenly;
     }
+
     ul {
         display: flex;
         flex-direction: column;
@@ -268,9 +257,11 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
+
     li:hover {
         background-color: #45454f;
     }
+
     img {
         border: 1px solid gray;
         padding: 0.4rem;
@@ -285,6 +276,7 @@
         text-align: left;
         color: #fff;
     }
+
     .overlay {
         position: fixed;
         top: 0;
