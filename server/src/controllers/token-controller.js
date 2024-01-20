@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { performSimpleOneQuery} from "./generic.js";
+import {replaceRoleIdWithName} from "./user-controller.js";
 
 export async function checkToken(req, res) {
     const givenEmail = req.body.email;
@@ -61,15 +62,3 @@ async function createToken(user, res) {
     });
 }
 
-async function replaceRoleIdWithName(user) {
-    const getRolesStrings = await performSimpleOneQuery('userrole', 'get')
-
-    const matchingRole = getRolesStrings.find(role => role.roleid === user.roleid);
-
-    if (matchingRole) {
-        user.role = matchingRole.name;
-        delete user.roleid;
-    }
-
-    return user;
-}
