@@ -223,4 +223,4 @@ values (1, 4, 1),
        (4, 2, 4),
        (4, 2, 4);
 
-update testing set completiondate = CURRENT_DATE where StatusID = 1
+update testing set completiondate = CURRENT_DATE where StatusID = 2

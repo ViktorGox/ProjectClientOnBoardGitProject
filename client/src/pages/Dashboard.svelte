@@ -6,21 +6,15 @@
     import router from "page";
     import TestTable from "../components/TestTable.svelte";
 
-    let sprintTesting;
-
-    let dashboardBoxes = [
-        {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
-        {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
-        {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: sprintTesting },
-        {icon: 'bi bi-check-square text-success', title: 'Passed', value: 60},
-        {icon: 'bi bi-x-circle text-danger', title: 'Failed', value: 88},
-        {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: 100},
-        {icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97},
-        {icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0}
-    ];
+    let dashboardBoxes = [];
 
     export let params;
     let sprintid;
+
+    let testValue;
+    let passedValue;
+    let bugValue;
+    let blockerValue;
 
     //VALUES
     let totalTests = 500;
@@ -33,22 +27,31 @@
             const testing = await fetchRequest('testing');
             const dataArray = Array.isArray(testing) ? testing : [testing];
             const filteredData = dataArray.filter(sprint => sprint.sprintid == sprintid);
-            console.log('Filtered Data:', filteredData);
+            testValue = filteredData.length;
+            passedValue = filteredData.filter(sprint => sprint.statusid == 2).length;
+            blockerValue = filteredData.filter(sprint => sprint.statusid == 3).length;
+            bugValue = filteredData.filter(sprint => sprint.statusid == 4).length;
+
+            drawDashboardBoxes();
         } catch (e) {
             console.error(e);
         }
     }
 
-    // return fetchRequest('status').then((result) => {
-    //     return new Map(result.map(status => [status.name, status.statusid]));
-    // }).catch((e) => {
-    //     throw e;
-    // })
+    function drawDashboardBoxes() {
+        dashboardBoxes = [
+            {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
+            {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
+            {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: testValue },
+            {icon: 'bi bi-check-square text-success', title: 'Passed', value: passedValue},
+            {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: bugValue},
+            {icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: blockerValue},
+            // {icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0}
+        ];
+    }
 
     onMount(() => {
         sprintid = params ? params.id : null;
-        sprintid--;
-
         getSprintTesting();
 
         const doughnutValues = dashboardBoxes.map(box => box.value);
@@ -122,7 +125,7 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
-            <h1 style="margin-top: -20px;">SPRINT {sprintid}</h1>
+            <h1 style="margin-top: -20px;">SPRINT {sprintid= sprintid-1}</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
