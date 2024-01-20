@@ -345,7 +345,9 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
 
     // TODO: should return 404 if nothing found?
 
-    fakeReq.query[queryProperty] = queryParam + ";Equals";
+    if(queryProperty) {
+        fakeReq.query[queryProperty] = queryParam + ";Equals";
+    }
 
     return await performQueryFromReq(fakeReq);
 }
