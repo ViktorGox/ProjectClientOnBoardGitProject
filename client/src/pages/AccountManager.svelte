@@ -145,7 +145,7 @@
                     <option value={role.name}>{role.name}</option>
                 {/each}
             </select>
-            <button class="add-user-button" on:click={addUser}>Add a new fucking User</button>
+            <button class="add-user-button" on:click={addUser}>Add User</button>
             <button class="close-button" on:click={() => showAddUserPopup = false}>
                 <span class="close-icon">X</span>
             </button>
