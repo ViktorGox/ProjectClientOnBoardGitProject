@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Testing
     SprintID integer,
     TestID   integer,
     StatusID integer NOT NULL DEFAULT 1,
-    completionDate DATE DEFAULT NULL CHECK (completionDate >= CURRENT_DATE),
+    completionDate DATE DEFAULT NULL,
     FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (TestID) REFERENCES Test (TestId)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE
@@ -221,5 +221,3 @@ values (1, 4, 1),
        (4, 2, 4),
        (4, 2, 4),
        (4, 2, 4);
-
-update testing set completiondate = CURRENT_DATE where StatusID = 1
