@@ -139,7 +139,7 @@
     }
 
     async function generateReport(sprintid) {
-        // Call fullFetch for the selected sprint
+        // // Call fullFetch for the selected sprint
         await fullFetch(sprintid);
 
         // Check if data is present

@@ -18,7 +18,6 @@
         console.log(users);
         assigneeName=users.find(user => user.userid === test.userid).email;
 
-        username = await username.users[(test.userid-1)];
         // assigneeName=username.email;
     }
     function changeAssignee() {

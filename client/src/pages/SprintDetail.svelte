@@ -6,13 +6,14 @@
     import SprintInfo from "../components/SprintInfo.svelte";
 
     import JafarButton from "../components/JafarButton.svelte";
-    import { fetchRequest, generateQuery } from "../lib/Request.js";
+    import {fetchRequest} from "../lib/Request.js";
+
     export let params;
     console.log(params);
     let sprintid = params.id;
     let email = $userStore ? $userStore.email : null;
 
-    let sprint=[];
+    let sprint = [];
     let title;
     let startDate;
     let dueDate;
@@ -25,7 +26,7 @@
         const path = `sprint/${sprintid}`;
         const response = await fetchRequest(path, 'GET');
         sprint = response;
-        console.log("Sprint:",sprint);
+        console.log("Sprint:", sprint);
     }
 
 
@@ -53,6 +54,7 @@
         console.log("StartDate:", startDate);
         console.log("DueDate:", dueDate);
     });
+
     async function editSprint(sprintid, sprintInfo) {
         const path = `sprint/${sprintid}`;
 
@@ -90,6 +92,10 @@
         return true;
     }
 
+    function formatDate(date) {
+        let start = new Date(date);
+        return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
+    }
     function submitNewInfo() {
         if (checkInputs()) {
             let sprintInfo = {
@@ -104,7 +110,7 @@
                 addNewSprint(sprintInfo);
             }
 
-            router(`/projects/${email}`);
+            router(`/projects`);
         } else {
             alert("One or many inputs are not correctly inputted!");
         }
@@ -115,79 +121,117 @@
     }
 
 
-    let logoImageLink ;
+    let logoImageLink;
 
 </script>
 
 <main>
     {#if sprint && sprintid !== undefined}
-        <section id="informationPreview">
-            <img src={logoImageLink} alt={logoImageLink}>
+        <section id="informationPreview" class="content-section">
+<!--            <div class="image-container">-->
+<!--                <img src={logoImageLink} alt={logoImageLink}>-->
+<!--            </div>-->
 
-            <label class="lighter-text">Title: {title}</label>
-
-            <div>
-                <label class="lighter-text">Start Date: {startDate} </label>
-                <label class="lighter-text">Due Date: {dueDate}</label>
+            <div class="info-container">
+                <div class="date-container">
+                    <label class="lighter-text">Title: {title}</label>
+                    <label class="lighter-text">Start Date: {formatDate(startDate)} </label>
+                    <label class="lighter-text">Due Date: {formatDate(dueDate)}</label>
+                </div>
             </div>
 
         </section>
 
-        <section>
+        <section class="content-section">
             <SprintInfo bind:title={title} bind:strartdate={startDate} bind:dueddate={dueDate}/>
-
-            <JafarButton text="Submit" clickHandler={submitNewInfo}/>
+            <button class="add-sprint-button" on:click={submitNewInfo}>Add Sprint</button>
+<!--            <JafarButton text="Submit" clickHandler={submitNewInfo} />-->
         </section>
     {:else }
-        <p>No sprint found for skin detail page!</p>
+        <p class="no-sprint-message" >No sprint found!</p>
     {/if}
 </main>
 
 <style>
-
+    body {
+        background-color: #666;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
     main {
         display: flex;
         justify-content: space-evenly;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+        align-items: center;
     }
-
+    .info-container {
+        text-align: center;
+    }
     section {
         display: flex;
         flex-direction: column;
-
-        gap: 0.5rem;
-
-        width: 39%;
+        gap: 1rem;
+        width: 45%;
     }
-
-    img {
-        width: 100%;
-        border-radius: 10px;
-
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-    }
-
-    div {
+    .date-container {
         display: flex;
-        justify-content: space-between;
-        gap: 0.5rem;
+        flex-direction: column;
+        gap: 1rem;
+        font-family: 'Arial', sans-serif;
+        font-size: large;
+        font-weight: bold;
     }
-    label.lighter-text {
-        color: #b3b3b3;
-        font-weight: lighter;
+    .no-sprint-message {
+        color: #fff;
     }
+
     textarea {
         flex: 1;
-        width: 96%;
-
+        width: 100%;
         border: 1px solid #ccc;
         border-radius: 10px;
-
         background-color: #313131;
         padding: 10px;
         color: white;
         font-weight: bold;
         font-size: 18px;
         font-family: "Baskerville Old Face";
+        resize: none;
     }
+    .info-container {
+        background-color: #333;
+        border-radius: 10px;
+        padding: 15px;
+        color: white;
+        text-align: center;
+        margin-bottom: 85px;
+    }
+
+
+    .date-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    .add-sprint-button {
+        background-color: #4CAF50;
+        padding: 10px;
+        margin: 5px;
+        color: #fff;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        font-size: large;
+    }
+    .content-section{
+       margin-top: 150px;
+    }
+
 
 </style>
