@@ -1,5 +1,5 @@
 <script>
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {addCombinatoryOption, fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import {onMount} from 'svelte';
     import router from "page";
@@ -69,7 +69,10 @@
             }).then(async (allTests) => {
             let alteredTests = [];
             if (sprintId) {
-                const sprintData = await fetchRequest('testing?sprintid=' + sprintId + ';Equals&columns=testid,statusid');
+                const query = generateQuery('testing', ['sprintid','statusid'], [sprintId, arrayToString(statusOptions)]
+                    , ['Equals','Equals'], 'testid,statusid')
+                const sprintData = await fetchRequest(addCombinatoryOption(query));
+                console.log("Query: ",query);
                 const filteredTests = allTests.filter(item => sprintData.some(({testid}) => testid === item.testid));
                 alteredTests = filteredTests.map(item2 => {
                     const matchingEntry = sprintData.find(item1 => item1.testid === item2.testid);

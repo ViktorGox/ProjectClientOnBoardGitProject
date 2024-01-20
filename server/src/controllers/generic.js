@@ -26,6 +26,9 @@ const lessOrEqualTo = 'LessEqual';
  * you want to return.
  */
 export async function performQueryFromReq(req) {
+    req.combinatory = req.query.combinatory;
+    delete req.query.combinatory;
+
     let query;
     try {
         if (req.method.toLowerCase() === 'get') {
@@ -178,7 +181,7 @@ function generateWhereClause(req) {
 
     whereClause += whereClauseFromPath(req);
     if (queryKeys.length > 0 && paramsKeys.length > 0) {
-        whereClause += ' OR ';
+        whereClause += orOrAnd(req);
     }
     whereClause += whereClauseFromQuery(req);
     return whereClause;
@@ -200,11 +203,19 @@ function whereClauseFromPath(req) {
         whereClause += param + " = " + req.params[param];
 
         if (i !== paramsKeys.length - 1) {
-            whereClause += " OR ";
+            whereClause += orOrAnd(req);
         }
     }
 
     return whereClause;
+}
+
+function orOrAnd(req) {
+    if(req.combinatory) {
+        return ' AND '
+    } else {
+        return ' OR '
+    }
 }
 
 /**
@@ -229,7 +240,7 @@ function whereClauseFromQuery(req) {
         whereClause += addParameterToQuery(param, paramInfo);
 
         if (i !== queryKeys.length - 1) {
-            whereClause += " OR ";
+            whereClause += orOrAnd(req);
         }
     }
 
