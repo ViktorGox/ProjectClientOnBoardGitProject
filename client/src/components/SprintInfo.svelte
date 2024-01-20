@@ -4,7 +4,7 @@
     export let dueddate;
 </script>
 
-<section id="sprintInfoEditing">
+<section id="sprintInfoEditing" class="addData">
     <div class="titleDivs">
         <label class="lighter-text">Name: </label>
         <input type="text" class="titleInputs" bind:value={title}>
@@ -35,6 +35,14 @@
         justify-content: space-between;
         gap: 0.5rem;
     }
+    .addData {
+        padding: 1rem;
+        background-color: #333;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+
+    }
 
     .titleDivs {
         justify-content: flex-start;
@@ -43,6 +51,7 @@
         color: #b3b3b3;
         font-weight: lighter;
     }
+
     input {
         padding-top: 5px;
         padding-bottom: 5px;
