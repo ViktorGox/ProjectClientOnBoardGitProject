@@ -50,7 +50,6 @@
                 </div>
             </div>
             <div class="col-auto">
-                {console.log(role)}
                 {#if role === 'admin' || role === 'developer'}
                     <button class="btn btn-primary" on:click={addNewSprint}>
                         Add Sprint
