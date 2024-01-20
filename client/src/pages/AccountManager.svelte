@@ -18,15 +18,6 @@
     let newRole = "";
     let showAddUserPopup = false;
     let usersWithCurrentRole = [];
-    // $: usersWithCurrentRole = users.map(user => ({...user, currentRole: user.role}));
-    // $: usersWithCurrentRole = users.map(user => {
-    //     return {
-    //         ...user,
-    //         currentRole: user.role,
-    //         newRole: user.role
-    //     };
-    // });
-
 
     async function fetchUsers() {
         const response = await fetch(`http://localhost:3000/users`);
@@ -57,8 +48,6 @@
             console.error("Error updating user:", error);
         }
     }
-
-
 
     async function deleteUser(user) {
         const confirmDelete = confirm(`Are you sure you want to delete ${user.email}?`);
@@ -157,6 +146,9 @@
                 {/each}
             </select>
             <button class="add-user-button" on:click={addUser}>Add a new fucking User</button>
+            <button class="close-button" on:click={() => showAddUserPopup = false}>
+                <span class="close-icon">X</span>
+            </button>
         </div>
     {/if}
 
@@ -192,14 +184,15 @@
 
 
     .popup {
-        position: fixed;
+        position: relative;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #fff;
+        background-color: #333;
         padding: 20px;
         border: 1px solid #ccc;
         z-index: 1000;
+
     }
 
     .add-user-button, .update-button, .delete-button {
@@ -223,5 +216,26 @@
 
     .delete-button {
         background-color: #e74c3c;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #e74c3c;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-icon {
+        color: #fff; /* White color for the X */
+        font-size: 16px;
+        font-weight: bold;
     }
 </style>
