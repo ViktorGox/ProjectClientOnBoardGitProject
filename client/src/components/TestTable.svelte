@@ -6,6 +6,11 @@
 
     export let generalTable;
     export let sprintId;
+    // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
+    // remove this when its fixed there.
+    if(sprintId) {
+        sprintId++;
+    }
 
     let fullTests = [];
     let statuses;
@@ -62,20 +67,22 @@
                 );
                 return Promise.all(modulePromises);
             }).then(async (allTests) => {
-            // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
-            // remove this when its fixed there.
-            sprintId++;
-            let filteredTests = [];
+            let alteredTests = [];
             if (sprintId) {
-                console.log("First option")
-                const sprintData = await fetchRequest('testing?sprintid=' + sprintId + ';Equals&columns=testid');
-                filteredTests = allTests.filter(item => sprintData.some(({testid}) => testid === item.testid));
-                console.log("-> ", filteredTests);
+                const sprintData = await fetchRequest('testing?sprintid=' + sprintId + ';Equals&columns=testid,statusid');
+                const filteredTests = allTests.filter(item => sprintData.some(({testid}) => testid === item.testid));
+                alteredTests = filteredTests.map(item2 => {
+                    const matchingEntry = sprintData.find(item1 => item1.testid === item2.testid);
+                    if (matchingEntry) {
+                        return { ...item2, statusid: matchingEntry.statusid };
+                    } else {
+                        return item2;
+                    }
+                });
             } else {
-                console.log("Second option")
-                filteredTests = allTests;
+                alteredTests = allTests;
             }
-            return filteredTests
+            return alteredTests
         })
             .then(updatedTests => {
                 if (weightOrder) {
@@ -85,7 +92,6 @@
                     updatedTests.reverse();
                 }
                 fullTests = updatedTests;
-                console.log(fullTests);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -97,10 +103,10 @@
         if (moduleOptions.length !== 0) {
             moduleIdsArray = await fetchTestIds();
         }
-        const queryProperties = ["statusid", 'testid', 'name'];
-        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray), searchBarValue];
+        const queryProperties = ['testid', 'name'];
+        const queryParams = [arrayToString(moduleIdsArray), searchBarValue];
 
-        const querySettings = ["Equals", "Equals", "Includes"];
+        const querySettings = ["Equals", "Includes"];
         let query = generateQuery('test', queryProperties, queryParams, querySettings);
         return await fetchRequest(query);
     }
