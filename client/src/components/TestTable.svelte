@@ -5,6 +5,7 @@
     import router from "page";
 
     export let generalTable;
+    export let sprintId;
 
     let fullTests = [];
     let statuses;
@@ -60,6 +61,8 @@
                         })
                 );
                 return Promise.all(modulePromises);
+            }).then((allTests) => {
+                fetchRequest('')
             })
             .then(updatedTests => {
                 if (weightOrder) {
@@ -81,7 +84,6 @@
         if (moduleOptions.length !== 0) {
             moduleIdsArray = await fetchTestIds();
         }
-
         const queryProperties = ["statusid", 'testid', 'name'];
         const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray), searchBarValue];
 
@@ -263,33 +265,33 @@
         <table class="table custom-table">
 
             <thead>
-                <tr>
+            <tr>
 
-                    {#if !generalTable}
-                        <th scope="col">
-                            <label class="control">
-                                <input type="checkbox" on:click={checkAll}>
-                                <span class="checkmark"></span>
-                            </label>
-                        </th>
-                    {/if}
+                {#if !generalTable}
+                    <th scope="col">
+                        <label class="control">
+                            <input type="checkbox" on:click={checkAll}>
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                {/if}
 
-                    <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
-                        ID
-                        <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
-                             alt="order button image">
-                    </th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Modules</th>
-                    {#if !generalTable}
-                        <th scope="col">Status</th>
-                    {/if}
-                    <th scope="col">Assignee</th>
-                    <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
-                        <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
-                             alt="order button image">
-                    </th>
-                </tr>
+                <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
+                    ID
+                    <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
+                         alt="order button image">
+                </th>
+                <th scope="col">Title</th>
+                <th scope="col">Modules</th>
+                {#if !generalTable}
+                    <th scope="col">Status</th>
+                {/if}
+                <th scope="col">Assignee</th>
+                <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
+                    <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
+                         alt="order button image">
+                </th>
+            </tr>
             </thead>
 
             <tbody>
