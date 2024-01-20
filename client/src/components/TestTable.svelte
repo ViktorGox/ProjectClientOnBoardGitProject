@@ -69,7 +69,6 @@
                     updatedTests.reverse();
                 }
                 fullTests = updatedTests;
-                console.log(fullTests);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);

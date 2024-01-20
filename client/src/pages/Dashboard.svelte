@@ -1,37 +1,56 @@
 <script>
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {fetchRequest} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import router from "page";
     import TestTable from "../components/TestTable.svelte";
 
+    let sprintTesting;
+
     let dashboardBoxes = [
-        { icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400 },
-        { icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52 },
-        { icon: 'bi bi-list-ul text-primary', title: 'Tests', value: 410 },
-        { icon: 'bi bi-check-square text-success', title: 'Passed', value: 60 },
-        { icon: 'bi bi-x-circle text-danger', title: 'Failed', value: 88 },
-        { icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: 100 },
-        { icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97 },
-        { icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0 }
+        {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
+        {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
+        {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: sprintTesting },
+        {icon: 'bi bi-check-square text-success', title: 'Passed', value: 60},
+        {icon: 'bi bi-x-circle text-danger', title: 'Failed', value: 88},
+        {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: 100},
+        {icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: 97},
+        {icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0}
     ];
 
     export let params;
-    let sprintid = params ? params.id : null;
-    sprintid --; 
+    let sprintid;
 
     //VALUES
     let totalTests = 500;
     let chartValues = [totalTests, 480, 460, 400, 390, 365, 300, 290, 248, 230, 180, 130, 60, 0];
-    let chartLabels = ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '13', '14'];
+    let chartLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
     let chartCanvas;
 
-    function goBack() {
-        window.history.back();
+    async function getSprintTesting() {
+        try {
+            const testing = await fetchRequest('testing');
+            const dataArray = Array.isArray(testing) ? testing : [testing];
+            const filteredData = dataArray.filter(sprint => sprint.sprintid == sprintid);
+            console.log('Filtered Data:', filteredData);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
+    // return fetchRequest('status').then((result) => {
+    //     return new Map(result.map(status => [status.name, status.statusid]));
+    // }).catch((e) => {
+    //     throw e;
+    // })
+
     onMount(() => {
+        sprintid = params ? params.id : null;
+        sprintid--;
+
+        getSprintTesting();
+
         const doughnutValues = dashboardBoxes.map(box => box.value);
         const doughnutLabels = dashboardBoxes.map(box => box.title);
 
@@ -103,7 +122,7 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
-            <h1 style="margin-top: -20px;" >SPRINT {sprintid}</h1>
+            <h1 style="margin-top: -20px;">SPRINT {sprintid}</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
@@ -122,7 +141,7 @@
         </div>
     </div>
 
-    <section class="graph dark-bg" >
+    <section class="graph dark-bg">
         <div class="chart-container">
             <div class="chart-column" style="margin-top: -60px;">
                 <canvas id="doughnutChart"></canvas>
@@ -133,7 +152,7 @@
         </div>
     </section>
 
-   <TestTable generalTable={false}></TestTable>
+    <TestTable generalTable={false}></TestTable>
 </main>
 
 <style>
@@ -144,9 +163,11 @@
         max-width: 900px;
         margin: 0 auto;
     }
+
     .chart-column {
         width: 48%;
     }
+
     .dash {
         background: #1a1a1a;
         box-sizing: border-box;
