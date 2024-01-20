@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS Users
     Email    character varying(255) NOT NULL UNIQUE,
     RoleID   integer                NOT NULL,
     Password character varying(255) NOT NULL,
-    Role     character varying(255) NOT NULL,
     PRIMARY KEY (UserID),
     FOREIGN KEY (RoleID) REFERENCES userRole (RoleID) ON DELETE CASCADE
 );
@@ -63,7 +62,6 @@ CREATE TABLE IF NOT EXISTS Test
     Name        VARCHAR(255) NOT NULL,
     UserID      INTEGER               DEFAULT NULL,
     Description VARCHAR(255)          DEFAULT NULL,
-    StatusId    INTEGER      NOT NULL DEFAULT 1,
     lastUpdate  DATE                  DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE),
     FOREIGN KEY (UserID) REFERENCES Users (Userid) MATCH SIMPLE
 );
@@ -72,7 +70,8 @@ CREATE TABLE IF NOT EXISTS Testing
 (
     SprintID integer,
     TestID   integer,
-    StatusID integer,
+    StatusID integer NOT NULL DEFAULT 1,
+    completionDate DATE DEFAULT NULL CHECK (completionDate >= CURRENT_DATE),
     FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (TestID) REFERENCES Test (TestId)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE
@@ -116,11 +115,11 @@ values ('admin'),
        ('developer'),
        ('tester');
 
-INSERT INTO Users (email, RoleID, password, role)
-VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC', 'admin'),
-       ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS', 'developer'),
-       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester'),
-       ('tester2', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester');
+INSERT INTO Users (email, RoleID, password)
+VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC'),
+       ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS'),
+       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy'),
+       ('tester2', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy');
 
 
 insert into module (label)
@@ -135,14 +134,14 @@ values ('To do'),
        ('Blocker'),
        ('Bug');
 
-insert into test(name, userid, description, statusId)
-values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct', 2),
-       ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected', 4),
-       ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected', 3),
-       ('Check if background color is not red', 3, 'red background shall not be accepted', 1),
-       ('Verify the sidebar is on the side', 1, 'sidebar shall be on the side', 4),
-       ('Confirm confirmation works correctly', 1, 'confirmation shall work', 1),
-       ('Verify all data is shown', 1, 'data stored shall be shown', 1);
+insert into test(name, userid, description)
+values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct'),
+       ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected'),
+       ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected'),
+       ('Check if background color is not red', 3, 'red background shall not be accepted'),
+       ('Verify the sidebar is on the side', 1, 'sidebar shall be on the side'),
+       ('Confirm confirmation works correctly', 1, 'confirmation shall work'),
+       ('Verify all data is shown', 1, 'data stored shall be shown');
 
 insert into teststep (testid, stepnr, title, testlog, weight)
 values (1, 1, 'Open users page', 'nothing to note', 1),
@@ -181,44 +180,46 @@ values (1, 1),
        (7, 3),
        (7, 4);
 
-insert into testing (sprintid, testid)
-values (1, 4),
-       (1, 4),
-       (1, 6),
-       (1, 7),
-       (1, 1),
-       (1, 3),
-       (1, 3),
+insert into testing (sprintid, testid, statusid)
+values (1, 4, 1),
+       (1, 4, 1),
+       (1, 6, 2),
+       (1, 7, 3),
+       (1, 1, 3),
+       (1, 3, 3),
+       (1, 3, 4),
 
-       (2, 1),
-       (2, 3),
-       (2, 3),
-       (2, 5),
-       (2, 2),
-       (2, 5),
+       (2, 1, 1),
+       (2, 3, 1),
+       (2, 3, 1),
+       (2, 5, 1),
+       (2, 2, 2),
+       (2, 5, 4),
 
-       (3, 4),
-       (3, 6),
-       (3, 6),
-       (3, 7),
-       (3, 1),
-       (3, 1),
-       (3, 1),
-       (3, 3),
-       (3, 3),
-       (3, 5),
+       (3, 4, 2),
+       (3, 6, 2),
+       (3, 6, 2),
+       (3, 7, 2),
+       (3, 1, 2),
+       (3, 1, 2),
+       (3, 1, 2),
+       (3, 3, 2),
+       (3, 3, 2),
+       (3, 5, 1),
 
-       (4, 4),
-       (4, 6),
-       (4, 7),
-       (4, 1),
-       (4, 1),
-       (4, 1),
-       (4, 1),
-       (4, 3),
-       (4, 3),
-       (4, 2),
-       (4, 2),
-       (4, 2),
-       (4, 2),
-       (4, 2);
+       (4, 4, 1),
+       (4, 6, 1),
+       (4, 7, 1),
+       (4, 1, 1),
+       (4, 1, 2),
+       (4, 1, 2),
+       (4, 1, 2),
+       (4, 3, 2),
+       (4, 3, 3),
+       (4, 2, 3),
+       (4, 2, 4),
+       (4, 2, 4),
+       (4, 2, 4),
+       (4, 2, 4);
+
+update testing set completiondate = CURRENT_DATE where StatusID = 1
