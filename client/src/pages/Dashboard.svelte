@@ -40,8 +40,8 @@
 
     function drawDashboardBoxes() {
         dashboardBoxes = [
-            {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
-            {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
+            // {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
+            // {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
             {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: testValue},
             {icon: 'bi bi-check-square text-success', title: 'Passed', value: allPassedTests.length},
             {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: bugValue},
@@ -193,13 +193,13 @@
             </div>
         </div>
     </div>
-
+    <div style="margin-bottom: 80px;"></div>
     <section class="graph dark-bg">
         <div class="chart-container">
-            <div class="chart-column" style="margin-top: -60px;">
+            <div class="chart-column" style="margin-top: -60px;margin-right: 80px">
                 <canvas id="doughnutChart"></canvas>
             </div>
-            <div class="chart-column" style="margin-top: -30px;">
+            <div class="chart-column" style="margin-top: -30px;margin-left: 80px">
                 <canvas bind:this={chartCanvas} id="lineChart"></canvas>
             </div>
         </div>
