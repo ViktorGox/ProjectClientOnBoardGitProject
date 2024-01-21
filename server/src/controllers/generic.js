@@ -485,3 +485,32 @@ export async function notFoundReq(req, res) {
     }
     return await badRequestOnly(req, res);
 }
+
+/**
+ * Removes unwanted query parameters from the body. Takes in the req and a string of parameter names
+ * separated by a comma.
+ */
+export function removeBodyParametersIgnoreCase(req, paramNames) {
+    req.body = removeParametersIgnoreCase(req.body, paramNames);
+    return req;
+}
+
+/**
+ * Removes unwanted query parameters from the query. Takes in the req and a string of parameter names
+ * separated by a comma.
+ */
+export function removeQueryParametersIgnoreCase(req, paramNames) {
+    req.query = removeParametersIgnoreCase(req.query, paramNames);
+    return req;
+}
+
+function removeParametersIgnoreCase(part, paramNames) {
+    const paramArray = paramNames.split(',').map(param => param.trim());
+
+    for (const key in part) {
+        if (paramArray.includes(key.toLowerCase())) {
+            delete part[key];
+        }
+    }
+    return part;
+}
