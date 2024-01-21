@@ -12,7 +12,7 @@
     console.log(params);
     let sprintid = params.id;
     let email = $userStore ? $userStore.email : null;
-    let sprint = [];
+   let sprint = [];
     let title;
     let startDate;
     let dueDate;
@@ -91,7 +91,7 @@
         let start = new Date(date);
         return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
     }
-    function submitNewInfo() {
+   async function submitNewInfo() {
         if (checkInputs()) {
             let sprintInfo = {
                 title: title,
@@ -100,12 +100,12 @@
             }
 
             if (sprintid && sprintid !== 'new') {
-                editSprint(sprintid, sprintInfo);
+              await  editSprint(sprintid, sprintInfo);
             } else {
-                addNewSprint(sprintInfo);
+              await  addNewSprint(sprintInfo);
             }
 
-            router(`/projects`);
+           await router(`/projects`);
         } else {
             alert("One or many inputs are not correctly inputted!");
         }
