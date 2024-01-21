@@ -116,6 +116,9 @@
                 {/each}
             </select>
             <button class="add-user-button" on:click={addUser}>Add a new User</button>
+            <button class="close-button" on:click={() => showAddUserPopup = false}>
+                <span class="close-icon">X</span>
+            </button>
         </div>
     {/if}
 
@@ -149,16 +152,16 @@
         color: white;
     }
 
-
     .popup {
-        position: fixed;
+        position: relative;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #fff;
+        background-color: #333;
         padding: 20px;
         border: 1px solid #ccc;
         z-index: 1000;
+
     }
 
     .add-user-button, .update-button, .delete-button {
@@ -182,5 +185,26 @@
 
     .delete-button {
         background-color: #e74c3c;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #e74c3c;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-icon {
+        color: #fff; /* White color for the X */
+        font-size: 16px;
+        font-weight: bold;
     }
 </style>
