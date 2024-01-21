@@ -9,8 +9,6 @@
     let testSteps = [];
 
     async function fetchTestSteps() {
-        const queryProperties = ['testid'];
-        const querySettings = ["Equals"];
         const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
         testSteps = await response.json();
         testCaseName = await fetch('http://localhost:3000/test/' + testId + '/');

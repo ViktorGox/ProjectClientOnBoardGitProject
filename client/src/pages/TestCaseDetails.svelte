@@ -4,6 +4,10 @@
     import RightConstantBar from '../components/RightConstantBar.svelte';
     import router from "page";
 
+    export let params;
+    let sprintid = params ? params.id : null;
+    console.log(sprintid);
+
     const currentRoute = router.current;
     const parts = currentRoute.split('/');
     let testId = parts[parts.length - 1];

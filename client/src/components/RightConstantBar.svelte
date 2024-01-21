@@ -6,30 +6,34 @@
     export let assigneeProfilePicture;
     export let dueDate;
     export let testId;
-    let users=[];
+    let users = [];
     let username;
-    let test={};
+    let test = {};
+
     async function fetchData() {
         test = await fetchRequest('test/' + testId + '/');
-        test=test[0];
+        test = test[0];
         console.log(test);
         users = await fetchRequest('users/allUsernames');
 
         console.log(users);
-        assigneeName=users.find(user => user.userid === test.userid).email;
+        assigneeName = users.find(user => user.userid === test.userid).email;
 
         // assigneeName=username.email;
     }
+
     function changeAssignee() {
         // Handle the change in test status here
         console.log("Selected status:", test.userid);
-        const body ={
+        const body = {
             userid: (test.userid),
         };
         console.log(JSON.stringify(body));
-        assigneeName=users.find(user => user.userid === test.userid).email;
-        const response = fetchRequest('test/'+testId,'PUT', body)
+        assigneeName = users.find(user => user.userid === test.userid).email;
+        console.log(test);
+        // const response = fetchRequest('testing/'+test.sprintid,'PUT', body)
     }
+
     onMount(async () => {
         await fetchData();
     });
@@ -37,11 +41,11 @@
 
 <div class="right-constant-bar">
     <div class="assignee-info">
-<!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
+        <!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
         <p> Assignee: {assigneeName}</p>
         <select bind:value={test.userid} on:change={changeAssignee}
                 class="form-select form-select-sm bg-dark">
-            {#each users as {email,userid}}
+            {#each users as {email, userid}}
                 <option value="{userid}">
                     {email}
                 </option>
@@ -85,6 +89,7 @@
     .due-date {
         text-align: center;
     }
+
     .form-select-sm {
         /*width: 60%;*/
         cursor: pointer;

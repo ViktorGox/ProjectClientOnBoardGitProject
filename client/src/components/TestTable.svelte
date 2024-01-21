@@ -91,7 +91,6 @@
             const fetchAssignees = updatedTests.map(async (test) => {
                 if (sprintId) {
                     const assignee = await fetchRequest('testing/' + sprintId + '/assignee/' + test.testid);
-                    console.log('Assignee response:', assignee);
                     test.assignee = assignee.email;
                 }
             });
@@ -101,8 +100,6 @@
             return updatedTests;
         })
             .then(updatedTests => {
-                console.log("Tests: ",updatedTests);
-                console.log("->>>>>>> ",updatedTests[0].assignee)
                 if (weightOrder) {
                     updatedTests.sort((a, b) => a.weight - b.weight)
                 }
@@ -205,7 +202,12 @@
     };
 
     const openTestPage = (id) => {
-        router("/tests/" + id);
+        console.log(sprintId);
+        if (sprintId) {
+            router(sprintId + "/test/" + id);
+        } else {
+            router("/tests/" + id);
+        }
     }
 
     const changeStatus = async (test) => {

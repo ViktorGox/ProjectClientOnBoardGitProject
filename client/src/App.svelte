@@ -36,6 +36,12 @@
         currentRoute = ctx.pathname;
     });
 
+    router('/projects/:sprintid/test/:id', (ctx) => {
+        page = TestCaseDetails;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+
     router('/tests/:id', (ctx) => {
         page = TestCaseDetails;
         params = ctx.params;
