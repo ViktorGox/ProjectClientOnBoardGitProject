@@ -57,6 +57,6 @@ Certainly! I've updated the usage guide to include the additional information ab
   ws.send('{"command": "notify", "token": "LrNz0wGflK67oQmu8MVthntnvbzTBkmH"}');
   ```
 
-  - The server fetches blockers with status IDs `3` (In Progress) and `4` (Blocked) every 10 seconds, and subscribed clients automatically receive these updates.
+  - The server fetches blockers every 3 seconds, and subscribed clients automatically receive these updates.
 
 ---
