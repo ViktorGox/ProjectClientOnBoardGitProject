@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS Test
     UserID      INTEGER               DEFAULT NULL,
     Description VARCHAR(255)          DEFAULT NULL,
     lastUpdate  DATE                  DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE),
-    FOREIGN KEY (UserID) REFERENCES Users (Userid) MATCH SIMPLE
+    FOREIGN KEY (UserID) REFERENCES Users (Userid) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS Testing
