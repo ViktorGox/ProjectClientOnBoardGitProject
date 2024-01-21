@@ -47,8 +47,8 @@
         fullFetch();
     }
 
-    onMount(() => {
-        fullFetch();
+    onMount(async () => {
+        await fullFetch();
     });
 
     function fullFetch() {
@@ -61,6 +61,7 @@
                     fetchRequest('testmodule/test/' + element.testid)
                         .then(async (result) => {
                             element.modules = result.map(item => item.moduleid);
+
                             const weightReturn = await fetchRequest('test/' + element.testid + "/weight");
                             element.weight = weightReturn.sum;
                             return element;
@@ -86,8 +87,22 @@
                 alteredTests = allTests;
             }
             return alteredTests
+        }).then(async (updatedTests) => {
+            const fetchAssignees = updatedTests.map(async (test) => {
+                if (sprintId) {
+                    const assignee = await fetchRequest('testing/' + sprintId + '/assignee/' + test.testid);
+                    console.log('Assignee response:', assignee);
+                    test.assignee = assignee.email;
+                }
+            });
+
+            await Promise.all(fetchAssignees);
+
+            return updatedTests;
         })
             .then(updatedTests => {
+                console.log("Tests: ",updatedTests);
+                console.log("->>>>>>> ",updatedTests[0].assignee)
                 if (weightOrder) {
                     updatedTests.sort((a, b) => a.weight - b.weight)
                 }
@@ -368,7 +383,7 @@
                             </td>
                         {/if}
                         <td>
-                            {test.userid}
+                            {test.assignee}
                         </td>
                         <td>{test.weight}</td>
                     </tr>
