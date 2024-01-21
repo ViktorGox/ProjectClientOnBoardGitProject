@@ -8,9 +8,6 @@
     export let sprintId;
     // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
     // remove this when its fixed there.
-    if (typeof sprintId !== 'undefined') {
-        sprintId++;
-    }
 
     let fullTests = [];
     let statuses;
