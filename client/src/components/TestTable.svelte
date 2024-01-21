@@ -195,6 +195,7 @@
     const changeStatus = async (test) => {
         await fetchRequest('testing/' + sprintId + "/status/" + test.testid + "?combinatory=true", 'put', {statusid: test.statusid});
         console.log('status id for test: ' + test.testid + ', changed to:', test.statusid);
+        fullFetch();
     }
 </script>
 
