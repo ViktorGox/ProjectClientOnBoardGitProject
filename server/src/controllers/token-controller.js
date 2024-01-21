@@ -1,9 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { performSimpleOneQuery} from "./generic.js";
-
-
-
+import {replaceRoleIdWithName} from "./user-controller.js";
 
 export async function checkToken(req, res) {
     const givenEmail = req.body.email;
@@ -35,7 +33,7 @@ async function getUser(givenEmail) {
     }
 }
 
-function checkPassword(givenPassword, storedPassword, user, res) {
+async function checkPassword(givenPassword, storedPassword, user, res) {
     bcrypt.compare(givenPassword, storedPassword, function (err, result) {
         if (err) {
             return res.status(500).json({ error: 'Internal server error' });
@@ -47,10 +45,11 @@ function checkPassword(givenPassword, storedPassword, user, res) {
     });
 }
 
-function createToken(user, res) {
+async function createToken(user, res) {
+    user = await replaceRoleIdWithName(user)
+    console.log(user);
     const payload = {
         email: user.email,
-        roleid: user.roleid,
         role: user.role
     };
     jwt.sign(payload, 'secretKey', { expiresIn: '12h' }, (err, token) => {
@@ -62,3 +61,4 @@ function createToken(user, res) {
         }
     });
 }
+

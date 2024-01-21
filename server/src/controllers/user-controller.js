@@ -2,9 +2,6 @@ import statusCodes from "http-status-codes";
 import {badRequestOnly, notFoundReq, performSimpleOneQuery} from "./generic.js";
 import bcrypt from "bcrypt";
 
-
-
-
 export function getAllUsers(req, res) {
     return badRequestOnly(req, res);
 }
@@ -122,4 +119,25 @@ async function hashPassword(password) {
     } catch (e) {
         throw e;
     }
+}
+
+export async function getUsersMappedRoles(req, res) {
+    const fullUsers = await performSimpleOneQuery('users', 'get')
+    for(const user of fullUsers) {
+        await replaceRoleIdWithName(user);
+    }
+    return res.status(200).json(fullUsers);
+}
+
+export async function replaceRoleIdWithName(user) {
+    const getRolesStrings = await performSimpleOneQuery('userrole', 'get')
+
+    const matchingRole = getRolesStrings.find(role => role.roleid === user.roleid);
+
+    if (matchingRole) {
+        user.role = matchingRole.name;
+        delete user.roleid;
+    }
+
+    return user;
 }

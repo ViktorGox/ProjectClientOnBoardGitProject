@@ -1,9 +1,6 @@
 <script>
     import { onMount } from 'svelte';
     import Chart from 'chart.js/auto';
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
-    import {arrayToString} from "../lib/Utils.js";
-    import router from "page";
     import TestTable from "../components/TestTable.svelte";
 
     let dashboardBoxes = [
@@ -133,7 +130,7 @@
         </div>
     </section>
 
-   <TestTable generalTable={false}></TestTable>
+   <TestTable generalTable={false} sprintId={sprintid}></TestTable>
 </main>
 
 <style>

@@ -3,23 +3,17 @@
     import {tokenStore} from "../stores/TokenStore.js";
     import userStore from "../stores/userStore.js";
     import router from "page";
-    import JafarButton from "../components/JafarButton.svelte";
     import {fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import SprintTable from "../components/SprintTable.svelte";
 
-    export let params;
-    let sprintid = params ? params.sprintid : null;
-
     let email = $userStore ? $userStore.email : null;
-    let role = $userStore ? $userStore.roleid : 'user';
-    console.log("role: ", role);
+    let role = $userStore ? $userStore.role : 'user';
 
     let sprints = [];
     let fullTests = [];
     let statuses;
     let modules;
-    let showStatusMenu = false;
     let reverseTests = false;
     let searchBarValue;
     let statusOptions = [];
@@ -142,11 +136,6 @@
 
     async function addNewSprint() {
         router("/SprintDetail/new");
-    }
-
-
-    function navigateToProject(sprintid) {
-        router(`/projects/${sprintid}`);
     }
 
     async function generateReport(sprintid) {

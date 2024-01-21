@@ -1,10 +1,16 @@
 <script>
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {addCombinatoryOption, fetchRequest, generateQuery} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import {onMount} from 'svelte';
     import router from "page";
 
     export let generalTable;
+    export let sprintId;
+    // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
+    // remove this when its fixed there.
+    if (typeof sprintId !== 'undefined') {
+        sprintId++;
+    }
 
     let fullTests = [];
     let statuses;
@@ -60,7 +66,26 @@
                         })
                 );
                 return Promise.all(modulePromises);
-            })
+            }).then(async (allTests) => {
+            let alteredTests = [];
+            if (sprintId) {
+                const query = generateQuery('testing', ['sprintid', 'statusid'], [sprintId, arrayToString(statusOptions)]
+                    , ['Equals', 'Equals'], 'testid,statusid')
+                const sprintData = await fetchRequest(addCombinatoryOption(query));
+                const filteredTests = allTests.filter(item => sprintData.some(({testid}) => testid === item.testid));
+                alteredTests = filteredTests.map(item2 => {
+                    const matchingEntry = sprintData.find(item1 => item1.testid === item2.testid);
+                    if (matchingEntry) {
+                        return {...item2, statusid: matchingEntry.statusid};
+                    } else {
+                        return item2;
+                    }
+                });
+            } else {
+                alteredTests = allTests;
+            }
+            return alteredTests
+        })
             .then(updatedTests => {
                 if (weightOrder) {
                     updatedTests.sort((a, b) => a.weight - b.weight)
@@ -69,7 +94,6 @@
                     updatedTests.reverse();
                 }
                 fullTests = updatedTests;
-                console.log(fullTests);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -81,11 +105,10 @@
         if (moduleOptions.length !== 0) {
             moduleIdsArray = await fetchTestIds();
         }
+        const queryProperties = ['testid', 'name'];
+        const queryParams = [arrayToString(moduleIdsArray), searchBarValue];
 
-        const queryProperties = ["statusid", 'testid', 'name'];
-        const queryParams = [arrayToString(statusOptions), arrayToString(moduleIdsArray), searchBarValue];
-
-        const querySettings = ["Equals", "Equals", "Includes"];
+        const querySettings = ["Equals", "Includes"];
         let query = generateQuery('test', queryProperties, queryParams, querySettings);
         return await fetchRequest(query);
     }
@@ -169,9 +192,10 @@
         router("/tests/" + id);
     }
 
-    const changeStatus = (test) => {
-        //TODO change test status
+    const changeStatus = async (test) => {
+        await fetchRequest('testing/' + sprintId + "/status/" + test.testid + "?combinatory=true", 'put', {statusid: test.statusid});
         console.log('status id for test: ' + test.testid + ', changed to:', test.statusid);
+        fullFetch();
     }
 </script>
 
@@ -263,33 +287,33 @@
         <table class="table custom-table">
 
             <thead>
-                <tr>
+            <tr>
 
-                    {#if !generalTable}
-                        <th scope="col">
-                            <label class="control">
-                                <input type="checkbox" on:click={checkAll}>
-                                <span class="checkmark"></span>
-                            </label>
-                        </th>
-                    {/if}
+                {#if !generalTable}
+                    <th scope="col">
+                        <label class="control">
+                            <input type="checkbox" on:click={checkAll}>
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                {/if}
 
-                    <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
-                        ID
-                        <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
-                             alt="order button image">
-                    </th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Modules</th>
-                    {#if !generalTable}
-                        <th scope="col">Status</th>
-                    {/if}
-                    <th scope="col">Assignee</th>
-                    <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
-                        <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
-                             alt="order button image">
-                    </th>
-                </tr>
+                <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
+                    ID
+                    <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
+                         alt="order button image">
+                </th>
+                <th scope="col">Title</th>
+                <th scope="col">Modules</th>
+                {#if !generalTable}
+                    <th scope="col">Status</th>
+                {/if}
+                <th scope="col">Assignee</th>
+                <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
+                    <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
+                         alt="order button image">
+                </th>
+            </tr>
             </thead>
 
             <tbody>
