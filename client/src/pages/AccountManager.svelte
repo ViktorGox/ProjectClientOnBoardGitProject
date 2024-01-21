@@ -3,11 +3,7 @@
     import {fetchRequest} from "../lib/Request.js";
 
 
-    let roles = [
-        {roleid: 1, name: "admin"},
-        {roleid: 2, name: "developer"},
-        {roleid: 3, name: "tester"}
-    ];
+    let roles = [];
     let users = [];
     let newUser = {
         email: "",
@@ -15,39 +11,24 @@
         role: ""
     };
 
-    let newRole = "";
     let showAddUserPopup = false;
-    let usersWithCurrentRole = [];
 
     async function fetchUsers() {
-        const response = await fetch(`http://localhost:3000/users`);
-        users = await response.json();
-
-        usersWithCurrentRole = users.map(user => {
-            return {
-                ...user,
-                currentRole: user.role,
-                newRole: user.role
-            };
-        });
-        console.log(users);
+        const fetchedUsers = await fetchRequest('users/mappedRoles');
+        fetchedUsers.forEach((user) => {
+            user.newRoleId = user.role;
+        })
+        users = fetchedUsers;
     }
 
     async function updateUserRole(user) {
-        console.log("NewRole: ", user.newRole);
-        try {
-            const updatedUser = {
-                email: user.email,
-                roleid: user.roleid,
-                password: user.password,
-                role: user.newRole
-            };
-            await fetchRequest(`users/${user.userid}`, 'PUT', updatedUser);
-            await fetchUsers();
-        } catch (error) {
-            console.error("Error updating user:", error);
-        }
+        const updatedUser = {
+            roleid: user.newRoleId,
+        };
+        await fetchRequest(`users/${user.userid}`, 'PUT', updatedUser);
+        await fetchUsers();
     }
+
 
     async function deleteUser(user) {
         const confirmDelete = confirm(`Are you sure you want to delete ${user.email}?`);
@@ -63,30 +44,19 @@
 
     async function addUser() {
         showAddUserPopup = false;
-        const selectedRole = roles.find(role => role.name === newUser.role);
-        console.log("selectedRole: ", selectedRole);
-        if (!selectedRole) {
-            console.error("Error: Selected role not found.");
-            return;
-        }
+        const newUserWithRoleID = {
+            email: newUser.email,
+            roleid: newUser.roleid,
+            password: newUser.password,
+        };
+        await fetchRequest('users', 'POST', newUserWithRoleID);
+        await fetchUsers();
 
-        try {
-            const newUserWithRoleID = {
-                email: newUser.email,
-                roleid: selectedRole.roleid,
-                password: newUser.password,
-                role: newUser.role
-            };
-            await fetchRequest('users', 'POST', newUserWithRoleID);
-            await fetchUsers();
-
-        } catch (error) {
-            console.error("Error adding user:", error);
-        }
     }
 
     onMount(async () => {
         await fetchUsers();
+        roles = await fetchRequest('userrole');
     });
 
 </script>
@@ -106,14 +76,14 @@
             </thead>
 
             <tbody>
-            {#each usersWithCurrentRole as user}
+            {#each users as user, index}
                 <tr>
                     <td>{user.email}</td>
-                    <td>{user.currentRole}</td>
+                    <td>{user.role}</td>
                     <td>
-                        <select bind:value={user.newRole}>
+                        <select bind:value={user.newRoleId}>
                             {#each roles as role}
-                                <option value={role.name}>{role.name}</option>
+                                <option value={role.roleid}>{role.name}</option>
                             {/each}
                         </select>
                     </td>
@@ -140,12 +110,12 @@
             <input type="password" bind:value={newUser.password}/>
 
             <label for="role">Role:</label>
-            <select bind:value={newUser.role}>
+            <select bind:value={newUser.roleid}>
                 {#each roles as role}
-                    <option value={role.name}>{role.name}</option>
+                    <option value={role.roleid}>{role.name}</option>
                 {/each}
             </select>
-            <button class="add-user-button" on:click={addUser}>Add User</button>
+            <button class="add-user-button" on:click={addUser}>Add a new User</button>
             <button class="close-button" on:click={() => showAddUserPopup = false}>
                 <span class="close-icon">X</span>
             </button>
@@ -181,7 +151,6 @@
         background-color: #4CAF50;
         color: white;
     }
-
 
     .popup {
         position: relative;

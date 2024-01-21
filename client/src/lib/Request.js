@@ -122,3 +122,11 @@ export function generateQuery(path, queryProperties, queryParams, querySettings,
     }
     return query;
 }
+
+export function addCombinatoryOption(query) {
+    if(query.includes('?')) {
+        return query += '&combinatory=' + 'true';
+    } else {
+        return query += '?combinatory=' + 'true';
+    }
+}

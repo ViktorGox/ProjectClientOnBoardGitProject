@@ -5,6 +5,7 @@ import {editUserByUserId} from "../controllers/user-controller.js";
 
 const router = express.Router();
 router.get("/",  userController.getAllUsers);
+router.get("/mappedRoles", userController.getUsersMappedRoles)
 router.get("/allUsernames", userController.getAllUsernames); // TODO: remove? not secure
 router.get("/:userid/email", userController.getUsername);
 router.get("/:userid", userController.getUserById);

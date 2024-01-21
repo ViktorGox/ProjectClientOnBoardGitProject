@@ -155,7 +155,7 @@
         </div>
     </section>
 
-    <TestTable generalTable={false}></TestTable>
+   <TestTable generalTable={false} sprintId={sprintid}></TestTable>
 </main>
 
 <style>
@@ -166,11 +166,9 @@
         max-width: 900px;
         margin: 0 auto;
     }
-
     .chart-column {
         width: 48%;
     }
-
     .dash {
         background: #1a1a1a;
         box-sizing: border-box;

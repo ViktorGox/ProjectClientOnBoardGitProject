@@ -38,7 +38,7 @@
     async function submit() {
         try {
             return fetchRequest('token', 'POST', {email, password}).then((result) => {
-                console.log(result);
+                console.log("result -> ",result)
                 incorrectCredentials = false;
                 $tokenStore.token = result.token;
                 $userStore=result.user;
@@ -52,7 +52,6 @@
         } catch (e) {
             console.log(e);
             incorrectCredentials = true;
-
         }
     }
 

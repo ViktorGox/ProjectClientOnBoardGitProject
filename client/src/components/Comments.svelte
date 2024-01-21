@@ -38,7 +38,7 @@ export let testId,stepId;
 </script>
 
 <div class="comments-section">
-    <h2>Comments</h2>
+    <h2>Change Test Log</h2>
     <ul>
         {#each comments as comment (comment.id)}
             <li>

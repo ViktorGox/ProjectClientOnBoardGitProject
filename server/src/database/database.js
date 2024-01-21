@@ -1,5 +1,6 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
+import {performSimpleOneQuery} from "../controllers/generic.js";
 
 const {Pool} = pkg;
 dotenv.config();
@@ -11,7 +12,6 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 });
-
 
 
 /**
@@ -35,11 +35,41 @@ export async function performQuery(query, answers = []) {
                     console.error('Error executing query', err);
                     reject(err);
                 } else {
-                    resolve(result.rows);
+                    resolve(result.rows || []);
                 }
             });
         });
     } finally {
         client.release();
     }
+}
+
+export async function fixDummyCompletionDateData() {
+    const sprintData = await performSimpleOneQuery('sprint', 'get');
+    const testData = await performSimpleOneQuery('testing', 'get');
+
+    for (const test of testData) {
+        const correspondingSprint = sprintData.find(sprint => sprint.sprintid === test.sprintid);
+
+        if (correspondingSprint) {
+            const randomDate = generateRandomDate(new Date(correspondingSprint.startdate), new Date(correspondingSprint.duedate));
+            await performQuery(`
+                UPDATE testing
+                SET completionDate = $1
+                WHERE sprintid = $2
+                  AND testid = $3
+                  AND statusid = 2
+            `, [randomDate, test.sprintid, test.testid]);
+        }
+    }
+}
+
+function generateRandomDate(startDate, endDate) {
+    const startTimestamp = startDate.getTime();
+    const endTimestamp = endDate.getTime();
+
+    // Calculate a random timestamp within the entire range (including the first and last day)
+    const randomTimestamp = startTimestamp + Math.random() * (endTimestamp - startTimestamp);
+
+    return new Date(randomTimestamp);
 }

@@ -26,6 +26,9 @@ const lessOrEqualTo = 'LessEqual';
  * you want to return.
  */
 export async function performQueryFromReq(req) {
+    req.combinatory = req.query.combinatory;
+    delete req.query.combinatory;
+
     let query;
     try {
         if (req.method.toLowerCase() === 'get') {
@@ -43,7 +46,7 @@ export async function performQueryFromReq(req) {
         return {error: e.message};
     }
     // This is just test printing.
-    if(query !== 'SELECT * FROM test') {
+    if (query !== 'SELECT * FROM test') {
         console.log(query);
     }
 
@@ -178,7 +181,7 @@ function generateWhereClause(req) {
 
     whereClause += whereClauseFromPath(req);
     if (queryKeys.length > 0 && paramsKeys.length > 0) {
-        whereClause += ' OR ';
+        whereClause += orOrAnd(req);
     }
     whereClause += whereClauseFromQuery(req);
     return whereClause;
@@ -198,13 +201,20 @@ function whereClauseFromPath(req) {
         const param = paramsKeys[i];
 
         whereClause += param + " = " + req.params[param];
-
         if (i !== paramsKeys.length - 1) {
-            whereClause += " OR ";
+            whereClause += orOrAnd(req);
         }
     }
 
     return whereClause;
+}
+
+function orOrAnd(req) {
+    if (req.combinatory) {
+        return ' AND '
+    } else {
+        return ' OR '
+    }
 }
 
 /**
@@ -229,7 +239,7 @@ function whereClauseFromQuery(req) {
         whereClause += addParameterToQuery(param, paramInfo);
 
         if (i !== queryKeys.length - 1) {
-            whereClause += " OR ";
+            whereClause += orOrAnd(req);
         }
     }
 
@@ -345,7 +355,9 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
 
     // TODO: should return 404 if nothing found?
 
-    fakeReq.query[queryProperty] = queryParam + ";Equals";
+    if (queryProperty) {
+        fakeReq.query[queryProperty] = queryParam + ";Equals";
+    }
 
     return await performQueryFromReq(fakeReq);
 }
@@ -460,6 +472,8 @@ export async function badRequestOnly(req, res) {
  * error handling, and you want to return a 404 when nothing is found.
  */
 export async function notFoundReq(req, res) {
+    let combinatory = req.query.combinatory;
+
     if (req.method.toLowerCase() !== 'get') {
         const oldMethod = req.method;
         req.method = 'get'
@@ -470,5 +484,39 @@ export async function notFoundReq(req, res) {
         }
         req.method = oldMethod;
     }
+
+    if(combinatory) {
+        req.query.combinatory = true;
+    }
+
     return await badRequestOnly(req, res);
+}
+
+/**
+ * Removes unwanted query parameters from the body. Takes in the req and a string of parameter names
+ * separated by a comma.
+ */
+export function removeBodyParametersIgnoreCase(req, paramNames) {
+    req.body = removeParametersIgnoreCase(req.body, paramNames);
+    return req;
+}
+
+/**
+ * Removes unwanted query parameters from the query. Takes in the req and a string of parameter names
+ * separated by a comma.
+ */
+export function removeQueryParametersIgnoreCase(req, paramNames) {
+    req.query = removeParametersIgnoreCase(req.query, paramNames);
+    return req;
+}
+
+function removeParametersIgnoreCase(part, paramNames) {
+    const paramArray = paramNames.split(',').map(param => param.trim());
+
+    for (const key in part) {
+        if (paramArray.includes(key.toLowerCase())) {
+            delete part[key];
+        }
+    }
+    return part;
 }

@@ -6,7 +6,7 @@ import tokenRouter from "./routes/token-router.js";
 import userRouter from "./routes/user-router.js";
 import testsRouter from "./routes/test-router.js";
 import sprintRouter from "./routes/sprint-router.js";
-import {performQuery} from "./database/database.js";
+import {fixDummyCompletionDateData, performQuery} from "./database/database.js";
 import statusRouter from "./routes/status-router.js";
 import moduleRouter from "./routes/module-router.js"
 import testModuleRouter from "./routes/test-module-router.js";
@@ -23,14 +23,16 @@ app.use('/token', tokenRouter);
 app.use('/users', userRouter);
 app.use('/test', testsRouter)
 app.use('/status', statusRouter);
-app.use('/module', moduleRouter);
-app.use('/testmodule', testModuleRouter);
-app.use('/testing', testingRouter);
+app.use('/module', moduleRouter)
+app.use('/testmodule', testModuleRouter)
 app.use('/sprint', sprintRouter);
 app.use('/userrole', roleRouter);
+app.use('/testing', testingRouter);
 
-const sqlFile = fs.readFileSync('./database/DatabaseScript.sql', 'utf8');
-void performQuery(sqlFile);
+const sqlFile = fs.readFileSync('../server/src/database/DatabaseScript.sql', 'utf8');
+performQuery(sqlFile).then((result) => {
+    void fixDummyCompletionDateData();
+});
 
 app.listen(port, function () {
     console.log(`Server listening on port ${port}`);
