@@ -1,31 +1,50 @@
 import fetch from 'node-fetch';
 import {subscribedSockets} from "../websocket.js";
+import {SERVER_PS_OUT_PARAMS} from "mysql/lib/protocol/constants/server_status.js";
 
 const url = "http://localhost:3000/";
 
 export async function sendBlockers() {
     try {
-        const response = await fetch(`${url}testing`, {
+        const testingData = await fetch(`${url}testing`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
         });
 
-        let data = await response.json();
-        data = data.filter(test => test.statusid === 3);
+        let testing = await testingData.json();
 
-        // const testIdsMapped = data.map(item => item.testid).join(',');
-        // let testData = await fetch(`${url}test?testid=` + testIdsMapped + ";Equals", {
-        //     method: 'GET',
-        //     headers: { 'Content-Type': 'application/json' },
-        // });
-        //
-        // let testDataJsoned = await testData.json();
-        // console.log(testDataJsoned);
+        const tests = await fetch(`${url}test`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+        });
+        let test = await tests.json();
+
+
+        let blockers = mergeTestData(testing, test).filter(test => test.statusid === 3);
+        console.log(blockers);
+
+
         const clients = Array.from(subscribedSockets);
         clients.forEach(client => {
-            client.send(JSON.stringify({ response: "blockers", data }));
+            client.send(JSON.stringify({response: "blockers", blockers}));
         });
     } catch (error) {
         console.error('Error fetching blockers:', error);
     }
+}
+
+function mergeTestData(testData, sprintTestData) {
+    const testDataMap = new Map(testData.map(test => [test.testid, test]));
+    for (const sprintTest of sprintTestData) {
+        const testid = sprintTest.testid;
+
+        if (testDataMap.has(testid)) {
+            Object.assign(testDataMap.get(testid), sprintTest);
+        }
+    }
+
+    // Convert the merged data back to an array
+    const mergedData = Array.from(testDataMap.values());
+
+    return mergedData;
 }

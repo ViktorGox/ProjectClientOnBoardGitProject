@@ -2,11 +2,13 @@
 <script>
     import { blockerStore } from '../stores/blockerStore';
     import { onMount } from 'svelte';
+    import userStore from "../stores/userStore.js";
 
     onMount(() => {
     });
 
-    let notifications = $blockerStore.blockers;
+    let notifications = $blockerStore.filter(blocker => blocker.userId === $userStore.id)
+
 
 
 
