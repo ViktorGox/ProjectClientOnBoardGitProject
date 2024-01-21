@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS Testing
     SprintID integer,
     TestID   integer,
     StatusID integer NOT NULL DEFAULT 1,
-    completionDate DATE DEFAULT NULL CHECK (completionDate >= CURRENT_DATE),
+    completionDate DATE DEFAULT NULL,
     FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (TestID) REFERENCES Test (TestId)  MATCH SIMPLE ON DELETE CASCADE,
     FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE
@@ -119,8 +119,8 @@ values ('admin'),
 INSERT INTO Users (email, RoleID, password, role)
 VALUES ('admin', 1, '$2a$12$vsDm8ca0k/BhR/FiCVJn3.dUoUMw2.x64T2PmgAAnfvFI7pUA.FrC', 'admin'),
        ('developer', 2, '$2a$12$JtIJIApdrVJL3KKctEERJOXfMc2bXzawugrLoeUllGERgDOm6IuuS', 'developer'),
-       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester'),
-       ('tester2', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy', 'tester');
+       ('tester', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy','tester'),
+       ('tester2', 3, '$2a$12$Tx9Ny6wMjMLtjEmG52/k1OSveL7ZHY7oBfbeQy22hUQM4hLC5Yscy','tester');
 
 
 insert into module (label)
@@ -222,5 +222,3 @@ values (1, 4, 1),
        (4, 2, 4),
        (4, 2, 4),
        (4, 2, 4);
-
-update testing set completiondate = CURRENT_DATE where StatusID = 2

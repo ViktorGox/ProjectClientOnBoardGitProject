@@ -11,26 +11,26 @@
     export let params;
     let sprintid;
 
+    let sprintTitle;
+
     let testValue;
-    let passedValue;
     let bugValue;
     let blockerValue;
 
-    //VALUES
-    let totalTests = 500;
-    let chartValues = [totalTests, 480, 460, 400, 390, 365, 300, 290, 248, 230, 180, 130, 60, 0];
-    let chartLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
     let chartCanvas;
 
-    async function getSprintTesting() {
+    let allPassedTests;
+    let allTests;
+
+    async function getSprintTestingInfo() {
         try {
             const testing = await fetchRequest('testing');
             const dataArray = Array.isArray(testing) ? testing : [testing];
-            const filteredData = dataArray.filter(sprint => sprint.sprintid == sprintid);
-            testValue = filteredData.length;
-            passedValue = filteredData.filter(sprint => sprint.statusid == 2).length;
-            blockerValue = filteredData.filter(sprint => sprint.statusid == 3).length;
-            bugValue = filteredData.filter(sprint => sprint.statusid == 4).length;
+            allTests = dataArray.filter(sprint => sprint.sprintid == sprintid);
+            testValue = allTests.length;
+            allPassedTests = allTests.filter(sprint => sprint.statusid == 2);
+            blockerValue = allTests.filter(sprint => sprint.statusid == 3).length;
+            bugValue = allTests.filter(sprint => sprint.statusid == 4).length;
 
             drawDashboardBoxes();
         } catch (e) {
@@ -42,18 +42,75 @@
         dashboardBoxes = [
             {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
             {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
-            {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: testValue },
-            {icon: 'bi bi-check-square text-success', title: 'Passed', value: passedValue},
+            {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: testValue},
+            {icon: 'bi bi-check-square text-success', title: 'Passed', value: allPassedTests.length},
             {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: bugValue},
             {icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: blockerValue},
             // {icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0}
         ];
+        createDonut();
+        createLineChart();
     }
 
-    onMount(() => {
-        sprintid = params ? params.id : null;
-        getSprintTesting();
+    async function createLineChart() {
+        const response = await fetchRequest(`sprint/${sprintid}`)
+        const sprint = response[0];
+        sprintTitle = sprint.title;
 
+        const sprintStartDate = new Date(sprint.startdate);
+        const sprintEndDate = new Date(sprint.duedate);
+
+        const totalDays = Math.floor((sprintEndDate - sprintStartDate) / (24 * 60 * 60 * 1000));
+
+        let chartValues = [testValue];
+        let chartLabels = [];
+
+        let remainingTestsPerDay = testValue;
+
+        for (let i = 0; i <= totalDays; i++) {
+            const currentDate = new Date(sprintStartDate);
+            currentDate.setDate(currentDate.getDate() + i);
+
+            const testsCompletedOnDay = allTests.filter(test => {
+                const testDate = new Date(test.completiondate);
+                return testDate.toDateString() === currentDate.toDateString();
+            });
+
+            const completedTestsCount = testsCompletedOnDay.length;
+            remainingTestsPerDay -= completedTestsCount;
+
+            chartValues.push(remainingTestsPerDay);
+        }
+
+        for (let i = 0; i <= totalDays + 1; i++) {
+            chartLabels.push(i.toString());
+        }
+
+
+        const lineCtx = chartCanvas.getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Tests to do',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: chartValues
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }
+            }
+        });
+    }
+
+    function createDonut() {
         const doughnutValues = dashboardBoxes.map(box => box.value);
         const doughnutLabels = dashboardBoxes.map(box => box.title);
 
@@ -98,26 +155,17 @@
             }
         };
 
-        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        const doughnutCtx = document.getElementById('doughnutChart');
         const doughnutChart = new Chart(doughnutCtx, {
             type: 'doughnut',
             data: doughnutData,
             options: doughnutOptions
         });
+    }
 
-        const lineCtx = chartCanvas.getContext('2d');
-        const lineChart = new Chart(lineCtx, {
-            type: 'line',
-            data: {
-                labels: chartLabels,
-                datasets: [{
-                    label: 'Tests to do',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: chartValues
-                }]
-            }
-        });
+    onMount(() => {
+        sprintid = params ? params.id : null;
+        getSprintTestingInfo();
     });
 
 </script>
@@ -125,7 +173,9 @@
 <main>
     <div class="dash dark-bg text-light">
         <div class="container px-4 py-5" id="icon-grid">
-            <h1 style="margin-top: -20px;">SPRINT {sprintid= sprintid-1}</h1>
+            {#if sprintTitle !== undefined}
+                <h1 style="margin-top: -20px;">{sprintTitle}</h1>
+            {/if}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-start">
