@@ -5,7 +5,7 @@ import {
     putQuery,
     getTestById,
     putTestById,
-    deleteTest
+    deleteTest, getTotalWeight
 } from "../controllers/test-controller.js";
 import testStepRouter from "./teststep-router.js";
 
@@ -15,11 +15,13 @@ router.use('/:testid/teststeps', testStepRouter);
 
 router.get('/', getQuery);
 router.get('/:testid', getTestById);
+router.get('/:testid/weight', getTotalWeight);
 
 router.put('/:testid', putTestById);
+router.put('/', putQuery);
 
 router.delete('/:testid',deleteTest);
+
 router.post('/', postQuery);
-router.put('/', putQuery) //TODO: should be patch, and all other puts.
 
 export default router;

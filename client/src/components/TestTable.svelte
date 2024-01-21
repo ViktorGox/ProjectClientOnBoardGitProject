@@ -59,9 +59,10 @@
 
                 const modulePromises = fetchedTests.map(element =>
                     fetchRequest('testmodule/test/' + element.testid)
-                        .then(result => {
+                        .then(async (result) => {
                             element.modules = result.map(item => item.moduleid);
-                            element.weight = Math.floor(Math.random() * 25) + 1;
+                            const weightReturn = await fetchRequest('test/' + element.testid + "/weight");
+                            element.weight = weightReturn.sum;
                             return element;
                         })
                 );

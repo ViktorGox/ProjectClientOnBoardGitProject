@@ -35,7 +35,7 @@ export async function performQuery(query, answers = []) {
                     console.error('Error executing query', err);
                     reject(err);
                 } else {
-                    resolve(result.rows);
+                    resolve(result.rows || []);
                 }
             });
         });
