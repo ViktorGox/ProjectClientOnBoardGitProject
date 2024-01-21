@@ -154,69 +154,55 @@
 
 <style>
     body {
-        background-color: #666;
+        background-color: #f0f0f0; /* Change to a lighter background color */
         margin: 0;
         font-family: 'Arial', sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-    }
-    main {
-        display: flex;
-        justify-content: space-evenly;
-        padding: 20px;
-        font-family: 'Arial', sans-serif;
-        align-items: center;
-    }
-    .info-container {
-        text-align: center;
-    }
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        width: 45%;
-    }
-    .date-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        font-family: 'Arial', sans-serif;
-        font-size: large;
-        font-weight: bold;
-    }
-    .no-sprint-message {
-        color: #fff;
+        min-height: 100vh;
     }
 
-    textarea {
-        flex: 1;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background-color: #313131;
-        padding: 10px;
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        font-family: "Baskerville Old Face";
-        resize: none;
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
     }
+
     .info-container {
+        text-align: center;
         background-color: #333;
         border-radius: 10px;
         padding: 15px;
         color: white;
-        text-align: center;
-        margin-bottom: 85px;
+        margin-bottom: 15px;
     }
 
+    section {
+        width: 100%;
+        max-width: 600px; /* Adjust the max-width as needed */
+        margin-bottom: 20px;
+    }
 
     .date-container {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 16px;
+        font-weight: bold;
     }
+
+    h2 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1rem;
+    }
+
     .add-sprint-button {
         background-color: #4CAF50;
         padding: 10px;
@@ -225,13 +211,24 @@
         cursor: pointer;
         border: none;
         border-radius: 5px;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
-        font-size: large;
-    }
-    .content-section{
-       margin-top: 150px;
     }
 
+    .no-sprint-message {
+        color: #333; /* Adjust color for better contrast */
+    }
 
+    /* Calendar Section Styles */
+    .calendar-section {
+        width: 100%;
+        max-width: 800px; /* Adjust the max-width as needed */
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .bigger-font {
+        font-size: 30px; /* Ajusta el tamaño según tus preferencias */
+    }
 </style>
