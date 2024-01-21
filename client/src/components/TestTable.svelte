@@ -8,7 +8,7 @@
     export let sprintId;
     // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
     // remove this when its fixed there.
-    if (sprintId) {
+    if (typeof sprintId !== 'undefined') {
         sprintId++;
     }
 
@@ -72,7 +72,6 @@
                 const query = generateQuery('testing', ['sprintid', 'statusid'], [sprintId, arrayToString(statusOptions)]
                     , ['Equals', 'Equals'], 'testid,statusid')
                 const sprintData = await fetchRequest(addCombinatoryOption(query));
-                console.log("Query: ", query);
                 const filteredTests = allTests.filter(item => sprintData.some(({testid}) => testid === item.testid));
                 alteredTests = filteredTests.map(item2 => {
                     const matchingEntry = sprintData.find(item1 => item1.testid === item2.testid);
