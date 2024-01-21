@@ -46,7 +46,7 @@ export async function performQueryFromReq(req) {
         return {error: e.message};
     }
     // This is just test printing.
-    if(query !== 'SELECT * FROM test') {
+    if (query !== 'SELECT * FROM test') {
         console.log(query);
     }
 
@@ -201,7 +201,6 @@ function whereClauseFromPath(req) {
         const param = paramsKeys[i];
 
         whereClause += param + " = " + req.params[param];
-
         if (i !== paramsKeys.length - 1) {
             whereClause += orOrAnd(req);
         }
@@ -211,7 +210,7 @@ function whereClauseFromPath(req) {
 }
 
 function orOrAnd(req) {
-    if(req.combinatory) {
+    if (req.combinatory) {
         return ' AND '
     } else {
         return ' OR '
@@ -356,7 +355,7 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
 
     // TODO: should return 404 if nothing found?
 
-    if(queryProperty) {
+    if (queryProperty) {
         fakeReq.query[queryProperty] = queryParam + ";Equals";
     }
 
@@ -473,6 +472,8 @@ export async function badRequestOnly(req, res) {
  * error handling, and you want to return a 404 when nothing is found.
  */
 export async function notFoundReq(req, res) {
+    let combinatory = req.query.combinatory;
+
     if (req.method.toLowerCase() !== 'get') {
         const oldMethod = req.method;
         req.method = 'get'
@@ -483,6 +484,11 @@ export async function notFoundReq(req, res) {
         }
         req.method = oldMethod;
     }
+
+    if(combinatory) {
+        req.query.combinatory = true;
+    }
+
     return await badRequestOnly(req, res);
 }
 
