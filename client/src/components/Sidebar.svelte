@@ -26,12 +26,22 @@
                 </div>
             </a>
         </li>
+        <li>
+            <a href="/modules" class="nav-link" class:active={active === '/modules'}>
+                <div class="row menu-row">
+                    <span class="menu-icon">
+                       <i class="bi bi-tags"></i>
+                    </span>
+                    Modules
+                </div>
+            </a>
+        </li>
         {#if $userStore.role === 'admin'}
             <li>
                 <a href="/account" class="nav-link" class:active={active === '/account'}>
                     <div class="row menu-row">
                     <span class="menu-icon">
-                       <i class="bi bi-view-list"></i>
+                       <i class="bi bi-people"></i>
                     </span>
                         Users and Roles
                     </div>

@@ -322,7 +322,6 @@
                 {#if !generalTable}
                     <th scope="col">Status</th>
                 {/if}
-                <th scope="col">Assignee</th>
                 <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
                     <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
                          alt="order button image">
@@ -380,9 +379,6 @@
                                 </div>
                             </td>
                         {/if}
-                        <td>
-                            {test.assignee}
-                        </td>
                         <td>{test.weight}</td>
                     </tr>
                     <tr class="spacer">

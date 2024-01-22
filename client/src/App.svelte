@@ -12,6 +12,7 @@
     import Sprints from "./pages/Sprints.svelte";
     import Notifications from "./pages/Notifications.svelte";
     import AccountManager from "./pages/AccountManager.svelte";
+    import Modules from "./pages/Modules.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -73,6 +74,12 @@
     });
     router('/account', (ctx) => {
         page = AccountManager;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+
+    router('/modules', (ctx) => {
+        page = Modules;
         params = ctx.params;
         currentRoute = ctx.pathname;
     });
