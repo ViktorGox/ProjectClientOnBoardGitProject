@@ -26,6 +26,9 @@
         testCaseName = await testCaseName.json();
         testCaseName = testCaseName[0].name;
 
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+
         const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
         testSteps = await response.json();
         console.log(testSteps);
