@@ -48,6 +48,40 @@
             console.error('Error:', error);
         }
     }
+
+    let fileInput;
+    let previewImage;
+
+    function handleFileChange() {
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Update the previewImage source to display the selected image
+                previewImage.src = e.target.result;
+            };
+
+            // Read the selected file as a data URL
+            reader.readAsDataURL(file);
+        }
+    }
+
+    async function uploadFile() {
+        const file = fileInput.files[0];
+
+        if (!file) {
+            console.error('No file selected.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetchRequest('test/1/teststeps/2/attachment','POST',formData)
+        console.log(response);
+    }
 </script>
 
 <div class="comments-section">
@@ -66,9 +100,12 @@
             </li>
         {/each}
     </ul>
+
     <form on:submit={handleSubmit}>
         <textarea name="comment" placeholder="Add a comment..."></textarea>
-        <input type="file" accept="image/*" name="image"/>
+        <input type="file" bind:this={fileInput} on:change={handleFileChange}>
+        <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
+        <button on:click={uploadFile}>Upload File</button>
         <button type="submit">Submit</button>
     </form>
 </div>
