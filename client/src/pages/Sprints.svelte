@@ -3,7 +3,7 @@
     import {tokenStore} from "../stores/TokenStore.js";
     import userStore from "../stores/userStore.js";
     import router from "page";
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {fetchRequest, generateQuery,addCombinatoryOption} from "../lib/Request.js";
     import {arrayToString} from "../lib/Utils.js";
     import SprintTable from "../components/SprintTable.svelte";
 
@@ -30,6 +30,7 @@
 
     function updateSprints() {
         getSprints();
+        sprints = [...sprints];
     }
 
     async function deleteSprintWithId(sprintid) {
@@ -42,14 +43,12 @@
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}` // Replace 'token' with the actual token
+                'Authorization': `Bearer ${$tokenStore}`
             }
         });
         const result = await response.json();
-        console.log(result);
         await getSprints();
 
-        // Reset variables after deletion
         deletingSprintId = null;
         showDeleteConfirmation = false;
     }
@@ -59,33 +58,58 @@
         showDeleteConfirmation = false;
     }
 
-    function fullFetch() {
-        Promise.all([fetchStatuses(), fetchTests(), fetchModules()])
-            .then(([fetchedStatuses, fetchedTests, fetchedModules]) => {
-                statuses = fetchedStatuses;
-                modules = fetchedModules;
+    async function fullFetch(sprintid) {
+        try {
+            const [fetchedStatuses, fetchedTests, fetchedModules] = await Promise.all([
+                fetchStatuses(),
+                fetchTests(),
+                fetchModules()
+            ]);
 
-                const modulePromises = fetchedTests.map(element =>
-                    fetchRequest('testmodule/test/' + element.testid)
-                        .then(result => {
-                            element.modules = result.map(item => item.moduleid);
-                            return element;
-                        })
-                );
-                return Promise.all(modulePromises);
-            })
-            .then(updatedTests => {
-                if (reverseTests) {
-                    updatedTests.reverse();
-                }
-                fullTests = updatedTests;
-                console.log(fullTests);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
+            statuses = fetchedStatuses;
+            modules = fetchedModules;
+
+            const modulePromises = fetchedTests.map(async (element) => {
+                const result = await fetchRequest(`testmodule/test/${element.testid}`);
+                element.modules = result.map((item) => item.moduleid);
+
+                const weightReturn = await fetchRequest(`test/${element.testid}/weight`);
+                element.weight = weightReturn.sum;
+
+                return element;
             });
-    }
 
+            const allTests = await Promise.all(modulePromises);
+
+            let alteredTests = [];
+            if (sprintid) {
+                const query = generateQuery('testing', ['sprintid', 'statusid'], [sprintid, arrayToString(statusOptions)],
+                    ['Equals', 'Equals'], 'testid,statusid');
+                const sprintData = await fetchRequest(addCombinatoryOption(query));
+                const filteredTests = allTests.filter(item => sprintData.some(({ testid }) => testid === item.testid));
+                alteredTests = filteredTests.map(item2 => {
+                    const matchingEntry = sprintData.find(item1 => item1.testid === item2.testid);
+                    if (matchingEntry) {
+                        return { ...item2, statusid: matchingEntry.statusid };
+                    } else {
+                        return item2;
+                    }
+                });
+            } else {
+                alteredTests = allTests;
+            }
+
+            if (moduleOptions.length > 0) {
+                const selectedModuleIds = moduleOptions.map(module => module.moduleid);
+                alteredTests = alteredTests.filter(test => test.modules.some(moduleId => selectedModuleIds.includes(moduleId)));
+            }
+
+
+            fullTests = alteredTests;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     async function fetchTests() {
         let moduleIdsArray = [];
         if (moduleOptions.length !== 0) {
@@ -138,26 +162,24 @@
     }
 
     async function generateReport(sprintid) {
-        // // Call fullFetch for the selected sprint
-        await fullFetch(sprintid);
-
-        // Check if data is present
-        if (fullTests.length > 0) {
-            // Generate CSV and trigger download
-            generateCSV(fullTests, sprintid);
-        } else {
-            console.warn("No data available for CSV generation.");
+        try {
+            await fullFetch(sprintid);
+            if (fullTests.length > 0) {
+                generateCSV(fullTests, sprintid);
+            } else {
+                console.warn("No data available for CSV generation.");
+            }
+        } catch (error) {
+            console.error('Error generating report:', error);
         }
     }
 
     function generateCSV(data, sprintid) {
-        // Add a header row with titles
         const headerRow = Object.keys(data[0]).map(title => escapeCSVValue(title)).join(",");
-
         const csvContent = "data:text/csv;charset=utf-8," + headerRow + "\n" + data.map(row => rowToCSV(row)).join("\n");
         const encodedUri = encodeURI(csvContent);
 
-        // Use sprintid in the filename
+
         const filename = `report_${sprintid}.csv`;
 
         const link = document.createElement("a");

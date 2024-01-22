@@ -12,17 +12,13 @@
     console.log(params);
     let sprintid = params.id;
     let email = $userStore ? $userStore.email : null;
-
-    let sprint = [];
+   let sprint = [];
     let title;
     let startDate;
     let dueDate;
 
 
     async function getSprintById() {
-        console.log(sprintid);
-
-        // Use fetchRequest from Request.js
         const path = `sprint/${sprintid}`;
         const response = await fetchRequest(path, 'GET');
         sprint = response;
@@ -39,7 +35,6 @@
                 dueDate = sprint[0].duedate;
             }
         } else {
-            // Handle the case when it's a new sprint
             sprint = [{
                 sprintId: 0,
                 title: "Sprint 1",
@@ -96,7 +91,7 @@
         let start = new Date(date);
         return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
     }
-    function submitNewInfo() {
+   async function submitNewInfo() {
         if (checkInputs()) {
             let sprintInfo = {
                 title: title,
@@ -105,12 +100,12 @@
             }
 
             if (sprintid && sprintid !== 'new') {
-                editSprint(sprintid, sprintInfo);
+              await  editSprint(sprintid, sprintInfo);
             } else {
-                addNewSprint(sprintInfo);
+              await  addNewSprint(sprintInfo);
             }
 
-            router(`/projects`);
+           await router(`/projects`);
         } else {
             alert("One or many inputs are not correctly inputted!");
         }
@@ -128,9 +123,9 @@
 <main>
     {#if sprint && sprintid !== undefined}
         <section id="informationPreview" class="content-section">
-<!--            <div class="image-container">-->
-<!--                <img src={logoImageLink} alt={logoImageLink}>-->
-<!--            </div>-->
+            <!--            <div class="image-container">-->
+            <!--                <img src={logoImageLink} alt={logoImageLink}>-->
+            <!--            </div>-->
 
             <div class="info-container">
                 <div class="date-container">
@@ -145,7 +140,6 @@
         <section class="content-section">
             <SprintInfo bind:title={title} bind:strartdate={startDate} bind:dueddate={dueDate}/>
             <button class="add-sprint-button" on:click={submitNewInfo}>Add Sprint</button>
-<!--            <JafarButton text="Submit" clickHandler={submitNewInfo} />-->
         </section>
     {:else }
         <p class="no-sprint-message" >No sprint found!</p>
@@ -154,55 +148,69 @@
 
 <style>
     body {
-        background-color: #f0f0f0; /* Change to a lighter background color */
+        background-color: #666;
         margin: 0;
         font-family: 'Arial', sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
+        height: 100vh;
     }
-
     main {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: space-evenly;
         padding: 20px;
+        font-family: 'Arial', sans-serif;
+        align-items: center;
     }
-
     .info-container {
         text-align: center;
+    }
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 45%;
+    }
+    .date-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        font-family: 'Arial', sans-serif;
+        font-size: large;
+        font-weight: bold;
+    }
+    .no-sprint-message {
+        color: #fff;
+    }
+
+    textarea {
+        flex: 1;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #313131;
+        padding: 10px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        font-family: "Baskerville Old Face";
+        resize: none;
+    }
+    .info-container {
         background-color: #333;
         border-radius: 10px;
         padding: 15px;
         color: white;
-        margin-bottom: 15px;
+        text-align: center;
+        margin-bottom: 85px;
     }
 
-    section {
-        width: 100%;
-        max-width: 600px; /* Adjust the max-width as needed */
-        margin-bottom: 20px;
-    }
 
     .date-container {
         display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        font-size: 16px;
-        font-weight: bold;
+        justify-content: space-between;
     }
-
-    h2 {
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-    }
-
-    p {
-        margin: 0;
-        font-size: 1rem;
-    }
-
     .add-sprint-button {
         background-color: #4CAF50;
         padding: 10px;
@@ -211,24 +219,13 @@
         cursor: pointer;
         border: none;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
+        font-size: large;
+    }
+    .content-section{
+        margin-top: 150px;
     }
 
-    .no-sprint-message {
-        color: #333; /* Adjust color for better contrast */
-    }
 
-    /* Calendar Section Styles */
-    .calendar-section {
-        width: 100%;
-        max-width: 800px; /* Adjust the max-width as needed */
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .bigger-font {
-        font-size: 30px; /* Ajusta el tamaño según tus preferencias */
-    }
 </style>
