@@ -60,41 +60,41 @@ CREATE TABLE IF NOT EXISTS Test
 (
     TestID      SERIAL PRIMARY KEY,
     Name        VARCHAR(255) NOT NULL,
-    UserID      INTEGER               DEFAULT NULL,
-    Description VARCHAR(255)          DEFAULT NULL,
-    lastUpdate  DATE                  DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE),
-    FOREIGN KEY (UserID) REFERENCES Users (Userid) ON DELETE SET NULL
+    Description VARCHAR(255) DEFAULT NULL,
+    lastUpdate  DATE         DEFAULT CURRENT_DATE CHECK (lastUpdate >= CURRENT_DATE)
 );
 
 CREATE TABLE IF NOT EXISTS Testing
 (
-    SprintID integer,
-    TestID   integer,
-    StatusID integer NOT NULL DEFAULT 1,
-    completionDate DATE DEFAULT NULL,
+    SprintID       integer,
+    TestID         integer,
+    StatusID       integer NOT NULL DEFAULT 1,
+    UserID         INTEGER          DEFAULT NULL,
+    completionDate DATE             DEFAULT NULL,
     UNIQUE (SprintID, TestID),
-    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID)  MATCH SIMPLE ON DELETE CASCADE,
-    FOREIGN KEY (TestID) REFERENCES Test (TestId)  MATCH SIMPLE ON DELETE CASCADE,
-    FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE
+    FOREIGN KEY (SprintID) REFERENCES Sprint (SprintID) MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (TestID) REFERENCES Test (TestId) MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (StatusID) REFERENCES TestStatus (statusid) MATCH SIMPLE,
+    FOREIGN KEY (UserID) REFERENCES Users (Userid) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS TestModule
 (
     TestID   integer NOT NULL,
     ModuleID integer NOT NULL,
-    FOREIGN KEY (TestID) REFERENCES Test (TestID)  MATCH SIMPLE ON DELETE CASCADE,
-    FOREIGN KEY (ModuleID) REFERENCES Module (ModuleID)  MATCH SIMPLE ON DELETE CASCADE
+    FOREIGN KEY (TestID) REFERENCES Test (TestID) MATCH SIMPLE ON DELETE CASCADE,
+    FOREIGN KEY (ModuleID) REFERENCES Module (ModuleID) MATCH SIMPLE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS TestStep
 (
-    StepID      integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    TestID      integer                NOT NULL,
-    StepNR      integer                NOT NULL,
-    Title       character varying(255) NOT NULL,
-    TestLog     character varying(255) DEFAULT null,
-    weight      integer                NOT NULL,
-    completion 		boolean 			NOT NULL DEFAULT FALSE,
+    StepID     integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    TestID     integer                NOT NULL,
+    StepNR     integer                NOT NULL,
+    Title      character varying(255) NOT NULL,
+    TestLog    character varying(255)          DEFAULT null,
+    weight     integer                NOT NULL,
+    completion boolean                NOT NULL DEFAULT FALSE,
     PRIMARY KEY (StepID),
     UNIQUE (TestID, StepNR),
     FOREIGN KEY (TestID) REFERENCES Test (TestID) ON DELETE CASCADE
@@ -102,11 +102,11 @@ CREATE TABLE IF NOT EXISTS TestStep
 
 CREATE TABLE IF NOT EXISTS Attachment
 (
-    AttachmentID integer NOT NULL GENERATED ALWAYS AS IDENTITY,
-    TestStepId integer NOT NULL,
-    path character varying(255) NOT NULL,
+    AttachmentID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    TestStepId   integer                NOT NULL,
+    path         character varying(255) NOT NULL,
     Primary key (AttachmentID),
-    FOREIGN KEY (TestStepId) REFERENCES TestStep (StepID)  MATCH SIMPLE
+    FOREIGN KEY (TestStepId) REFERENCES TestStep (StepID) MATCH SIMPLE
 );
 
 END;
@@ -135,25 +135,25 @@ values ('To do'),
        ('Blocker'),
        ('Bug');
 
-insert into test(name, userid, description)
-values ('Check if first and last name are added correctly', 3, 'first and last name shall be correct'),
-       ('Check if wrong passwords are rejected', 1, 'wrong passwords shall be rejected'),
-       ('Check if wrong username are rejected', 2, 'wrong usernames shall be rejected'),
-       ('Check if background color is not red', 3, 'red background shall not be accepted'),
-       ('Verify the sidebar is on the side', 1, 'sidebar shall be on the side'),
-       ('Confirm confirmation works correctly', 1, 'confirmation shall work'),
-       ('Verify all data is shown 1', 3, 'data stored shall be shown 1'),
-       ('Verify all data is shown 2', 1, 'data stored shall be shown 2'),
-       ('Verify all data is shown 3', 2, 'data stored shall be shown 3'),
-       ('Verify all data is shown 4', 2, 'data stored shall be shown 4'),
-       ('Verify all data is shown 5', 1, 'data stored shall be shown 5'),
-       ('Verify all data is shown 6', 1, 'data stored shall be shown 6'),
-       ('Verify all data is shown 7', 3, 'data stored shall be shown 7'),
-       ('Verify all data is shown 8', 3, 'data stored shall be shown 8'),
-       ('Verify all data is shown 9', 3, 'data stored shall be shown 9'),
-       ('Verify all data is shown 10', 1, 'data stored shall be shown 10'),
-       ('Verify all data is shown 11', 2, 'data stored shall be shown 11'),
-       ('Verify all data is shown 12', 2, 'data stored shall be shown 12');
+insert into test(name, description)
+values ('Check if first and last name are added correctly', 'first and last name shall be correct'),
+       ('Check if wrong passwords are rejected', 'wrong passwords shall be rejected'),
+       ('Check if wrong username are rejected', 'wrong usernames shall be rejected'),
+       ('Check if background color is not red', 'red background shall not be accepted'),
+       ('Verify the sidebar is on the side', 'sidebar shall be on the side'),
+       ('Confirm confirmation works correctly', 'confirmation shall work'),
+       ('Verify all data is shown 1', 'data stored shall be shown 1'),
+       ('Verify all data is shown 2', 'data stored shall be shown 2'),
+       ('Verify all data is shown 3', 'data stored shall be shown 3'),
+       ('Verify all data is shown 4', 'data stored shall be shown 4'),
+       ('Verify all data is shown 5', 'data stored shall be shown 5'),
+       ('Verify all data is shown 6', 'data stored shall be shown 6'),
+       ('Verify all data is shown 7', 'data stored shall be shown 7'),
+       ('Verify all data is shown 8', 'data stored shall be shown 8'),
+       ('Verify all data is shown 9', 'data stored shall be shown 9'),
+       ('Verify all data is shown 10', 'data stored shall be shown 10'),
+       ('Verify all data is shown 11', 'data stored shall be shown 11'),
+       ('Verify all data is shown 12', 'data stored shall be shown 12');
 
 insert into teststep (testid, stepnr, title, testlog, weight)
 values (1, 1, 'Open users page', 'nothing to note', 1),
@@ -248,44 +248,44 @@ values (1, 1),
        (17, 4),
        (18, 2);
 
-insert into testing (sprintid, testid, statusid)
-values (1, 14, 1),
-       (1, 4, 1),
-       (1, 6, 2),
-       (1, 7, 3),
-       (1, 1, 3),
-       (1, 3, 3),
-       (1, 13, 4),
+insert into testing (sprintid, testid, statusid, UserID)
+values (1, 14, 1, 1),
+       (1, 4, 1, 2),
+       (1, 6, 2, 3),
+       (1, 7, 3, 1),
+       (1, 1, 3, 2),
+       (1, 3, 3, 2),
+       (1, 13, 4, 3),
 
-       (2, 1, 1),
-       (2, 2, 1),
-       (2, 3, 1),
-       (2, 4, 1),
-       (2, 5, 2),
-       (2, 6, 4),
+       (2, 1, 1, 1),
+       (2, 2, 1, 1),
+       (2, 3, 1, 1),
+       (2, 4, 1, 2),
+       (2, 5, 2, 2),
+       (2, 6, 4, 3),
 
-       (3, 1, 2),
-       (3, 3, 2),
-       (3, 5, 2),
-       (3, 7, 2),
-       (3, 9, 2),
-       (3, 11, 2),
-       (3, 13, 2),
-       (3, 15, 2),
-       (3, 17, 2),
-       (3, 18, 1),
+       (3, 1, 2, 3),
+       (3, 3, 2, 3),
+       (3, 5, 2, 3),
+       (3, 7, 2, 2),
+       (3, 9, 2, 2),
+       (3, 11, 2, 1),
+       (3, 13, 2, 1),
+       (3, 15, 2, 2),
+       (3, 17, 2, 2),
+       (3, 18, 1, 3),
 
-       (4, 2, 1),
-       (4, 4, 1),
-       (4, 5, 1),
-       (4, 7, 1),
-       (4, 8, 2),
-       (4, 10, 2),
-       (4, 11, 2),
-       (4, 12, 2),
-       (4, 13, 3),
-       (4, 14, 3),
-       (4, 15, 4),
-       (4, 16, 4),
-       (4, 17, 4),
-       (4, 18, 4);
+       (4, 2, 1, 1),
+       (4, 4, 1, 2),
+       (4, 5, 1, 2),
+       (4, 7, 1, 3),
+       (4, 8, 2, 1),
+       (4, 10, 2, 2),
+       (4, 11, 2, 1),
+       (4, 12, 2, 1),
+       (4, 13, 3, 2),
+       (4, 14, 3, 3),
+       (4, 15, 4, 1),
+       (4, 16, 4, 2),
+       (4, 17, 4, 1),
+       (4, 18, 4, 1);

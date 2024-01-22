@@ -1,5 +1,6 @@
 <script>
     import {fetchRequest} from "../lib/Request.js";
+    import router from "page";
 
     export let testId;
     export let comments = [];
@@ -7,6 +8,10 @@
     export let fetchAll;
 
     async function handleSubmit(event) {
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        let testId = parts[parts.length - 1];
+
         event.preventDefault();
 
         const formData = new FormData(event.target);
