@@ -1,11 +1,11 @@
 <script>
     import TestCaseDetailsComponent from '../components/TestCaseDetailsComponent.svelte';
-    import CommentsSection from '../components/Comments.svelte';
     import RightConstantBar from '../components/RightConstantBar.svelte';
+    import router from "page";
 
-    export let params;
+    // export let params;
 
-    let testId = params && params.id !== undefined ? params.id : null;
+    // let testId = params && params.id !== undefined ? params.id : null;
     const currentRoute = router.current;
     const parts = currentRoute.split('/');
     let testId = parts[parts.length - 1];
@@ -17,9 +17,6 @@
     <div class="container">
         <div class="main-content">
             <TestCaseDetailsComponent {testId} bind:selectedStep={selectedStep}/>
-<!--            <CommentsSection {testId} {selectedStep}/>-->
-            <TestCaseDetailsComponent testId={testId}/>
-            <CommentsSection {testId}/>
         </div>
         <RightConstantBar {testId}/>
     </div>

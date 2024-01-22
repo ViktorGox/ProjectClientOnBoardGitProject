@@ -2,7 +2,6 @@
     import {onMount} from "svelte";
     import {fetchRequest} from "../lib/Request.js";
     import router from "page";
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
     import CommentsSection from "./Comments.svelte";
 
     export let testId;
@@ -26,6 +25,8 @@
         const parts = currentRoute.split('/');
         let testId = parts[parts.length - 1];
 
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         testSteps = await fetchRequest('test/' + testId + '/teststeps');
         testCaseName = await fetchRequest('test/' + 2 + '/');
         testCaseName = testCaseName[0].name;
@@ -44,6 +45,7 @@
         testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
         await fetchTestSteps();
     });
+
     function handleStepClick(step) {
         // Toggle the selected state for the clicked step
         selectedStep = selectedStep === step ? null : step;
@@ -53,6 +55,9 @@
     }
 
     function handleStepCompletionChange(step, event) {
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        let testId = parts[parts.length - 1];
         console.log(step.completion)
         // Update the completion state of the clicked step based on the selected option
         step.completion = event.target.value === "true";
@@ -63,6 +68,7 @@
         const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
 
     }
+
     function updateHighlight() {
         // Remove highlight from all rows
         document.querySelectorAll('tr').forEach(row => {
@@ -82,6 +88,7 @@
     }
 
     async function addUser() {
+        console.log("testId ", testId)
         showAddTeststepPopup = false;
         const teststep = {
             testid: testId,
@@ -90,10 +97,9 @@
             testlog: newTeststep.testlog,
             completion: newTeststep.completion
         };
-        await fetchRequest('test/' + testId+'/teststeps', 'POST', teststep);
+        await fetchRequest('test/' + testId + '/teststeps', 'POST', teststep);
 
         await fetchAll();
-
     }
 </script>
 
