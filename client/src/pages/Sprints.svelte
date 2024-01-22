@@ -25,7 +25,6 @@
     async function getSprints() {
         const response = await fetch(`http://localhost:3000/sprint`);
         sprints = await response.json();
-        console.log(sprints);
         return sprints;
     }
 

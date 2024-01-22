@@ -2,22 +2,17 @@
     import TestCaseDetailsComponent from '../components/TestCaseDetailsComponent.svelte';
     import CommentsSection from '../components/Comments.svelte';
     import RightConstantBar from '../components/RightConstantBar.svelte';
-    import router from "page";
 
     export let params;
-    let sprintid = params ? params.id : null;
-    console.log(sprintid);
 
-    const currentRoute = router.current;
-    const parts = currentRoute.split('/');
-    let testId = parts[parts.length - 1];
+    let testId = params && params.id !== undefined ? params.id : null;
 </script>
 
 
 {#if testId}
     <div class="container">
         <div class="main-content">
-            <TestCaseDetailsComponent {testId}/>
+            <TestCaseDetailsComponent testId={testId}/>
             <CommentsSection {testId}/>
         </div>
         <RightConstantBar {testId}/>

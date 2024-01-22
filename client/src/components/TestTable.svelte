@@ -199,7 +199,6 @@
     };
 
     const openTestPage = (id) => {
-        console.log(sprintId);
         if (sprintId) {
             router(sprintId + "/test/" + id);
         } else {

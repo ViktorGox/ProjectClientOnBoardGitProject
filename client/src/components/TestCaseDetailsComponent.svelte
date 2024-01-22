@@ -1,29 +1,28 @@
 <script>
     import {onMount} from "svelte";
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {fetchRequest} from "../lib/Request.js";
+    import router from "page";
 
     export let testId;
     let selectedStep = null;
     let testCaseName;
-
     let testSteps = [];
 
     async function fetchTestSteps() {
-        const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
-        testSteps = await response.json();
-        testCaseName = await fetch('http://localhost:3000/test/' + testId + '/');
-        testCaseName = await testCaseName.json();
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        let testId = parts[parts.length - 1];
+
+        testSteps = await fetchRequest('test/' + testId + '/teststeps');
+        testCaseName = await fetchRequest('test/' + 2 + '/');
         testCaseName = testCaseName[0].name;
-        console.log(testCaseName)
     }
 
     onMount(async () => {
         const pathArray = window.location.pathname.split('/');
         testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
         await fetchTestSteps();
-        console.log(testSteps);
     });
-
     function handleStepClick(step) {
         // Toggle the selected state for the clicked step
         selectedStep = selectedStep === step ? null : step;
@@ -31,17 +30,19 @@
         // Manually update the style for highlighting
         updateHighlight();
     }
+
     function handleStepCompletionChange(step, event) {
         console.log(step.completion)
         // Update the completion state of the clicked step based on the selected option
         step.completion = event.target.value === "true";
-        const body ={
+        const body = {
             completion: (step.completion),
         };
         console.log(JSON.stringify(body));
-        const response = fetchRequest('test/'+testId+'/teststeps/'+step.stepid,'PUT', body)
+        const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
 
     }
+
     function updateHighlight() {
         // Remove highlight from all rows
         document.querySelectorAll('tr').forEach(row => {
@@ -138,7 +139,8 @@
 
     th {
     }
-    tr{
+
+    tr {
         cursor: pointer;
     }
 </style>
