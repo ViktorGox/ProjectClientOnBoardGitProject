@@ -12,5 +12,5 @@ router.get('/:stepid', getTestStepById);
 //Middleware doesnt work yet
 router.put('/:stepid'/*,isDeveloper()*/,putQuery);
 router.delete('/:stepid',/*isDeveloper(),*/deleteQuery);
-router.post('/:stepid',/*isDeveloper(),*/postQuery);
+router.post('/',/*isDeveloper(),*/postQuery);
 export default router;

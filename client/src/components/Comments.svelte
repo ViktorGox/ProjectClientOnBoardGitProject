@@ -148,11 +148,16 @@
     }
 
     button {
-        margin-top: 10px;
         background-color: #007bff;
         color: #fff;
         border: none;
-        padding: 10px 10px;
+        padding: 10px 15px;
+        margin: 5px;
         cursor: pointer;
+        border-radius: 5px;
     }
+    button:hover{
+        background-color: #0056b3;
+    }
+
 </style>

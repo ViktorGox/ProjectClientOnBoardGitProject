@@ -162,7 +162,15 @@ meeting on saturday where we finalized the documentation, I made the technical
 design and added more information about the meetings.
 
 ### Aleks
-[]
+
+I concentrated on creating a stoner-friendly interface that aligns with the design conditions. 
+The runner displays test way with applicable details similar as ID, name, weight, 
+and completion state. I enforced interactive features, allowing druggies to click on a test 
+to punctuate it and change its completion state. 
+To enhance collaboration, I integrated the frontal end with the aft end, enabling flawless 
+communication between the two. This involved running asynchronous requests for costing and streamlining test way. also, 
+I worked on a point that allows druggies to add new test way, contributing to the overall functionality of the operation.
+
 ### Yaroslav
 
 At the start of this project, I was working on our project documentation. I build several diagrams
@@ -337,3 +345,15 @@ Board at the End Of Sprint
 ![](.Scrum Document_images/3a843e9c.png)
 ![](.Scrum Document_images/5eed6f0d.png)
 ![](.Scrum Document_images/29345dc4.png)
+
+## Retrospectives
+
+### Aleks
+
+During the alternate sprint, my focus was on expanding the functionality of the test step runner 
+by enforcing the capability to add new test way. I successfully integrated the frontal page of test steps
+This involved running asynchronous requests backend, allowing for the creation of new test way.
+In addition to the front-end work, I took on the responsibility of developing the entire backend sense for managing test steps.
+This included handling requests to produce, update, and recoup test way, facing a smooth inflow of data between the customer and the website.
+I laboriously banded with platoon members to align the functionality with design conditions,
+making necessary adaptations grounded on feedback. The integration of the new test step functionality enhances the overall stoner experience and contributes to the design's pretensions.
