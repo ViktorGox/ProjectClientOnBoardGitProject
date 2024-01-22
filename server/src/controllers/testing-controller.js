@@ -10,6 +10,12 @@ export function getAll(req, res) {
 
 export function updateTestStatus(req, res) {
     req = removeBodyParametersIgnoreCase(req, 'sprintid, testid, completiondate, userid');
+    if(req.body.statusid === 2) {
+        req.body.completionDate = new Date().toDateString();
+    } else {
+        req.body.completionDate = null;
+    }
+    console.log(req.body);
     return notFoundReq(req, res);
 }
 

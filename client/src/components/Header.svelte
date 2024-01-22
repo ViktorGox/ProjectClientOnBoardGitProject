@@ -1,5 +1,5 @@
 <script>
-    import { blockerStore } from '../stores/blockerStore';
+    import {blockerStore} from '../stores/blockerStore';
     import userStore from "../stores/userStore.js";
 
     export let active;
@@ -7,10 +7,10 @@
 
     $: loggedIn = true; // Set to true or false based on your logic
     let showUserMenu = false; // Flag to control user menu visibility
-    $: AmountOfBlockers = 0;
-     //    $blockerStore
-     // .filter(blocker => blocker.userId === $userStore.id)
-     //    .length;
+    $: AmountOfBlockers =
+        $blockerStore
+            .filter(blocker => blocker.userId === $userStore.id)
+            .length;
     $: email = $userStore.email;
 
 </script>

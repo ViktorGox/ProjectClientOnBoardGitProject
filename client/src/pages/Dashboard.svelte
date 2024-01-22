@@ -2,8 +2,6 @@
     import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
     import {fetchRequest} from "../lib/Request.js";
-    import {arrayToString} from "../lib/Utils.js";
-    import router from "page";
     import TestTable from "../components/TestTable.svelte";
 
     let dashboardBoxes = [];
@@ -16,6 +14,7 @@
     let testValue;
     let bugValue;
     let blockerValue;
+    let todoTests;
 
     let chartCanvas;
 
@@ -27,8 +26,10 @@
             const testing = await fetchRequest('testing');
             const dataArray = Array.isArray(testing) ? testing : [testing];
             allTests = dataArray.filter(sprint => sprint.sprintid == sprintid);
+            // testValue = allTests.filter(sprint => sprint.statusid == 1).length;
             testValue = allTests.length;
-            allPassedTests = allTests.filter(sprint => sprint.statusid == 2);
+            todoTests = allTests.filter(sprint => sprint.statusid == 1).length;
+            allPassedTests = allTests.filter(sprint => sprint.statusid == 2).length;
             blockerValue = allTests.filter(sprint => sprint.statusid == 3).length;
             bugValue = allTests.filter(sprint => sprint.statusid == 4).length;
 
@@ -40,13 +41,10 @@
 
     function drawDashboardBoxes() {
         dashboardBoxes = [
-            // {icon: 'bi bi-clock text-primary', title: 'Time Testing', value: 400},
-            // {icon: 'bi bi-clock text-success', title: 'Average time per Test', value: 52},
-            {icon: 'bi bi-list-ul text-primary', title: 'Tests', value: testValue},
-            {icon: 'bi bi-check-square text-success', title: 'Passed', value: allPassedTests.length},
+            {icon: 'bi bi-list-ul text-primary', title: 'To do', value: todoTests},
+            {icon: 'bi bi-check-square text-success', title: 'Passed', value: allPassedTests},
             {icon: 'bi bi-exclamation-triangle text-warning', title: 'Bugs', value: bugValue},
             {icon: 'bi bi-dash-circle text-danger', title: 'Blockers', value: blockerValue},
-            // {icon: 'bi bi-code-square text-info', title: 'Tests in process', value: 0}
         ];
         createDonut();
         createLineChart();
@@ -120,22 +118,16 @@
                 label: 'Values',
                 data: doughnutValues,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
                     'rgba(75, 192, 192, 0.5)',
-                    'rgba(153, 102, 255, 0.5)',
-                    'rgba(255, 159, 64, 0.5)',
-                    'rgba(255, 255, 64, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(255, 99, 132, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 255, 64, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)',
                 ],
                 borderWidth: 1
             }]
@@ -172,20 +164,20 @@
 
 <main>
     <div className="dash dark-bg text-light">
-        <div className="container px-4 py-5" id="icon-grid">
+        <div className="container px-4 py-5" id="icon-grid ">
             {#if sprintTitle !== undefined}
-                <h1 style="margin-top: -20px;">{sprintTitle}</h1>
+                <h1 class="bright-text">{sprintTitle}</h1>
             {/if}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
-                    <div class="col d-flex align-items-start">
+                    <div class="col d-flex align-items-center">
                         <div class="row dash-box dark-bg text-light">
-                            <div class="col-4">
+                            <div class="col-4 text-center">
                                 <i class={box.icon} style="font-size: 60px;"></i>
                             </div>
-                            <div class="col-8">
-                                <p class="fw-bold mb-0 fs-4">{box.value}</p>
-                                <p>{box.title}</p>
+                            <div class="col-8 justify-content-center">
+                                <p class="fw-bold mb-0 fs-4 text-center">{box.value}</p>
+                                <p class="text-center">{box.title}</p>
                             </div>
                         </div>
                     </div>
@@ -196,7 +188,7 @@
     <div style="margin-bottom: 80px;"></div>
     <section class="graph dark-bg">
         <div class="chart-container">
-            <div class="chart-column" style="margin-top: -60px;margin-right: 80px">
+            <div class="chart-column" style="margin-top: -60px;margin-right: 80px; padding:1px">
                 <canvas id="doughnutChart"></canvas>
             </div>
             <div class="chart-column" style="margin-top: -30px;margin-left: 80px">
@@ -217,15 +209,17 @@
         margin: 0 auto;
     }
 
+    .bright-text {
+        color: white;
+    }
+
     .chart-column {
         width: 48%;
     }
 
-    .dash {
-        background: #1a1a1a;
-        box-sizing: border-box;
-        text-align: center;
-
+    .justify-content-center {
+        display: flex;
+        flex-direction: column;
     }
 
     .dash-box {

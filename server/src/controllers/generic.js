@@ -137,7 +137,12 @@ function generateUpdateQuery(req) {
 
     for (let i = 0; i < keys.length; i++) {
         const param = keys[i];
-        const paramLoad = "'" + req.body[param] + "'";
+        let paramLoad;
+        if(req.body[param] !== null) {
+            paramLoad = "'" + req.body[param] + "'";
+        } else {
+            paramLoad = "null";
+        }
 
         query += param + " = " + paramLoad;
 
