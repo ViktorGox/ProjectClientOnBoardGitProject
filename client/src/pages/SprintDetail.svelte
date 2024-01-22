@@ -12,17 +12,13 @@
     console.log(params);
     let sprintid = params.id;
     let email = $userStore ? $userStore.email : null;
-
-    let sprint = [];
+   let sprint = [];
     let title;
     let startDate;
     let dueDate;
 
 
     async function getSprintById() {
-        console.log(sprintid);
-
-        // Use fetchRequest from Request.js
         const path = `sprint/${sprintid}`;
         const response = await fetchRequest(path, 'GET');
         sprint = response;
@@ -39,7 +35,6 @@
                 dueDate = sprint[0].duedate;
             }
         } else {
-            // Handle the case when it's a new sprint
             sprint = [{
                 sprintId: 0,
                 title: "Sprint 1",
@@ -96,7 +91,7 @@
         let start = new Date(date);
         return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
     }
-    function submitNewInfo() {
+   async function submitNewInfo() {
         if (checkInputs()) {
             let sprintInfo = {
                 title: title,
@@ -105,12 +100,12 @@
             }
 
             if (sprintid && sprintid !== 'new') {
-                editSprint(sprintid, sprintInfo);
+              await  editSprint(sprintid, sprintInfo);
             } else {
-                addNewSprint(sprintInfo);
+              await  addNewSprint(sprintInfo);
             }
 
-            router(`/projects`);
+           await router(`/projects`);
         } else {
             alert("One or many inputs are not correctly inputted!");
         }
@@ -128,9 +123,9 @@
 <main>
     {#if sprint && sprintid !== undefined}
         <section id="informationPreview" class="content-section">
-<!--            <div class="image-container">-->
-<!--                <img src={logoImageLink} alt={logoImageLink}>-->
-<!--            </div>-->
+            <!--            <div class="image-container">-->
+            <!--                <img src={logoImageLink} alt={logoImageLink}>-->
+            <!--            </div>-->
 
             <div class="info-container">
                 <div class="date-container">
@@ -145,7 +140,6 @@
         <section class="content-section">
             <SprintInfo bind:title={title} bind:strartdate={startDate} bind:dueddate={dueDate}/>
             <button class="add-sprint-button" on:click={submitNewInfo}>Add Sprint</button>
-<!--            <JafarButton text="Submit" clickHandler={submitNewInfo} />-->
         </section>
     {:else }
         <p class="no-sprint-message" >No sprint found!</p>
@@ -230,7 +224,7 @@
         font-size: large;
     }
     .content-section{
-       margin-top: 150px;
+        margin-top: 150px;
     }
 
 

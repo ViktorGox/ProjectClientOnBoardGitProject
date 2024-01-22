@@ -8,9 +8,6 @@
     export let sprintId;
     // TODO: Because of dashboard page, the sprint id is reduced by 1, so I am increasing it here in the meanwhile,
     // remove this when its fixed there.
-    if (typeof sprintId !== 'undefined') {
-        sprintId++;
-    }
 
     let fullTests = [];
     let statuses;
@@ -59,9 +56,10 @@
 
                 const modulePromises = fetchedTests.map(element =>
                     fetchRequest('testmodule/test/' + element.testid)
-                        .then(result => {
+                        .then(async (result) => {
                             element.modules = result.map(item => item.moduleid);
-                            element.weight = Math.floor(Math.random() * 25) + 1;
+                            const weightReturn = await fetchRequest('test/' + element.testid + "/weight");
+                            element.weight = weightReturn.sum;
                             return element;
                         })
                 );
