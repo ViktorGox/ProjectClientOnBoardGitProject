@@ -6,12 +6,18 @@
     export let params;
 
     let testId = params && params.id !== undefined ? params.id : null;
+    const currentRoute = router.current;
+    const parts = currentRoute.split('/');
+    let testId = parts[parts.length - 1];
+    let selectedStep=null;
 </script>
 
 
 {#if testId}
     <div class="container">
         <div class="main-content">
+            <TestCaseDetailsComponent {testId} bind:selectedStep={selectedStep}/>
+<!--            <CommentsSection {testId} {selectedStep}/>-->
             <TestCaseDetailsComponent testId={testId}/>
             <CommentsSection {testId}/>
         </div>
