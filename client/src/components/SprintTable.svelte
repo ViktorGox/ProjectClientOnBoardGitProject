@@ -121,7 +121,7 @@
                     {:else}
                         <tr>
                             <td>
-                                No tests here yet.
+                                No sprints here yet.
                             </td>
                         </tr>
                     {/if}
