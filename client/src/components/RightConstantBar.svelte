@@ -1,53 +1,56 @@
 <script>
     import {onMount} from "svelte";
     import {fetchRequest} from "../lib/Request.js";
+    import router from "page";
 
-    export let assigneeName;
     export let assigneeProfilePicture;
+    let assigneeEmail;
+    let userId;
+    let sprintId;
     export let dueDate;
     export let testId;
-    let users=[];
-    let username;
-    let test={};
+    let users = [];
+
     async function fetchData() {
-        test = await fetchRequest('test/' + testId + '/');
-        test=test[0];
-        console.log(test);
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        sprintId = parts[parts.length - 3];
+        if (sprintId) {
+            const result = await fetchRequest('testing/' + sprintId + '/assignee/' + testId);
+            assigneeEmail = result.email;
+        }
+
         users = await fetchRequest('users/allUsernames');
-
-        console.log(users);
-        assigneeName=users.find(user => user.userid === test.userid).email;
-
-        // assigneeName=username.email;
     }
-    function changeAssignee() {
-        // Handle the change in test status here
-        console.log("Selected status:", test.userid);
-        const body ={
-            userid: (test.userid),
+
+    async function changeAssignee() {
+        const body = {
+            userid: userId,
         };
-        console.log(JSON.stringify(body));
-        assigneeName=users.find(user => user.userid === test.userid).email;
-        const response = fetchRequest('test/'+testId,'PUT', body)
+        await fetchRequest('testing/' + sprintId + '/assignee/' + testId, 'PUT', body)
+        await fetchData();
     }
+
     onMount(async () => {
         await fetchData();
     });
 </script>
 
 <div class="right-constant-bar">
-    <div class="assignee-info">
-<!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
-        <p> Assignee: {assigneeName}</p>
-        <select bind:value={test.userid} on:change={changeAssignee}
-                class="form-select form-select-sm bg-dark">
-            {#each users as {email,userid}}
-                <option value="{userid}">
-                    {email}
-                </option>
-            {/each}
-        </select>
-    </div>
+    {#if sprintId}
+        <div class="assignee-info">
+            <!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
+            <p> Assignee: {assigneeEmail}</p>
+            <select bind:value={userId} on:change={changeAssignee}
+                    class="form-select form-select-sm bg-dark">
+                {#each users as {email, userid}}
+                    <option value="{userid}">
+                        {email}
+                    </option>
+                {/each}
+            </select>
+        </div>
+    {/if}
     <div class="due-date">
         <p>Due Date: {dueDate}</p>
     </div>
@@ -85,6 +88,7 @@
     .due-date {
         text-align: center;
     }
+
     .form-select-sm {
         /*width: 60%;*/
         cursor: pointer;

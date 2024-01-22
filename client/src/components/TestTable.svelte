@@ -44,8 +44,8 @@
         fullFetch();
     }
 
-    onMount(() => {
-        fullFetch();
+    onMount(async () => {
+        await fullFetch();
     });
 
     function fullFetch() {
@@ -58,6 +58,7 @@
                     fetchRequest('testmodule/test/' + element.testid)
                         .then(async (result) => {
                             element.modules = result.map(item => item.moduleid);
+
                             const weightReturn = await fetchRequest('test/' + element.testid + "/weight");
                             element.weight = weightReturn.sum;
                             return element;
@@ -83,6 +84,17 @@
                 alteredTests = allTests;
             }
             return alteredTests
+        }).then(async (updatedTests) => {
+            const fetchAssignees = updatedTests.map(async (test) => {
+                if (sprintId) {
+                    const assignee = await fetchRequest('testing/' + sprintId + '/assignee/' + test.testid);
+                    test.assignee = assignee.email;
+                }
+            });
+
+            await Promise.all(fetchAssignees);
+
+            return updatedTests;
         })
             .then(updatedTests => {
                 if (weightOrder) {
@@ -187,7 +199,11 @@
     };
 
     const openTestPage = (id) => {
-        router("/tests/" + id);
+        if (sprintId) {
+            router(sprintId + "/test/" + id);
+        } else {
+            router("/tests/" + id);
+        }
     }
 
     const changeStatus = async (test) => {
@@ -306,7 +322,6 @@
                 {#if !generalTable}
                     <th scope="col">Status</th>
                 {/if}
-                <th scope="col">Assignee</th>
                 <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
                     <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
                          alt="order button image">
@@ -364,9 +379,6 @@
                                 </div>
                             </td>
                         {/if}
-                        <td>
-                            {test.userid}
-                        </td>
                         <td>{test.weight}</td>
                     </tr>
                     <tr class="spacer">
