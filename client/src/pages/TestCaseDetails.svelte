@@ -7,14 +7,15 @@
     const currentRoute = router.current;
     const parts = currentRoute.split('/');
     let testId = parts[parts.length - 1];
+    let selectedStep=null;
 </script>
 
 
 {#if testId}
     <div class="container">
         <div class="main-content">
-            <TestCaseDetailsComponent {testId}/>
-            <CommentsSection {testId}/>
+            <TestCaseDetailsComponent {testId} bind:selectedStep={selectedStep}/>
+<!--            <CommentsSection {testId} {selectedStep}/>-->
         </div>
         <RightConstantBar {testId}/>
     </div>
