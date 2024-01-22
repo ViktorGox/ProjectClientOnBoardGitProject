@@ -1,21 +1,37 @@
 <script>
     import {onMount} from "svelte";
     import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import CommentsSection from "./Comments.svelte";
 
     export let testId;
-    let selectedStep = null;
+    export let selectedStep = null;
     let testCaseName;
-
+    let showAddTeststepPopup = false;
     let testSteps = [];
+    let newTeststep = {
+        title: "",
+        weight: "",
+        testlog: "",
+        completion: ""
+    };
 
-    async function fetchTestSteps() {
+    function fetchAll() {
+        fetchTestSteps();
+    }
+
+    export async function fetchTestSteps() {
         const queryProperties = ['testid'];
         const querySettings = ["Equals"];
-        const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
-        testSteps = await response.json();
         testCaseName = await fetch('http://localhost:3000/test/' + testId + '/');
         testCaseName = await testCaseName.json();
         testCaseName = testCaseName[0].name;
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+
+        const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
+        testSteps = await response.json();
+        console.log(testSteps);
         console.log(testCaseName)
     }
 
@@ -33,17 +49,19 @@
         // Manually update the style for highlighting
         updateHighlight();
     }
+
     function handleStepCompletionChange(step, event) {
         console.log(step.completion)
         // Update the completion state of the clicked step based on the selected option
         step.completion = event.target.value === "true";
-        const body ={
+        const body = {
             completion: (step.completion),
         };
         console.log(JSON.stringify(body));
-        const response = fetchRequest('test/'+testId+'/teststeps/'+step.stepid,'PUT', body)
+        const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
 
     }
+
     function updateHighlight() {
         // Remove highlight from all rows
         document.querySelectorAll('tr').forEach(row => {
@@ -61,11 +79,27 @@
             console.log(selectedRow);
         }
     }
+
+    async function addUser() {
+        showAddTeststepPopup = false;
+        const teststep = {
+            testid: testId,
+            title: newTeststep.title,
+            weight: newTeststep.weight,
+            testlog: newTeststep.testlog,
+            completion: newTeststep.completion
+        };
+        await fetchRequest('test/' + testId+'/teststeps', 'POST', teststep);
+
+        await fetchAll();
+
+    }
 </script>
 
 <div class="test-case-details">
     <h1>{testCaseName}</h1>
     <button class="edit-button">Edit</button>
+    <button class="add-test-step-button" on:click={() => showAddTeststepPopup = true}>Add User</button>
     <div class="header">
 
     </div>
@@ -99,6 +133,26 @@
             </tbody>
         </table>
     </div>
+    {#if showAddTeststepPopup}
+        <div class="popup">
+
+            <label for="name">Name:</label>
+            <input type="name" bind:value={newTeststep.title}/>
+
+            <label for="weight">Weight:</label>
+            <input type="weight" bind:value={newTeststep.weight}/>
+
+            <label for="testlog">Testlog:</label>
+            <input type="testlog" bind:value={newTeststep.testlog}/>
+
+            <label for="completion">Completion:</label>
+            <input type="completion" bind:value={newTeststep.completion}/>
+
+
+            <button class="add-user-button" on:click={addUser}>Add a new Test step</button>
+        </div>
+    {/if}
+    <CommentsSection {testId} {selectedStep} {fetchAll}/>
 </div>
 
 <style>
@@ -140,7 +194,8 @@
 
     th {
     }
-    tr{
+
+    tr {
         cursor: pointer;
     }
 </style>

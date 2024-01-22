@@ -1,7 +1,11 @@
 <script>
     import {fetchRequest} from "../lib/Request.js";
-export let testId,stepId;
+
+    export let testId;
     export let comments = [];
+    export let selectedStep;
+    export let fetchAll;
+
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -10,27 +14,31 @@ export let testId,stepId;
         // const requestFileBody={
         //     file: image
         // }
-        const requestCommentBody ={
+        const requestCommentBody = {
             testlog: formData.get('comment'),
         };
-        const text = JSON.stringify(requestCommentBody);
         console.log(image);
         try {
-            const imageResponse = await fetchRequest('/test/'+testId+'/teststeps/', {
-                method: 'POST',
-                body: image,
-            });
-            const textResponse= await fetchRequest('/test/'+testId+'/teststeps/'+stepId , {
-                method:'PUT',
-                body: text,
-            });
+            // const imageResponse = await fetchRequest('/test/'+testId+'/teststeps/', {
+            //     method: 'POST',
+            //     body: image,
+            // });
 
-            if (imageResponse.ok&&textResponse.ok) {
-                console.log('Comment submitted successfully');
-            } else {
-                // Handle error
-                console.error('Failed to submit comment');
+            if (selectedStep!=null){
+                console.log(requestCommentBody);
+                const textResponse =  fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid+'?combinatory=true', 'PUT',requestCommentBody);
+                if (textResponse.status=200) {
+                    console.log('Comment submitted successfully');
+                    setTimeout(() => {
+                        console.log("this is the third message");
+                    }, 3000);
+                    await fetchAll();
+                } else {
+                    // Handle error
+                    console.error('Failed to submit comment');
+                }
             }
+
         } catch (error) {
             console.error('Error:', error);
         }
@@ -48,14 +56,14 @@ export let testId,stepId;
                 </div>
                 <p>{comment.text}</p>
                 {#if comment.attachment}
-                    <img src={comment.attachment} alt="Comment Attachment" />
+                    <img src={comment.attachment} alt="Comment Attachment"/>
                 {/if}
             </li>
         {/each}
     </ul>
     <form on:submit={handleSubmit}>
         <textarea name="comment" placeholder="Add a comment..."></textarea>
-        <input type="file" accept="image/*" name="image" />
+        <input type="file" accept="image/*" name="image"/>
         <button type="submit">Submit</button>
     </form>
 </div>
