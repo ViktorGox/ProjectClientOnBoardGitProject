@@ -1,7 +1,8 @@
 <script>
     import {onMount} from "svelte";
-    import {fetchRequest, generateQuery} from "../lib/Request.js";
+    import {fetchRequest} from "../lib/Request.js";
     import CommentsSection from "./Comments.svelte";
+    import userStore from "../stores/userStore.js";
 
     export let testId;
     export let selectedStep = null;
@@ -9,6 +10,7 @@
     let showAddTeststepPopup = false;
     let testSteps = [];
     let newTeststep = {
+        stepnr: "",
         title: "",
         weight: "",
         testlog: "",
@@ -20,8 +22,6 @@
     }
 
     export async function fetchTestSteps() {
-        const queryProperties = ['testid'];
-        const querySettings = ["Equals"];
         testCaseName = await fetch('http://localhost:3000/test/' + testId + '/');
         testCaseName = await testCaseName.json();
         testCaseName = testCaseName[0].name;
@@ -43,16 +43,13 @@
     });
 
     function handleStepClick(step) {
-        // Toggle the selected state for the clicked step
         selectedStep = selectedStep === step ? null : step;
 
-        // Manually update the style for highlighting
         updateHighlight();
     }
 
     function handleStepCompletionChange(step, event) {
         console.log(step.completion)
-        // Update the completion state of the clicked step based on the selected option
         step.completion = event.target.value === "true";
         const body = {
             completion: (step.completion),
@@ -63,12 +60,10 @@
     }
 
     function updateHighlight() {
-        // Remove highlight from all rows
         document.querySelectorAll('tr').forEach(row => {
             row.style.backgroundColor = '';
         });
 
-        // Apply highlight to the selected row
         if (selectedStep) {
             const selectedRow = document.getElementById(`step-${selectedStep.stepid}`);
 
@@ -80,26 +75,36 @@
         }
     }
 
-    async function addUser() {
+    async function addTestStep() {
         showAddTeststepPopup = false;
         const teststep = {
             testid: testId,
+            stepnr: newTeststep.stepnr,
             title: newTeststep.title,
             weight: newTeststep.weight,
             testlog: newTeststep.testlog,
-            completion: newTeststep.completion
+            completion: 'false'
         };
-        await fetchRequest('test/' + testId+'/teststeps', 'POST', teststep);
+        await fetchRequest('test/' + testId + '/teststeps', 'POST', teststep);
 
         await fetchAll();
 
+        newTeststep = {
+            stepnr: "",
+            title: "",
+            weight: "",
+            testlog: "",
+            completion: ""
+        };
     }
 </script>
 
 <div class="test-case-details">
     <h1>{testCaseName}</h1>
-    <button class="edit-button">Edit</button>
-    <button class="add-test-step-button" on:click={() => showAddTeststepPopup = true}>Add User</button>
+    {#if $userStore.role === 'admin'}
+        <button class="edit-button">Edit</button>
+        <button class="add-test-step-button" on:click={() => showAddTeststepPopup = true}>Add Test Step</button>
+    {/if}
     <div class="header">
 
     </div>
@@ -123,7 +128,8 @@
                     <td>{step.testlog}</td>
                     <td>
                         {step.completion}
-                        <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}>
+                        <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}
+                                class="form-select form-select-sm bg-dark">
                             <option value="true">Completed</option>
                             <option value="false">Incomplete</option>
                         </select>
@@ -133,25 +139,24 @@
             </tbody>
         </table>
     </div>
-    {#if showAddTeststepPopup}
-        <div class="popup">
+    <div class="popup" style="{showAddTeststepPopup ? 'display: block;' : 'display: none;'}">
+        <span class="close-button" on:click={() => showAddTeststepPopup = false}>&times;</span>
 
-            <label for="name">Name:</label>
-            <input type="name" bind:value={newTeststep.title}/>
+        <label for="name">Name:</label>
+        <input type="name" bind:value={newTeststep.title}/>
 
-            <label for="weight">Weight:</label>
-            <input type="weight" bind:value={newTeststep.weight}/>
+        <label for="stepnr">Step number:</label>
+        <input type="stepnr" bind:value={newTeststep.stepnr}/>
 
-            <label for="testlog">Testlog:</label>
-            <input type="testlog" bind:value={newTeststep.testlog}/>
+        <label for="weight">Weight:</label>
+        <input type="weight" bind:value={newTeststep.weight}/>
 
-            <label for="completion">Completion:</label>
-            <input type="completion" bind:value={newTeststep.completion}/>
+        <label for="testlog">Testlog:</label>
+        <input type="testlog" bind:value={newTeststep.testlog}/>
 
+        <button class="add-teststep-button" on:click={addTestStep}>Add a new Test step</button>
+    </div>
 
-            <button class="add-user-button" on:click={addUser}>Add a new Test step</button>
-        </div>
-    {/if}
     <CommentsSection {testId} {selectedStep} {fetchAll}/>
 </div>
 
@@ -198,4 +203,83 @@
     tr {
         cursor: pointer;
     }
+
+    .form-select-sm {
+        /*width: 60%;*/
+        cursor: pointer;
+        border: none;
+        background-color: #2e2e36 !important;
+        color: #b3b3b3;
+    }
+
+    .form-select-sm:hover {
+        background-color: #45454f !important;
+        color: white;
+    }
+
+    .form-select-sm:focus {
+        box-shadow: none;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #2e2e36;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        color: white;
+    }
+
+    .popup label {
+        margin-top: 10px;
+        display: block;
+        font-weight: bold;
+    }
+
+    .popup input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    .popup button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #fff;
+    }
+    .edit-button,
+    .add-test-step-button,
+    .add-teststep-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .edit-button:hover,
+    .add-test-step-button:hover,
+    .add-teststep-button {
+        background-color: #0056b3;
+    }
+
 </style>
