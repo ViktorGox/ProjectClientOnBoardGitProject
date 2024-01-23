@@ -538,6 +538,10 @@ export function isBlank(string) {
     return true;
 }
 
+/**
+ * Validates a date, not any date is validated by this but of a date uses YYYY-MM-DD, it will be accepted.
+ * Possible it accepts other variants too.
+ */
 export function isValidDate(dateString) {
     // Attempt to create a Date object using ISO format
     let date = new Date(dateString);
