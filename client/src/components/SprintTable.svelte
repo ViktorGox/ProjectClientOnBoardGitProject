@@ -11,10 +11,6 @@
 
     let searchBarValue;
 
-    function skip() {
-
-    }
-
     const openSprintPage = (id) => {
         router("/projects/" + id);
     }
@@ -24,16 +20,23 @@
         return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
     }
 
-    let isFlippedID = true;
+    export let isFlippedID = true;
 
     function reverseSprintArray() {
         isFlippedID = !isFlippedID;
+        sortSprints();
+    }
+
+    function sortSprints() {
         if (isFlippedID) {
             promiseSprints = promiseSprints.sort((a, b) => a.sprintid - b.sprintid);
         } else {
             promiseSprints = promiseSprints.sort((a, b) => b.sprintid - a.sprintid);
         }
     }
+
+    sortSprints();
+
 </script>
 
 <div class="card mt-5 mb-5">
