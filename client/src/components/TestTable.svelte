@@ -200,6 +200,7 @@
     };
 
     const openTestPage = (id) => {
+        console.log(sprintId);
         if (sprintId) {
             router(sprintId + "/test/" + id);
         } else {
@@ -348,7 +349,7 @@
                         <td>
                             {test.testid}
                         </td>
-                        <td><a href="/tests/{test.testid}">{test.name}</a></td>
+                        <td>{test.name}</td>
                         <td>
                             {#if test.modules && modules}
                                 {#each test.modules as module}
