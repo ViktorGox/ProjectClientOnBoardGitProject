@@ -89,7 +89,6 @@
 </div>
 
 <div class="background__image">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOtH944W_PsijoUf1522VUMepf1ImPZPjKFnFhnNglAhTwyfJCbuqGBaYVEW9nx5kLzk&usqp=CAU"
          alt="parantion logo">
 </div>
 </body>

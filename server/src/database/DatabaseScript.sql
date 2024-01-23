@@ -96,7 +96,6 @@ CREATE TABLE IF NOT EXISTS TestStep
     weight     integer                NOT NULL,
     completion boolean                NOT NULL DEFAULT FALSE,
     PRIMARY KEY (StepID),
-    UNIQUE (TestID, StepNR),
     FOREIGN KEY (TestID) REFERENCES Test (TestID) ON DELETE CASCADE
 );
 
