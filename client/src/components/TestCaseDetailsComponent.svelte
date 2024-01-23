@@ -1,10 +1,9 @@
 <script>
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {fetchRequest} from "../lib/Request.js";
     import router from "page";
     import CommentsSection from "./Comments.svelte";
     import userStore from "../stores/userStore.js";
-
     export let testId;
     export let selectedStep = null;
     let testCaseName;
@@ -17,6 +16,26 @@
         testlog: "",
         completion: ""
     };
+    let attachments=[];
+    let selectedAttachmentIndex = null;
+    function handleImageClick(index) {
+        selectedAttachmentIndex = index;
+    }
+
+    function handleCloseZoom() {
+        selectedAttachmentIndex = null;
+    }
+
+    function handleNavigate(direction) {
+        if (selectedAttachmentIndex !== null) {
+            selectedAttachmentIndex += direction;
+            if (selectedAttachmentIndex < 0 || selectedAttachmentIndex >= attachments.length) {
+                selectedAttachmentIndex = null;
+            }
+        }
+    }
+
+    onDestroy(() => (selectedAttachmentIndex = null));
 
     function fetchAll() {
         fetchTestSteps();
@@ -49,43 +68,44 @@
     });
 
     function handleStepClick(step) {
-        // Toggle the selected state for the clicked step
         selectedStep = selectedStep === step ? null : step;
 
-        // Manually update the style for highlighting
         updateHighlight();
     }
+    async function fetchAttachments() {
+        if (selectedStep) {
+            const response = await fetchRequest(`test/${testId}/teststeps/${selectedStep.stepid}/attachment`);
 
+            attachments = await response;
+            console.log(attachments);
+        }
+    }
     function handleStepCompletionChange(step, event) {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
         let testId = parts[parts.length - 1];
         console.log(step.completion)
-        // Update the completion state of the clicked step based on the selected option
         step.completion = event.target.value === "true";
         const body = {
             completion: (step.completion),
         };
+
         console.log(JSON.stringify(body));
         const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
 
     }
 
-    function updateHighlight() {
-        // Remove highlight from all rows
+    async function updateHighlight() {
         document.querySelectorAll('tr').forEach(row => {
             row.style.backgroundColor = '';
         });
 
-        // Apply highlight to the selected row
         if (selectedStep) {
             const selectedRow = document.getElementById(`step-${selectedStep.stepid}`);
 
-            console.log(window.getComputedStyle(selectedRow).getPropertyValue('background-color'));
             selectedRow.classList.add('highlighted');
             selectedRow.style.backgroundColor = 'rgba(76, 76, 87, 0.78)';
-            console.log(window.getComputedStyle(selectedRow).getPropertyValue('background-color'));
-            console.log(selectedRow);
+            await fetchAttachments();
         }
     }
 
@@ -127,7 +147,7 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
+            <th>Step</th>
             <th>Name</th>
             <th>Weight</th>
             <th>Test Log</th>
@@ -171,6 +191,21 @@
         <input type="testlog" bind:value={newTeststep.testlog}/>
 
         <button class="add-teststep-button" on:click={addTestStep}>Add a new Test step</button>
+    </div>
+    <div class="attachments-container">
+        {#each attachments as attachment}
+            <div class="attachment" on:click={() => handleImageClick(attachment.attachmentid)}>
+                <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+attachment.attachmentid} alt="Attachment" />
+            </div>
+        {/each}
+
+        {#if selectedAttachmentIndex !== null}
+            <div class="zoom-overlay" on:click={handleCloseZoom}>
+                <div class="zoom-content">
+                    <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+selectedAttachmentIndex} alt="Zoomed Attachment" />
+                </div>
+            </div>
+        {/if}
     </div>
 <CommentsSection {testId} {selectedStep} {fetchAll}/>
 </div>
@@ -295,5 +330,43 @@
     .add-teststep-button {
         background-color: #0056b3;
     }
+    .attachments-container {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .attachment {
+        margin-right: 10px;
+        cursor: pointer;
+        display: inline-block;
+
+    }
+
+    .zoom-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .zoom-content {
+        margin: auto;
+        max-width: 80%;
+        max-height: 80%;
+    }
+
+    .zoom-content img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
 
 </style>
