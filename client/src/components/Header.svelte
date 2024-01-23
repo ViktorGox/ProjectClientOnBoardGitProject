@@ -9,7 +9,7 @@
 
     $: loggedIn = true; // Set to true or false based on your logic
     let showUserMenu = false; // Flag to control user menu visibility
-    $: AmountOfBlockers = $blockerStore.filter(blocker => blocker.userId === $userStore.id).length;
+    $: AmountOfBlockers = $blockerStore.filter(blocker => blocker.userid === $userStore.id).length;
     $: email = $userStore.email;
 
     console.log($userStore)
@@ -25,9 +25,9 @@
             class="navbar-brand"
     >
         {#if loggedIn}
-            <img src={logoImage} alt="Logo" style="height: 2rem;">
+            <img src={logoImage} alt="Logo" style="height: 2rem">
         {:else}
-            <img src={logoImage} alt="Logo" style="height: 30px;">
+            <img src={logoImage} alt="Logo" style="height: 1rem;">
         {/if}
     </a>
 
@@ -138,5 +138,9 @@
 
     .user-menu-item:hover {
         background-color: #486080; /* Adjust hover background color */
+    }
+    img{
+        height: 2rem;
+        width: 6rem;
     }
 </style>

@@ -7,7 +7,7 @@
     onMount(() => {
     });
 
-    let notifications = $blockerStore.filter(blocker => blocker.userId === $userStore.id)
+    let notifications = $blockerStore.filter(blocker => blocker.userid === $userStore.id)
 
 
 
