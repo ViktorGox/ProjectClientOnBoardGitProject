@@ -1,4 +1,4 @@
-import {badRequestOnly, notFoundReq, performSimpleOneQuery} from "./generic.js";
+import {badRequestOnly, isBlank, notFoundReq, performSimpleOneQuery} from "./generic.js";
 import {performQuery} from "../database/database.js";
 
 export function getQuery(req, res) {
@@ -10,6 +10,7 @@ export function deleteTest(req, res) {
 }
 
 export function postQuery(req, res) {
+    if(isBlank(req.body.name)) return res.status(400).json({error: "Name cannot be empty."});
     return badRequestOnly(req, res);
 }
 

@@ -12,9 +12,6 @@
     $: AmountOfBlockers = $blockerStore.filter(blocker => blocker.userid === $userStore.id).length;
     $: email = $userStore.email;
 
-    console.log($userStore)
-    console.log($blockerStore.filter(blocker => blocker.userId === $userStore.id).length)
-
 </script>
 
 <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg justify-content-between">

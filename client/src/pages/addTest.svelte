@@ -1,9 +1,9 @@
 <script>
     import {onMount} from 'svelte';
     import {fetchRequest} from "../lib/Request.js";
+    import {isBlank} from "../lib/Utils.js";
 
     let testName = '';
-    let selectedUserId = null;
     let description = '';
     let selectedSprints = []; // Array to store selected sprints
     let selectedModules = []; // Array to store selected modules
@@ -15,7 +15,6 @@
         try {
             sprints = await fetchRequest('sprint');
             modules = await fetchRequest('module');
-            console.log(modules);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -24,9 +23,16 @@
     async function addTest() {
         event.preventDefault()
 
+        if(isBlank(testName)) {
+            //TODO: Change border of name input field to red? Show its a problem.
+            //Empty description is okay. No Sprints / No modules is okay.
+            console.log("Name is empty")
+            return;
+        }
+
         await POSTtest();
-        await Promise.all(selectedSprints.map(async sprintid => await POSTtesting(sprintid)));
-        await Promise.all(selectedModules.map(async moduleId => await POSTmodule(moduleId)));
+        await Promise.all(selectedSprints.map(async sprintid => await POSTtesting(sprintid.sprintid)));
+        await Promise.all(selectedModules.map(async moduleId => await POSTmodule(moduleId.moduleid)));
 
         // Clear form and show success message after 2 seconds
         resetForm();
@@ -43,7 +49,6 @@
             name: testName,
             description: description
         };
-        console.log(testData);
 
         await fetchRequest('test', 'POST', testData);
     }
@@ -56,19 +61,11 @@
             return;
         }
 
-        if (selectedUserId === null) {
-            testingData = {
-                sprintid: sprintid,
-                testid: latestid,
-            };
-        } else {
-            testingData = {
-                sprintid: sprintid,
-                testid: latestid,
-                userId: selectedUserId
-            };
-        }
-
+        testingData = {
+            sprintid: sprintid,
+            testid: latestid,
+        };
+        console.log('Sprint data: ', testingData.sprintid);
         console.log('Testing Data:', testingData);
 
         await fetchRequest('testing', 'POST', testingData);
@@ -105,7 +102,6 @@
 
     function resetForm() {
         testName = '';
-        selectedUserId = null;
         description = '';
         selectedSprints = [];
         selectedModules = [];
