@@ -26,13 +26,17 @@ const lessOrEqualTo = 'LessEqual';
  * you want to return.
  */
 export async function performQueryFromReq(req) {
+    // Other setting handling
     req.combinatory = req.query.combinatory;
     delete req.query.combinatory;
+    req.ordering = req.query.ordering;
+    delete req.query.ordering;
 
     let query;
     try {
         if (req.method.toLowerCase() === 'get') {
             query = generateGetQuery(req);
+            query += addOrdering(req);
         } else if (req.method.toLowerCase() === 'delete') {
             query = generateDeleteQuery(req);
         } else if (req.method.toLowerCase() === 'post') {
@@ -45,10 +49,9 @@ export async function performQueryFromReq(req) {
     } catch (e) {
         return {error: e.message};
     }
+
     // This is just test printing.
-    if (query !== 'SELECT * FROM test') {
-        console.log(query);
-    }
+    console.log(query);
 
     return await performQuery(query).then((data) => {
         return data;
@@ -358,8 +361,6 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
         query: {}
     }
 
-    // TODO: should return 404 if nothing found?
-
     if (queryProperty) {
         fakeReq.query[queryProperty] = queryParam + ";Equals";
     }
@@ -524,4 +525,47 @@ function removeParametersIgnoreCase(part, paramNames) {
         }
     }
     return part;
+}
+
+export function isBlank(string) {
+    if(string === undefined || string === null) return true;
+    string = string.toString();
+    for (let stringElement of string) {
+        if (stringElement === " ") {
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Validates a date, not any date is validated by this but of a date uses YYYY-MM-DD, it will be accepted.
+ * Possible it accepts other variants too.
+ */
+export function isValidDate(dateString) {
+    if(dateString === undefined || dateString === null) return false;
+    // Attempt to create a Date object using ISO format
+    let date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        // If it fails, try an alternative format
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            date = new Date(`${parts[1]}-${parts[0]}-${parts[2]}`);
+        }
+    }
+
+    // Check if the final date is valid and matches the input string
+    return !isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateString;
+}
+
+/**
+ * Adds ordering to a request. Add ordering as query parameter.
+ * ordering=TABLE_NAME will be counted as desc. If you want asc, do not include the ordering as query parameter.
+ * Only allows single table and only by desc, since this is all that is needed for now.
+ */
+function addOrdering(req) {
+    if(!req.ordering) return "";
+    return " order by " + req.ordering + " desc";
 }
