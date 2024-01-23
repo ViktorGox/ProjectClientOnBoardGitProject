@@ -26,13 +26,17 @@ const lessOrEqualTo = 'LessEqual';
  * you want to return.
  */
 export async function performQueryFromReq(req) {
+    // Other setting handling
     req.combinatory = req.query.combinatory;
     delete req.query.combinatory;
+    req.ordering = req.query.ordering;
+    delete req.query.ordering;
 
     let query;
     try {
         if (req.method.toLowerCase() === 'get') {
             query = generateGetQuery(req);
+            query += addOrdering(req);
         } else if (req.method.toLowerCase() === 'delete') {
             query = generateDeleteQuery(req);
         } else if (req.method.toLowerCase() === 'post') {
@@ -45,10 +49,9 @@ export async function performQueryFromReq(req) {
     } catch (e) {
         return {error: e.message};
     }
+
     // This is just test printing.
-    if (query !== 'SELECT * FROM test') {
-        console.log(query);
-    }
+    console.log(query);
 
     return await performQuery(query).then((data) => {
         return data;
@@ -556,4 +559,14 @@ export function isValidDate(dateString) {
 
     // Check if the final date is valid and matches the input string
     return !isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateString;
+}
+
+/**
+ * Adds ordering to a request. Add ordering as query parameter.
+ * ordering=TABLE_NAME will be counted as desc. If you want asc, do not include the ordering as query parameter.
+ * Only allows single table and only by desc, since this is all that is needed for now.
+ */
+function addOrdering(req) {
+    if(!req.ordering) return "";
+    return " order by " + req.ordering + " desc";
 }
