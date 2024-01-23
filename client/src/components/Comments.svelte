@@ -7,32 +7,29 @@
     export let selectedStep;
     export let fetchAll;
 
-    async function handleSubmit(event) {
+    async function setTestId() {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
-        let testId = parts[parts.length - 1];
+        const lastPart = parts[parts.length - 1];
+        testId = parseInt(lastPart, 10);
+    }
 
+
+    async function handleSubmit(event) {
         event.preventDefault();
-
+        await setTestId();
         const formData = new FormData(event.target);
         const image = (formData.get('image'));
-        // const requestFileBody={
-        //     file: image
-        // }
         const requestCommentBody = {
             testlog: formData.get('comment'),
         };
         console.log(image);
         try {
-            // const imageResponse = await fetchRequest('/test/'+testId+'/teststeps/', {
-            //     method: 'POST',
-            //     body: image,
-            // });
-
-            if (selectedStep!=null){
-                console.log(requestCommentBody);
-                const textResponse =  fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid+'?combinatory=true', 'PUT',requestCommentBody);
-                if (textResponse.status=200) {
+            if (selectedStep != null) {
+                console.log("RequestCommentBody => ", requestCommentBody);
+                console.log("TestId => ", testId);
+                const textResponse = fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '?combinatory=true', 'PUT', requestCommentBody);
+                if (textResponse.status = 200) {
                     console.log('Comment submitted successfully');
                     setTimeout(() => {
                         console.log("this is the third message");
@@ -43,7 +40,6 @@
                     console.error('Failed to submit comment');
                 }
             }
-
         } catch (error) {
             console.error('Error:', error);
         }
@@ -69,6 +65,10 @@
     }
 
     async function uploadFile() {
+        await setTestId();
+
+        console.log("Selected Step ", selectedStep)
+
         const file = fileInput.files[0];
 
         if (!file) {
@@ -79,7 +79,7 @@
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetchRequest('test/1/teststeps/2/attachment','POST',formData)
+        const response = await fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '/attachment', 'POST', formData)
         console.log(response);
     }
 </script>
@@ -156,7 +156,8 @@
         cursor: pointer;
         border-radius: 5px;
     }
-    button:hover{
+
+    button:hover {
         background-color: #0056b3;
     }
 
