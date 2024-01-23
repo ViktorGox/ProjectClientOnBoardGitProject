@@ -7,14 +7,12 @@
     let description = '';
     let selectedSprints = []; // Array to store selected sprints
     let selectedModules = []; // Array to store selected modules
-    let users = [];
     let sprints = [];
     let modules = [];
     let successMessage = ''; // Added success message state
 
     onMount(async () => {
         try {
-            users = await fetchRequest('users');
             sprints = await fetchRequest('sprint');
             modules = await fetchRequest('module');
             console.log(modules);

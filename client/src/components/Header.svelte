@@ -2,6 +2,9 @@
     import { blockerStore } from '../stores/blockerStore';
     import userStore from "../stores/userStore.js";
 
+    // Import the image
+    import logoImage from '../assets/logopng/scorionLogoCutout.png';
+
     export let active;
 
     $: loggedIn = true; // Set to true or false based on your logic
@@ -15,15 +18,16 @@
 </script>
 
 <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg justify-content-between">
+    <!-- Replace the text with the image -->
     <a
             class:active={active === (loggedIn ? "/projects" : "/login")}
             href={loggedIn ? "/projects" : "/"}
             class="navbar-brand"
     >
         {#if loggedIn}
-            Home
+            <img src={logoImage} alt="Logo" style="height: 30px;">
         {:else}
-            Login
+            <img src={logoImage} alt="Logo" style="height: 30px;">
         {/if}
     </a>
 
@@ -32,7 +36,8 @@
             <li class="nav-item">
                 <a href="notifications" class="nav-link">
                     <i class="bi bi-bell d-inline-block mx-2"></i>
-                    Notifications {AmountOfBlockers > 0 ? `(${AmountOfBlockers})` : ''}                </a>
+                    Notifications {AmountOfBlockers > 0 ? `(${AmountOfBlockers})` : ''}
+                </a>
             </li>
             <li
                     class="nav-item user-menu"
@@ -55,7 +60,6 @@
         {/if}
     </ul>
 </nav>
-
 <style>
     .navbar {
         background-color: #25252b !important; /* Dark background color for the navbar */
