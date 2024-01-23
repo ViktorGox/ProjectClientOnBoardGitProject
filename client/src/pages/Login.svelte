@@ -20,12 +20,17 @@
 
     const handleSubmit = async () => {
         const response = await submit();
-        await login(email, password, socket)
+        try {
+            await login(email, password, socket)
+        }
+        catch (error){
+            console.log(error)
+        }
 
         if (response) {
             if (response.token) {
                 $tokenStore.token = response.token;
-                router('/testCases');
+                router('/projects');
             }
         }
     };
@@ -38,7 +43,6 @@
     async function submit() {
         try {
             return fetchRequest('token', 'POST', {email, password}).then((result) => {
-                console.log("result -> ",result)
                 incorrectCredentials = false;
                 $tokenStore.token = result.token;
                 $userStore=result.user;

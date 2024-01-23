@@ -1,24 +1,23 @@
 <script>
-    import {blockerStore} from '../stores/blockerStore';
+    import { blockerStore } from '../stores/blockerStore';
     import userStore from "../stores/userStore.js";
 
     export let active;
 
-
     $: loggedIn = true; // Set to true or false based on your logic
     let showUserMenu = false; // Flag to control user menu visibility
-    $: AmountOfBlockers =
-        $blockerStore
-            .filter(blocker => blocker.userId === $userStore.id)
-            .length;
+    $: AmountOfBlockers = $blockerStore.filter(blocker => blocker.userId === $userStore.id).length;
     $: email = $userStore.email;
+
+    console.log($userStore)
+    console.log($blockerStore.filter(blocker => blocker.userId === $userStore.id).length)
 
 </script>
 
 <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg justify-content-between">
     <a
-            class:active={active === (loggedIn ? "/testCases" : "/login")}
-            href={loggedIn ? "/testCases" : "/login"}
+            class:active={active === (loggedIn ? "/projects" : "/login")}
+            href={loggedIn ? "/projects" : "/"}
             class="navbar-brand"
     >
         {#if loggedIn}

@@ -50,7 +50,8 @@ async function createToken(user, res) {
     console.log(user);
     const payload = {
         email: user.email,
-        role: user.role
+        role: user.role,
+        id: user.userid
     };
     jwt.sign(payload, 'secretKey', { expiresIn: '12h' }, (err, token) => {
         if (err) {

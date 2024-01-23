@@ -13,6 +13,7 @@
     import Notifications from "./pages/Notifications.svelte";
     import AccountManager from "./pages/AccountManager.svelte";
     import Modules from "./pages/Modules.svelte";
+    import addTest from "./pages/addTest.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -40,6 +41,11 @@
     router('/projects/:sprintid/test/:id', (ctx) => {
         page = TestCaseDetails;
         params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+
+    router('/addTest', (ctx) => {
+        page = addTest;
         currentRoute = ctx.pathname;
     });
 
@@ -87,7 +93,7 @@
     router.start();
 </script>
 <svelte:head>
-    <title>{"Scorion Regression test management"}</title>
+    <title>{" Regression test management"}</title>
 </svelte:head>
 
 <main>

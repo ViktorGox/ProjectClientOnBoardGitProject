@@ -3,6 +3,7 @@
     import {arrayToString} from "../lib/Utils.js";
     import {onMount} from 'svelte';
     import router from "page";
+    import Button from "./Button.svelte";
 
     export let generalTable;
     export let sprintId;
@@ -226,9 +227,9 @@
             </div>
             <div class="col-auto">
                 {#if generalTable}
-                    <button class="btn btn-primary">
+                    <a class="btn btn-primary" href="/addtest">
                         Add Test
-                    </button>
+                    </a>
                 {:else}
                     <div class="dropdown">
 

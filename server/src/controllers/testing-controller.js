@@ -19,6 +19,12 @@ export function updateTestStatus(req, res) {
     return notFoundReq(req, res);
 }
 
+export function postTestStatus(req, res) {
+    return badRequestOnly(req, res);
+}export function postTesting(req, res) {
+    return badRequestOnly(req, res);
+}
+
 export function updateTestAssignee(req, res) {
     req.query.combinatory = true;
     req = removeBodyParametersIgnoreCase(req, 'sprintid, testid, completiondate, statusid');
