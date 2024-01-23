@@ -361,8 +361,6 @@ export async function performSimpleOneQuery(table, method, queryProperty, queryP
         query: {}
     }
 
-    // TODO: should return 404 if nothing found?
-
     if (queryProperty) {
         fakeReq.query[queryProperty] = queryParam + ";Equals";
     }
@@ -546,6 +544,7 @@ export function isBlank(string) {
  * Possible it accepts other variants too.
  */
 export function isValidDate(dateString) {
+    if(dateString === undefined || dateString === null) return false;
     // Attempt to create a Date object using ISO format
     let date = new Date(dateString);
 
