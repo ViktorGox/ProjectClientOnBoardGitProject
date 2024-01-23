@@ -30,7 +30,7 @@
         await new Promise(resolve => setTimeout(resolve, 100));
 
         testSteps = await fetchRequest('test/' + testId + '/teststeps');
-        testCaseName = await fetchRequest('test/' + 2 + '/');
+        testCaseName = await fetchRequest('test/' + testId + '/');
         testCaseName = testCaseName[0].name;
 
         await new Promise(resolve => setTimeout(resolve, 100));
