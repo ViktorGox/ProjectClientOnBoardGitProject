@@ -525,3 +525,31 @@ function removeParametersIgnoreCase(part, paramNames) {
     }
     return part;
 }
+
+export function isBlank(string) {
+    if(string === undefined || string === null) return true;
+    string = string.toString();
+    for (let stringElement of string) {
+        if (stringElement === " ") {
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
+
+export function isValidDate(dateString) {
+    // Attempt to create a Date object using ISO format
+    let date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        // If it fails, try an alternative format
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            date = new Date(`${parts[1]}-${parts[0]}-${parts[2]}`);
+        }
+    }
+
+    // Check if the final date is valid and matches the input string
+    return !isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateString;
+}
