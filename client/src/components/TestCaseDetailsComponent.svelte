@@ -137,7 +137,7 @@
         <tbody>
         {#each testSteps as step (step.stepnr)}
             <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}>
-                <td>{step.stepid}</td>
+                <td>{step.stepnr}</td>
                 <td>{step.title}</td>
                 <td>{step.weight}</td>
                 <td>{step.testlog}</td>
