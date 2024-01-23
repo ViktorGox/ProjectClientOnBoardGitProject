@@ -305,15 +305,6 @@
             <thead>
             <tr>
 
-                {#if !generalTable}
-                    <th scope="col">
-                        <label class="control">
-                            <input type="checkbox" on:click={checkAll}>
-                            <span class="checkmark"></span>
-                        </label>
-                    </th>
-                {/if}
-
                 <th scope="col" class="order-header" on:click={toggleRotateID} on:click={reverseTestArray}>
                     ID
                     <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
@@ -335,16 +326,6 @@
             {#if fullTests || statuses}
                 {#each fullTests as test, i}
                     <tr class="test-page" on:click={openTestPage(test.testid)}>
-
-                        {#if !generalTable}
-                            <th scope="row" on:click|stopPropagation>
-                                <label class="control">
-                                    <input type="checkbox" on:change={() => console.log('checked')}>
-                                    <!--change console.log to function that collects this test-->
-                                    <span class="checkmark"></span>
-                                </label>
-                            </th>
-                        {/if}
 
                         <td>
                             {test.testid}
