@@ -101,12 +101,12 @@
         {/each}
     </ul>
 
-    <form on:submit={handleSubmit}>
+    <form>
         <textarea name="comment" placeholder="Add a comment..."></textarea>
         <input type="file" bind:this={fileInput} on:change={handleFileChange}>
         <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
         <button on:click={uploadFile}>Upload File</button>
-        <button type="submit">Submit</button>
+        <button onclick={handleSubmit} type="submit">Submit</button>
     </form>
 </div>
 
