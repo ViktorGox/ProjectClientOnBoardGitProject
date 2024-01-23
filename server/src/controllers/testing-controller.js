@@ -21,7 +21,9 @@ export function updateTestStatus(req, res) {
 
 export function postTestStatus(req, res) {
     return badRequestOnly(req, res);
-}export function postTesting(req, res) {
+}
+
+export function postTesting(req, res) {
     return badRequestOnly(req, res);
 }
 
@@ -35,7 +37,11 @@ export async function getTestAssignee(req, res) {
     req.query.combinatory = true;
     req.query.columns = 'userid'
     const userIdResult = await performQueryFromReq(req);
-    if(!userIdResult[0]) return res.status(400).json({error: "User not found."})
+    if(!userIdResult[0]) return res.status(400).json({error: "User or sprint not found."})
+    if(userIdResult[0].userid === null) {
+        return res.status(200).json({email: "null"});
+    }
+
     const userEmailResult = await performSimpleOneQuery('users','get','userid', userIdResult[0].userid);
     return res.status(200).json({email: userEmailResult[0].email});
 }
