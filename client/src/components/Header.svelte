@@ -25,7 +25,7 @@
             class="navbar-brand"
     >
         {#if loggedIn}
-            <img src={logoImage} alt="Logo" style="height: 30px;">
+            <img src={logoImage} alt="Logo" style="height: 2rem;">
         {:else}
             <img src={logoImage} alt="Logo" style="height: 30px;">
         {/if}
