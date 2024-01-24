@@ -21,10 +21,19 @@ export function getSprintById(req, res) {
 }
 
 export function addNewSprint(req, res) {
+    if(isBlank(req.body.title)) return res.status(400).json({error: "Title missing in body."})
+    if(!isValidDate(req.body.startdate)) return res.status(400).json({error: "Invalid start date."})
+    if(!isValidDate(req.body.duedate)) return res.status(400).json({error: "Invalid end date."})
+    req.body.title = req.body.title.trim();
+
     return badRequestOnly(req, res);
 }
 
 export function editSprintBySprintId(req, res) {
+    if(req.body.title) {
+        req.body.title = req.body.title.trim();
+    }
+
     return badRequestOnly(req, res);
 }
 
