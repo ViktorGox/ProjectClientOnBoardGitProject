@@ -314,6 +314,7 @@
                 <th scope="col">Modules</th>
                 {#if !generalTable}
                     <th scope="col">Status</th>
+                    <th scope="col">Assignee</th>
                 {/if}
                 <th scope="col" class="order-header" on:click={toggleRotateWeight} on:click={orderByWeight}>Weight
                     <img class:rotated={isFlippedWeight} class="small-img" src="../src/assets/arrow-down-white.png"
@@ -361,6 +362,7 @@
                                     </div>
                                 </div>
                             </td>
+                            <td>{test.assignee}</td>
                         {/if}
                         <td>{test.weight}</td>
                     </tr>
