@@ -202,7 +202,7 @@
     const openTestPage = (id) => {
         console.log(sprintId);
         if (sprintId) {
-            router(sprintId + "/test/" + id);
+            router("/projects/" + sprintId + "/test/" + id);
         } else {
             router("/tests/" + id);
         }

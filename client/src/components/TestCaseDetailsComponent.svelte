@@ -168,7 +168,7 @@
             <tr>
                 <th scope="col" class="order-header" on:click={reverseStepArray}>
                     ID
-                    <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
+                    <img class:rotated={isFlippedID} class="small-img" src="/src/assets/arrow-down-white.png"
                          alt="order button image">
                 </th>
                 <th>Name</th>
