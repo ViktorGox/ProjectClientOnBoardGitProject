@@ -4,6 +4,7 @@
     import router from "page";
     import CommentsSection from "./Comments.svelte";
     import userStore from "../stores/userStore.js";
+
     export let testId;
     export let selectedStep = null;
     let testCaseName;
@@ -16,8 +17,9 @@
         testlog: "",
         completion: ""
     };
-    let attachments=[];
+    let attachments = [];
     let selectedAttachmentIndex = null;
+
     function handleImageClick(index) {
         selectedAttachmentIndex = index;
     }
@@ -72,6 +74,7 @@
 
         updateHighlight();
     }
+
     async function fetchAttachments() {
         if (selectedStep) {
             const response = await fetchRequest(`test/${testId}/teststeps/${selectedStep.stepid}/attachment`);
@@ -80,6 +83,7 @@
             console.log(attachments);
         }
     }
+
     function handleStepCompletionChange(step, event) {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
@@ -132,48 +136,56 @@
         };
 
     }
+
+    function editPage() {
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        let testId = parts[parts.length - 1];
+        router('/tests/' + testId + '/edit');
+    }
+
 </script>
 
 <div class="test-case-details">
     <h1>{testCaseName}</h1>
     {#if $userStore.role === 'admin'}
-        <button class="edit-button">Edit</button>
+        <button class="edit-button" on:click={editPage}>Edit</button>
         <button class="add-test-step-button" on:click={() => showAddTeststepPopup = true}>Add Test Step</button>
     {/if}
-        <div class="header">
+    <div class="header">
 
-</div>
-<div class="test-steps">
-    <table>
-        <thead>
-        <tr>
-            <th>Step</th>
-            <th>Name</th>
-            <th>Weight</th>
-            <th>Test Log</th>
-            <th>Completion State</th>
-        </tr>
-        </thead>
-        <tbody>
-        {#each testSteps as step (step.stepnr)}
-            <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}>
-                <td>{step.stepnr}</td>
-                <td>{step.title}</td>
-                <td>{step.weight}</td>
-                <td>{step.testlog}</td>
-                <td>
-                    {step.completion}
-                    <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}
-                            class="form-select form-select-sm bg-dark">
-                        <option value="true">Completed</option>
-                        <option value="false">Incomplete</option>
-                    </select>
-                </td>
+    </div>
+    <div class="test-steps">
+        <table>
+            <thead>
+            <tr>
+                <th>Step</th>
+                <th>Name</th>
+                <th>Weight</th>
+                <th>Test Log</th>
+                <th>Completion State</th>
             </tr>
-        {/each}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {#each testSteps as step}
+                <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}>
+                    <td>{step.stepnr}</td>
+                    <td>{step.title}</td>
+                    <td>{step.weight}</td>
+                    <td>{step.testlog}</td>
+                    <td>
+                        {step.completion}
+                        <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}
+                                class="form-select form-select-sm bg-dark">
+                            <option value="true">Completed</option>
+                            <option value="false">Incomplete</option>
+                        </select>
+                    </td>
+                </tr>
+            {/each}
+            </tbody>
+        </table>
+    </div>
     <div class="popup" style="{showAddTeststepPopup ? 'display: block;' : 'display: none;'}">
 
         <span class="close-button" on:click={() => showAddTeststepPopup = false}>&times;</span>
@@ -195,19 +207,21 @@
     <div class="attachments-container">
         {#each attachments as attachment}
             <div class="attachment" on:click={() => handleImageClick(attachment.attachmentid)}>
-                <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+attachment.attachmentid} alt="Attachment" />
+                <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+attachment.attachmentid}
+                     alt="Attachment"/>
             </div>
         {/each}
 
         {#if selectedAttachmentIndex !== null}
             <div class="zoom-overlay" on:click={handleCloseZoom}>
                 <div class="zoom-content">
-                    <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+selectedAttachmentIndex} alt="Zoomed Attachment" />
+                    <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+selectedAttachmentIndex}
+                         alt="Zoomed Attachment"/>
                 </div>
             </div>
         {/if}
     </div>
-<CommentsSection {testId} {selectedStep} {fetchAll}/>
+    <CommentsSection {testId} {selectedStep} {fetchAll}/>
 </div>
 
 <style>
@@ -253,6 +267,7 @@
     tr {
         cursor: pointer;
     }
+
     .form-select-sm {
         /*width: 60%;*/
         cursor: pointer;
@@ -313,6 +328,7 @@
         cursor: pointer;
         color: #fff;
     }
+
     .edit-button,
     .add-test-step-button,
     .add-teststep-button {
@@ -330,6 +346,7 @@
     .add-teststep-button {
         background-color: #0056b3;
     }
+
     .attachments-container {
         display: flex;
         flex-wrap: nowrap;
