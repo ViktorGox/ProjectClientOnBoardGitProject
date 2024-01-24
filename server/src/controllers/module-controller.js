@@ -1,4 +1,4 @@
-import {badRequestOnly, notFoundReq} from "./generic.js";
+import {badRequestOnly, isBlank, notFoundReq} from "./generic.js";
 
 export function getModule(req, res) {
     return badRequestOnly(req, res);
@@ -9,6 +9,8 @@ export function getModuleById(req, res) {
 }
 
 export function postModule(req, res) {
+    if(isBlank(req.body.label)) return res.status(400).json({error: "Label missing in body."})
+    req.body.label = req.body.label.trim();
     return badRequestOnly(req, res);
 }
 
@@ -17,5 +19,7 @@ export function deleteModuleById(req, res) {
 }
 
 export function editModule(req, res) {
+    if(isBlank(req.body.label)) return res.status(400).json({error: "Label missing in body."})
+    req.body.label = req.body.label.trim();
     return badRequestOnly(req, res);
 }
