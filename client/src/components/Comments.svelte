@@ -100,17 +100,23 @@
             </li>
         {/each}
     </ul>
-
-    <form>
-        <textarea name="comment" placeholder="Add a comment..."></textarea>
-        <input type="file" bind:this={fileInput} on:change={handleFileChange}>
-        <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
+    <div class="containerForAttachments">
+        <textarea name="comment" placeholder="Add a comment..."></textarea><br>
+        <input type="file" bind:this={fileInput} on:change={handleFileChange}><br>
+        <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;"><br>
         <button on:click={uploadFile}>Upload File</button>
+        <br>
         <button onclick={handleSubmit} type="submit">Submit</button>
-    </form>
+    </div>
 </div>
 
 <style>
+    .containerForAttachments{
+        text-align: left;
+    }
+    textarea{
+        width: 50%;
+    }
     .comments-section {
         margin-top: 20px;
     }

@@ -43,6 +43,8 @@
             <p> Assignee: {assigneeEmail}</p>
             <select bind:value={userId} on:change={changeAssignee}
                     class="form-select form-select-sm bg-dark">
+<!--                <option value="null">Unassign</option>-->
+
                 {#each users as {email, userid}}
                     <option value="{userid}">
                         {email}
