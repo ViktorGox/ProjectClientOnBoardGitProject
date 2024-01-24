@@ -6,6 +6,7 @@
     export let comments = [];
     export let selectedStep;
     export let fetchAll;
+    let comment = '';
 
     async function setTestId() {
         const currentRoute = router.current;
@@ -15,15 +16,12 @@
     }
 
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    async function handleSubmit() {
+
         await setTestId();
-        const formData = new FormData(event.target);
-        const image = (formData.get('image'));
         const requestCommentBody = {
-            testlog: formData.get('comment'),
+            testlog: comment,
         };
-        console.log(image);
         try {
             if (selectedStep != null) {
                 console.log("RequestCommentBody => ", requestCommentBody);
@@ -36,7 +34,6 @@
                     }, 3000);
                     await fetchAll();
                 } else {
-                    // Handle error
                     console.error('Failed to submit comment');
                 }
             }
@@ -47,6 +44,7 @@
 
     let fileInput;
     let previewImage;
+    let showImage = false;
 
     function handleFileChange() {
         const file = fileInput.files[0];
@@ -56,6 +54,7 @@
 
             reader.onload = function (e) {
                 // Update the previewImage source to display the selected image
+                showImage = true;
                 previewImage.src = e.target.result;
             };
 
@@ -81,42 +80,56 @@
 
         const response = await fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '/attachment', 'POST', formData)
         console.log(response);
+
+        previewImage.src = '';
+        await fetchAll();
     }
 </script>
 
 <div class="comments-section">
     <h2>Change Test Log</h2>
-    <ul>
-        {#each comments as comment (comment.id)}
-            <li>
-                <div class="comment-header">
-                    <span>{comment.user}</span>
-                    <span>{comment.timestamp}</span>
-                </div>
-                <p>{comment.text}</p>
-                {#if comment.attachment}
-                    <img src={comment.attachment} alt="Comment Attachment"/>
-                {/if}
-            </li>
-        {/each}
-    </ul>
+    <small class="hint">Make changes to selected step</small>
     <div class="containerForAttachments">
-        <textarea name="comment" placeholder="Add a comment..."></textarea><br>
+        <div class="form-group row">
+            <label for="comment" class="col-2 col-form-label">Comment</label>
+            <div class="col-10">
+                    <textarea class="form-control dark-text" id="comment" bind:value={comment}
+                              placeholder="Add a comment..." autocomplete="off" name="comment"
+                              required rows="3"></textarea>
+            </div>
+        </div>
+        <!--<textarea name="comment" placeholder="Add a comment..."></textarea><br>-->
         <input type="file" bind:this={fileInput} on:change={handleFileChange}><br>
         <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;"><br>
-        <button on:click={uploadFile}>Upload File</button>
-        <br>
-        <button onclick={handleSubmit} type="submit">Submit</button>
+
+        <div class="center">
+            <button class="btn btn-primary" on:click={uploadFile}>Upload File</button>
+            <button class="btn btn-primary" on:click={handleSubmit} type="submit">Submit</button>
+        </div>
+
     </div>
 </div>
 
 <style>
+    .dark-text {
+        background-color: #25252b;
+        color: #fff;
+        border-radius: 4px;
+        border: none;
+    }
+
+    .center {
+        text-align: center;
+    }
+
     .containerForAttachments{
         text-align: left;
     }
+
     textarea{
         width: 50%;
     }
+
     .comments-section {
         margin-top: 20px;
     }
@@ -167,4 +180,8 @@
         background-color: #0056b3;
     }
 
+    .hint {
+        opacity: 0.3;
+        font-size: 16px !important;
+    }
 </style>
