@@ -28,19 +28,11 @@
         selectedAttachmentIndex = null;
     }
 
-    function handleNavigate(direction) {
-        if (selectedAttachmentIndex !== null) {
-            selectedAttachmentIndex += direction;
-            if (selectedAttachmentIndex < 0 || selectedAttachmentIndex >= attachments.length) {
-                selectedAttachmentIndex = null;
-            }
-        }
-    }
-
     onDestroy(() => (selectedAttachmentIndex = null));
 
-    function fetchAll() {
-        fetchTestSteps();
+    async function fetchAll() {
+        await fetchTestSteps();
+        sortSteps();
     }
 
     async function fetchTestSteps() {
@@ -59,6 +51,13 @@
 
         const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
         testSteps = await response.json();
+        testSteps.forEach(function (step, index) {
+            if (step.completion) {
+                testSteps[index].completion = "true";
+            } else {
+                testSteps[index].completion = "false";
+            }
+        });
         console.log(testSteps);
         console.log(testCaseName)
     }
@@ -66,13 +65,14 @@
     onMount(async () => {
         const pathArray = window.location.pathname.split('/');
         testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
-        await fetchTestSteps();
+        await fetchAll();
     });
 
-    function handleStepClick(step) {
+    async function handleStepClick(step) {
         selectedStep = selectedStep === step ? null : step;
+        console.log("Selected step:", selectedStep);
 
-        updateHighlight();
+        await fetchAttachments();
     }
 
     async function fetchAttachments() {
@@ -88,7 +88,8 @@
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
         let testId = parts[parts.length - 1];
-        console.log(step.completion)
+        console.log(step.completion);
+        console.log(typeof step.completion);
         step.completion = event.target.value === "true";
         const body = {
             completion: (step.completion),
@@ -97,20 +98,6 @@
         console.log(JSON.stringify(body));
         const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
 
-    }
-
-    async function updateHighlight() {
-        document.querySelectorAll('tr').forEach(row => {
-            row.style.backgroundColor = '';
-        });
-
-        if (selectedStep) {
-            const selectedRow = document.getElementById(`step-${selectedStep.stepid}`);
-
-            selectedRow.classList.add('highlighted');
-            selectedRow.style.backgroundColor = 'rgba(76, 76, 87, 0.78)';
-            await fetchAttachments();
-        }
     }
 
     async function addTestStep() {
@@ -144,71 +131,102 @@
         router('/tests/' + testId + '/edit');
     }
 
+    let isFlippedID = true;
+
+    function reverseStepArray() {
+        isFlippedID = !isFlippedID;
+        sortSteps();
+    }
+
+    function sortSteps() {
+        if (isFlippedID) {
+            testSteps = testSteps.sort((a, b) => a.stepnr - b.stepnr);
+        } else {
+            testSteps = testSteps.sort((a, b) => b.stepnr - a.stepnr);
+        }
+    }
+
 </script>
 
 <div class="test-case-details">
     <h1>{testCaseName}</h1>
     {#if $userStore.role === 'admin'}
-        <button class="edit-button" on:click={editPage}>Edit</button>
-        <button class="add-test-step-button" on:click={() => showAddTeststepPopup = true}>Add Test Step</button>
+        <button class="btn btn-warning top-btn" on:click={editPage}>Edit <i class="bi bi-pencil-fill"></i></button>
+        <button class="btn top-btn" class:btn-primary={!showAddTeststepPopup}
+                class:btn-secondary={showAddTeststepPopup}
+                on:click={() => showAddTeststepPopup = !showAddTeststepPopup}>
+            {#if !showAddTeststepPopup}
+                Add Test Step
+            {:else}
+                Dismiss
+            {/if}
+        </button>
     {/if}
-    <div class="header">
 
-    </div>
-    <div class="test-steps">
-        <table>
+    <div class="mt-3 scrollable-div">
+        <table class="table custom-table">
             <thead>
             <tr>
-                <th>Step</th>
+                <th scope="col" class="order-header" on:click={reverseStepArray}>
+                    ID
+                    <img class:rotated={isFlippedID} class="small-img" src="../src/assets/arrow-down-white.png"
+                         alt="order button image">
+                </th>
                 <th>Name</th>
                 <th>Weight</th>
                 <th>Test Log</th>
                 <th>Completion State</th>
             </tr>
             </thead>
+
             <tbody>
             {#each testSteps as step}
-                <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}>
+                <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}
+                    class:active={selectedStep === step}>
                     <td>{step.stepnr}</td>
                     <td>{step.title}</td>
                     <td>{step.weight}</td>
                     <td>{step.testlog}</td>
-                    <td>
-                        {step.completion}
+                    <td on:click|preventDefault|stopPropagation>
                         <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}
-                                class="form-select form-select-sm bg-dark">
+                                class="form-select form-select-md bg-dark">
                             <option value="true">Completed</option>
                             <option value="false">Incomplete</option>
                         </select>
                     </td>
                 </tr>
+                <tr class="spacer">
+                    <td colspan="100"></td>
+                </tr>
             {/each}
             </tbody>
         </table>
     </div>
+
     <div class="popup" style="{showAddTeststepPopup ? 'display: block;' : 'display: none;'}">
 
         <span class="close-button" on:click={() => showAddTeststepPopup = false}>&times;</span>
 
         <label for="name">Name:</label>
-        <input type="name" bind:value={newTeststep.title}/>
+        <input id="name" type="text" bind:value={newTeststep.title}/>
 
         <label for="stepnr">Step number:</label>
-        <input type="stepnr" bind:value={newTeststep.stepnr}/>
+        <input id="stepnr" type="text" bind:value={newTeststep.stepnr}/>
 
         <label for="weight">Weight:</label>
-        <input type="weight" bind:value={newTeststep.weight}/>
+        <input id="weight" type="text" bind:value={newTeststep.weight}/>
 
         <label for="testlog">Testlog:</label>
-        <input type="testlog" bind:value={newTeststep.testlog}/>
+        <input id="testlog" type="text" bind:value={newTeststep.testlog}/>
 
         <button class="add-teststep-button" on:click={addTestStep}>Add a new Test step</button>
     </div>
+
     <div class="attachments-container">
         {#each attachments as attachment}
             <div class="attachment" on:click={() => handleImageClick(attachment.attachmentid)}>
                 <img src={"http://localhost:3000/test/"+testId+"/teststeps/"+selectedStep.stepid+"/attachment/"+attachment.attachmentid}
-                     alt="Attachment"/>
+                     alt="Attachment" class="images"/>
             </div>
         {/each}
 
@@ -221,69 +239,11 @@
             </div>
         {/if}
     </div>
+
     <CommentsSection {testId} {selectedStep} {fetchAll}/>
 </div>
 
 <style>
-    .test-case-details {
-        border: 2px solid #ccc;
-        padding: 20px;
-        margin: 10px;
-        border-radius: 10px;
-    }
-
-    .highlighted {
-        background-color: rgba(76, 76, 87, 0.78)
-    }
-
-    .header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 15px;
-    }
-
-    th, td {
-
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    td {
-        color: white;
-
-    }
-
-    th {
-    }
-
-    tr {
-        cursor: pointer;
-    }
-
-    .form-select-sm {
-        /*width: 60%;*/
-        cursor: pointer;
-        border: none;
-        background-color: #2e2e36 !important;
-        color: #b3b3b3;
-    }
-
-    .form-select-sm:hover {
-        background-color: #45454f !important;
-        color: white;
-    }
-
-    .form-select-sm:focus {
-        box-shadow: none;
-    }
 
     .popup {
         display: none;
@@ -329,8 +289,6 @@
         color: #fff;
     }
 
-    .edit-button,
-    .add-test-step-button,
     .add-teststep-button {
         background-color: #007bff;
         color: #fff;
@@ -341,8 +299,6 @@
         border-radius: 5px;
     }
 
-    .edit-button:hover,
-    .add-test-step-button:hover,
     .add-teststep-button {
         background-color: #0056b3;
     }
@@ -385,5 +341,215 @@
         object-fit: contain;
     }
 
+    .top-btn {
+        margin: 1rem;
+    }
 
+    .btn-warning:hover {
+        background-color: #d3aa11;
+    }
+
+    .custom-table {
+    }
+
+    .scrollable-div {
+        max-height: 28rem;
+        overflow-y: auto;
+    }
+
+    .scrollable-div::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .scrollable-div::-webkit-scrollbar-track {
+        background: rgba(179, 179, 179, 0.3);
+        border-radius: 10px;
+    }
+
+    .scrollable-div::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+
+    tbody {
+
+    }
+
+    .custom-table thead tr, .custom-table thead th {
+        position: sticky;
+        top: 0;
+        border-top: none;
+        border-bottom: none !important;
+        color: #fff;
+        background-color: #19191d;
+    }
+
+    .custom-table tbody th, .custom-table tbody td {
+        color: #777;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        font-weight: 300;
+    }
+
+    .custom-table tbody th small, .custom-table tbody td small {
+        color: #b3b3b3;
+        font-weight: 300;
+    }
+
+    .custom-table tbody tr:not(.spacer) {
+        border-radius: 7px;
+        overflow: hidden;
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+
+    .custom-table tbody tr:not(.spacer):hover {
+        -webkit-box-shadow: 0 2px 10px -5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-table tbody tr th, .custom-table tbody tr td {
+        background: #25252b;
+        border: none;
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+
+    .custom-table tbody tr th a, .custom-table tbody tr td a {
+        color: #b3b3b3;
+    }
+
+    .custom-table tbody tr th:first-child, .custom-table tbody tr td:first-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .custom-table tbody tr th:last-child, .custom-table tbody tr td:last-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .custom-table tbody tr.spacer td {
+        padding: 0 !important;
+        height: 3px;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
+    .custom-table tbody tr.active th, .custom-table tbody tr.active td, .custom-table tbody tr:hover th,
+    .custom-table tbody tr:hover td {
+        color: #fff;
+        background: #2e2e36;
+    }
+
+    .custom-table tbody tr.active th a, .custom-table tbody tr.active td a, .custom-table tbody tr:hover th a,
+    .custom-table tbody tr:hover td a {
+        color: #fff;
+    }
+
+    a {
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+
+    a, a:hover {
+        text-decoration: none !important;
+    }
+
+    input[type='checkbox'] {
+        height: 1rem;
+        width: 1rem;
+        cursor: pointer;
+    }
+
+    img {
+        width: 20px;
+        height: 20px;
+        margin: 0 10px 0 10px;
+    }
+
+    .module {
+        margin-bottom: 3px;
+        cursor: pointer;
+        background-color: #2e2e36;
+        border-radius: 0.5rem;
+    }
+
+    .modules .module {
+        width: 10rem;
+        color: #b3b3b3;
+        margin-right: 0.5rem;
+    }
+
+    .chosen-module {
+        background: #593fe4;
+        color: white !important;
+    }
+
+    .chosen-module:hover {
+        background: #6f58ee !important;
+    }
+
+    .modules .module:hover {
+        color: white;
+        background: #45454f;
+    }
+
+    .custom-table tbody tr.active th .module, .custom-table tbody tr.active td .module, .custom-table tbody tr:hover th .module,
+    .custom-table tbody tr:hover td .module {
+        background: #393942;
+    }
+
+    .custom-table tbody tr.active th .module:hover, .custom-table tbody tr.active td .module:hover, .custom-table tbody tr:hover th .module:hover,
+    .custom-table tbody tr:hover td .module:hover {
+        background: #45454f;
+    }
+
+    .custom-table tbody tr.active th .chosen-module, .custom-table tbody tr.active td .chosen-module, .custom-table tbody tr:hover th .chosen-module,
+    .custom-table tbody tr:hover td .chosen-module {
+        background: #593fe4;
+    }
+
+    .small-img {
+        width: 15px;
+        height: 15px;
+        margin: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .order-header, .test-page {
+        cursor: pointer;
+    }
+
+    .rotated {
+        transform: rotate(180deg);
+    }
+
+    .form-select-md {
+        /*width: 60%;*/
+        cursor: pointer;
+        border: none;
+        background-color: #2e2e36 !important;
+        color: #b3b3b3;
+    }
+
+    .form-select-md:hover {
+        background-color: #45454f !important;
+        color: white;
+    }
+
+    .form-select-md:focus {
+        box-shadow: none;
+    }
+
+    .images {
+        min-height: 150px;
+        min-width: 130px;
+        max-width: 200px;
+        max-height: 200px;
+    }
 </style>
