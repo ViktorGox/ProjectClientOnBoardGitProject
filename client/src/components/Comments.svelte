@@ -89,13 +89,13 @@
 <div class="comments-section">
     <h2>Change Test Log</h2>
     <small class="hint">Make changes to selected step</small>
-    <div class="containerForAttachments">
+    <div class="containerForAttachments mt-5">
         <div class="form-group row">
             <label for="comment" class="col-2 col-form-label">Comment</label>
             <div class="col-10">
                     <textarea class="form-control dark-text" id="comment" bind:value={comment}
                               placeholder="Add a comment..." autocomplete="off" name="comment"
-                              required rows="3"></textarea>
+                              required rows="5"></textarea>
             </div>
         </div>
         <!--<textarea name="comment" placeholder="Add a comment..."></textarea><br>-->
@@ -127,7 +127,6 @@
     }
 
     textarea{
-        width: 50%;
     }
 
     .comments-section {

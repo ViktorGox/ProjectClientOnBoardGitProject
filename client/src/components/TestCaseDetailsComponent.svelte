@@ -84,19 +84,18 @@
         }
     }
 
-    function handleStepCompletionChange(step, event) {
+    function handleStepCompletionChange(step) {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
         let testId = parts[parts.length - 1];
-        console.log(step.completion);
-        console.log(typeof step.completion);
-        step.completion = event.target.value === "true";
+
+        let completionBool = step.completion === "true";
         const body = {
-            completion: (step.completion),
+            completion: (completionBool)
         };
 
         console.log(JSON.stringify(body));
-        const response = fetchRequest('test/' + testId + '/teststeps/' + step.stepid, 'PUT', body)
+        fetchRequest('test/' + testId + '/teststeps/' + step.stepid + '?combinatory=true', 'PUT', body)
 
     }
 
@@ -163,7 +162,7 @@
         </button>
     {/if}
 
-    <div class="mt-3 scrollable-div">
+    <div class="mt-3">  <!--scrollable-div-->
         <table class="table custom-table">
             <thead>
             <tr>
@@ -180,25 +179,34 @@
             </thead>
 
             <tbody>
-            {#each testSteps as step}
-                <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}
-                    class:active={selectedStep === step}>
-                    <td>{step.stepnr}</td>
-                    <td>{step.title}</td>
-                    <td>{step.weight}</td>
-                    <td>{step.testlog}</td>
-                    <td on:click|preventDefault|stopPropagation>
-                        <select bind:value={step.completion} on:change={(e) => handleStepCompletionChange(step, e)}
-                                class="form-select form-select-md bg-dark">
-                            <option value="true">Completed</option>
-                            <option value="false">Incomplete</option>
-                        </select>
+            {#if testSteps.length > 0}
+                {#each testSteps as step}
+                    <tr id={`step-${step.stepid}`} on:click={() => handleStepClick(step)}
+                        class:active={selectedStep === step}>
+                        <td>{step.stepnr}</td>
+                        <td>{step.title}</td>
+                        <td>{step.weight}</td>
+                        <td>{step.testlog}</td>
+                        <td on:click|preventDefault|stopPropagation>
+                            <select bind:value={step.completion} on:change={handleStepCompletionChange(step)}
+                                    class="form-select form-select-md bg-dark">
+                                <option value="true">Completed</option>
+                                <option value="false">Incomplete</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="spacer">
+                        <td colspan="100"></td>
+                    </tr>
+                {/each}
+            {:else}
+                <tr>
+                    <td colspan="5">
+                        There are no steps yet.
                     </td>
                 </tr>
-                <tr class="spacer">
-                    <td colspan="100"></td>
-                </tr>
-            {/each}
+            {/if}
+
             </tbody>
         </table>
     </div>
@@ -349,33 +357,6 @@
         background-color: #d3aa11;
     }
 
-    .custom-table {
-    }
-
-    .scrollable-div {
-        max-height: 28rem;
-        overflow-y: auto;
-    }
-
-    .scrollable-div::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    .scrollable-div::-webkit-scrollbar-track {
-        background: rgba(179, 179, 179, 0.3);
-        border-radius: 10px;
-    }
-
-    .scrollable-div::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-    }
-
-    tbody {
-
-    }
-
     .custom-table thead tr, .custom-table thead th {
         position: sticky;
         top: 0;
@@ -472,48 +453,6 @@
         margin: 0 10px 0 10px;
     }
 
-    .module {
-        margin-bottom: 3px;
-        cursor: pointer;
-        background-color: #2e2e36;
-        border-radius: 0.5rem;
-    }
-
-    .modules .module {
-        width: 10rem;
-        color: #b3b3b3;
-        margin-right: 0.5rem;
-    }
-
-    .chosen-module {
-        background: #593fe4;
-        color: white !important;
-    }
-
-    .chosen-module:hover {
-        background: #6f58ee !important;
-    }
-
-    .modules .module:hover {
-        color: white;
-        background: #45454f;
-    }
-
-    .custom-table tbody tr.active th .module, .custom-table tbody tr.active td .module, .custom-table tbody tr:hover th .module,
-    .custom-table tbody tr:hover td .module {
-        background: #393942;
-    }
-
-    .custom-table tbody tr.active th .module:hover, .custom-table tbody tr.active td .module:hover, .custom-table tbody tr:hover th .module:hover,
-    .custom-table tbody tr:hover td .module:hover {
-        background: #45454f;
-    }
-
-    .custom-table tbody tr.active th .chosen-module, .custom-table tbody tr.active td .chosen-module, .custom-table tbody tr:hover th .chosen-module,
-    .custom-table tbody tr:hover td .chosen-module {
-        background: #593fe4;
-    }
-
     .small-img {
         width: 15px;
         height: 15px;
@@ -533,7 +472,7 @@
         /*width: 60%;*/
         cursor: pointer;
         border: none;
-        background-color: #2e2e36 !important;
+        background-color: #1d1d21 !important;
         color: #b3b3b3;
     }
 
