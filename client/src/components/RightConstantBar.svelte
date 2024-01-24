@@ -39,12 +39,10 @@
 <div class="right-constant-bar">
     {#if sprintId}
         <div class="assignee-info">
-            <!--        <img src={assigneeProfilePicture} alt="Assignee Profile Picture"/>-->
             <p> Assignee: {assigneeEmail}</p>
             <select bind:value={userId} on:change={changeAssignee}
                     class="form-select form-select-sm bg-dark">
-<!--                <option value="null">Unassign</option>-->
-
+                <option value="-1">Unassigned</option>
                 {#each users as {email, userid}}
                     <option value="{userid}">
                         {email}

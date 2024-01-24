@@ -28,6 +28,10 @@ export function postTesting(req, res) {
 }
 
 export function updateTestAssignee(req, res) {
+    if(req.body.userid === '-1') {
+        req.body.userid = null;
+    }
+    console.log(req.body);
     req.query.combinatory = true;
     req = removeBodyParametersIgnoreCase(req, 'sprintid, testid, completiondate, statusid');
     return notFoundReq(req, res);

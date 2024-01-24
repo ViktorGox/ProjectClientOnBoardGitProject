@@ -89,7 +89,11 @@
             const fetchAssignees = updatedTests.map(async (test) => {
                 if (sprintId) {
                     const assignee = await fetchRequest('testing/' + sprintId + '/assignee/' + test.testid);
-                    test.assignee = assignee.email;
+                    if(assignee.email === "null") {
+                        test.assignee = 'Unassigned';
+                    }else {
+                        test.assignee = assignee.email;
+                    }
                 }
             });
 
