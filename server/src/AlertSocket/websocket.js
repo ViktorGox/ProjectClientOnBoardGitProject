@@ -42,5 +42,5 @@ wss.on('connection', (ws) => {
     });
 });
 
-setInterval(sendinternalPushmessage,60000)
+setInterval(sendinternalPushmessage,3000)
 

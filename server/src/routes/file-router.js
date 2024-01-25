@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/', isLoggedIn, upload.single('file'), handleFileUpload);
-router.get('/', isLoggedIn, getAttachmentIds)
-router.get('/:attachmentId', isLoggedIn, getAttachment);
+router.post('/', upload.single('file'), handleFileUpload);
+router.get('/', getAttachmentIds)
+router.get('/:attachmentId', getAttachment);
 export default router;

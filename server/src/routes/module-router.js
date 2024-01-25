@@ -1,5 +1,12 @@
 import express from 'express';
-import {deleteModuleById, editModule, getModule, getModuleById, postModule} from "../controllers/module-controller.js";
+import {
+    deleteModuleById,
+    editLabel,
+    editModule,
+    getModule,
+    getModuleById,
+    postModule
+} from "../controllers/module-controller.js";
 import {isDeveloper, isLoggedIn} from "../middleware/middlewares.js";
 
 const router = express.Router({mergeParams:true});
