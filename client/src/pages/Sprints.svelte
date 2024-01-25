@@ -21,7 +21,7 @@
     let selectedSprintId = null;
     let deletingSprintId = null;
     let showDeleteConfirmation = false;
-    let isFlippedID = true;
+    let isFlippedID = false;
 
     function sortSprints() {
         console.log("sorting");

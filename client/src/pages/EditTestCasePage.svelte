@@ -67,7 +67,7 @@
         await fetchTestSteps();
     }
 
-    let isFlippedID = true;
+    let isFlippedID = false;
 
     function reverseStepArray() {
         isFlippedID = !isFlippedID;
@@ -75,17 +75,32 @@
     }
 
     function sortSteps() {
-        if (isFlippedID) {
+        if (!isFlippedID) {
             testSteps = testSteps.sort((a, b) => a.stepnr - b.stepnr);
         } else {
             testSteps = testSteps.sort((a, b) => b.stepnr - a.stepnr);
         }
     }
+
+    async function changeTitle() {
+        const body = {
+            name: testCaseName,
+        };
+        const response = await fetchRequest(`test/${testId}`, 'PUT', body);
+        console.log(response);
+    }
 </script>
 
 <div class="test-case-details" style="margin-top: 100px">
-    <h1>{testCaseName}</h1>
-    <button class="btn btn-primary mt-3 mb-4" on:click={goBackToDetails}>Back to Details</button>
+    <div class="form-group row head mx-auto">
+        <label for="testTitle" class="col-2 col-form-label">Test title</label>
+        <div class="col-10">
+            <input id="testTitle" class="form-control list-search big-input" type="text" bind:value={testCaseName}
+            on:input={changeTitle}>
+        </div>
+    </div>
+
+    <button class="btn btn-primary mt-4 mb-4" on:click={goBackToDetails}>Back to Details</button>
     <div class="test-steps">
         <table class="table custom-table">
             <thead>
@@ -318,5 +333,17 @@
 
     button {
         margin-left: 0.5rem;
+    }
+
+    .big-input {
+        font-size: 22px;
+    }
+
+    label {
+        color: #6e6e6e;
+    }
+
+    .head {
+        width: 80% !important;
     }
 </style>

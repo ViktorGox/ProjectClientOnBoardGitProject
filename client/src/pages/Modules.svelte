@@ -76,7 +76,7 @@
         showDeleteConfirmation = false;
     }
 
-    let isFlippedID = true;
+    let isFlippedID = false;
 
     function reverseModuleArray() {
         isFlippedID = !isFlippedID;
@@ -84,7 +84,7 @@
     }
 
     function sortModules() {
-        if (isFlippedID) {
+        if (!isFlippedID) {
             modules = modules.sort((a, b) => a.moduleid - b.moduleid);
         } else {
             modules = modules.sort((a, b) => b.moduleid - a.moduleid);
