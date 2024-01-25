@@ -94,7 +94,6 @@
             completion: (completionBool)
         };
 
-        console.log(JSON.stringify(body));
         fetchRequest('test/' + testId + '/teststeps/' + step.stepid + '?combinatory=true', 'PUT', body)
 
     }
