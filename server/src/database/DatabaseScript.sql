@@ -96,17 +96,16 @@ CREATE TABLE IF NOT EXISTS TestStep
     weight     integer                NOT NULL,
     completion boolean                NOT NULL DEFAULT FALSE,
     PRIMARY KEY (StepID),
-    UNIQUE (TestID, StepNR),
     FOREIGN KEY (TestID) REFERENCES Test (TestID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Attachment
 (
     AttachmentID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    TestStepId   integer                NOT NULL,
+    StepId   integer                NOT NULL,
     path         character varying(255) NOT NULL,
     Primary key (AttachmentID),
-    FOREIGN KEY (TestStepId) REFERENCES TestStep (StepID) MATCH SIMPLE
+    FOREIGN KEY (StepId) REFERENCES TestStep (StepID) MATCH SIMPLE
 );
 
 END;
@@ -250,7 +249,7 @@ values (1, 1),
 
 insert into testing (sprintid, testid, statusid, UserID)
 values (1, 14, 1, 1),
-       (1, 4, 1, 2),
+       (1, 4, 1, null),
        (1, 6, 2, 3),
        (1, 7, 3, 1),
        (1, 1, 3, 2),

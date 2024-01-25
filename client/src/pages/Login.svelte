@@ -4,7 +4,7 @@
     import {onMount} from 'svelte'
     import {fetchRequest} from "../lib/Request.js";
     import {tokenStore} from "../stores/TokenStore.js";
-    import {connect,login} from "../lib/clientSocket.js";
+    import {connect, login} from "../lib/clientSocket.js";
 
     let user = {};
     let socket;
@@ -22,8 +22,7 @@
         const response = await submit();
         try {
             await login(email, password, socket)
-        }
-        catch (error){
+        } catch (error) {
             console.log(error)
         }
 
@@ -45,7 +44,7 @@
             return fetchRequest('token', 'POST', {email, password}).then((result) => {
                 incorrectCredentials = false;
                 $tokenStore.token = result.token;
-                $userStore=result.user;
+                $userStore = result.user;
                 return result;
 
             }).catch((e) => {
@@ -62,36 +61,31 @@
 </script>
 
 <body>
-<div class="login__container">
-    <form id="login" action="" on:submit|preventDefault={handleSubmit}>
-        <div class="form-header">
-            <h1 style="text-align:center; margin: 5rem auto;">Login</h1>
+    <div class="login__container">
+        <form id="login" action="" on:submit|preventDefault={handleSubmit}>
+            <div class="form-header">
+                <h1 style="text-align:center; margin: 5rem auto;">Login</h1>
 
-            {#if incorrectCredentials}
-                <p class="error-message text-danger">Username or password is incorrect!</p>
-            {/if}
-        </div>
+                {#if incorrectCredentials}
+                    <p class="error-message text-danger">Username or password is incorrect!</p>
+                {/if}
+            </div>
 
 
-        <div class="form__control">
-            <input type="text" placeholder="Enter Username" name="uname" id="email" bind:value={email} required>
-        </div>
+            <div class="form__control">
+                <input type="text" placeholder="Enter Username" name="uname" id="email" bind:value={email} required>
+            </div>
 
-        <div class="form__control">
-            <input type="password" placeholder="Enter Password" name="psw" id="password" bind:value={password} required>
-        </div>
+            <div class="form__control">
+                <input type="password" placeholder="Enter Password" name="psw" id="password" bind:value={password} required>
+            </div>
 
-        <div class="submit__button">
-            <button type="submit">Login</button>
-        </div>
-    </form>
+            <div class="submit__button">
+                <button type="submit">Login</button>
+            </div>
+        </form>
 
-</div>
-
-<div class="background__image">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOtH944W_PsijoUf1522VUMepf1ImPZPjKFnFhnNglAhTwyfJCbuqGBaYVEW9nx5kLzk&usqp=CAU"
-         alt="parantion logo">
-</div>
+    </div>
 </body>
 
 <style>

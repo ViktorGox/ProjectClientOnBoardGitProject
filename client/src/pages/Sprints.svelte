@@ -21,6 +21,16 @@
     let selectedSprintId = null;
     let deletingSprintId = null;
     let showDeleteConfirmation = false;
+    let isFlippedID = false;
+
+    function sortSprints() {
+        console.log("sorting");
+        if (isFlippedID) {
+            sprints = sprints.sort((a, b) => a.sprintid - b.sprintid);
+        } else {
+            sprints = sprints.sort((a, b) => b.sprintid - a.sprintid);
+        }
+    }
 
     async function getSprints() {
         const response = await fetch(`http://localhost:3000/sprint`);
@@ -49,6 +59,7 @@
         const result = await response.json();
         await getSprints();
 
+        sortSprints();
         deletingSprintId = null;
         showDeleteConfirmation = false;
     }
@@ -223,7 +234,7 @@
     <main>
         <SprintTable promiseSprints={sprints} addNewSprint={addNewSprint} role={role}
         deleteSprintWithId={deleteSprintWithId} editSprintWithId={editSprintWithId}
-        generateReport={generateReport} update={updateSprints}>
+        generateReport={generateReport} update={updateSprints} isFlippedID={isFlippedID}>
 
         </SprintTable>
     </main>

@@ -6,44 +6,37 @@
     export let comments = [];
     export let selectedStep;
     export let fetchAll;
+    let comment = '';
 
-    async function handleSubmit(event) {
+    async function setTestId() {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
-        let testId = parts[parts.length - 1];
+        const lastPart = parts[parts.length - 1];
+        testId = parseInt(lastPart, 10);
+    }
 
-        event.preventDefault();
 
-        const formData = new FormData(event.target);
-        const image = (formData.get('image'));
-        // const requestFileBody={
-        //     file: image
-        // }
+    async function handleSubmit() {
+
+        await setTestId();
         const requestCommentBody = {
-            testlog: formData.get('comment'),
+            testlog: comment,
         };
-        console.log(image);
         try {
-            // const imageResponse = await fetchRequest('/test/'+testId+'/teststeps/', {
-            //     method: 'POST',
-            //     body: image,
-            // });
-
-            if (selectedStep!=null){
-                console.log(requestCommentBody);
-                const textResponse =  fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid+'?combinatory=true', 'PUT',requestCommentBody);
-                if (textResponse.status=200) {
+            if (selectedStep != null) {
+                console.log("RequestCommentBody => ", requestCommentBody);
+                console.log("TestId => ", testId);
+                const textResponse = fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '?combinatory=true', 'PUT', requestCommentBody);
+                if (textResponse.status = 200) {
                     console.log('Comment submitted successfully');
                     setTimeout(() => {
                         console.log("this is the third message");
                     }, 3000);
                     await fetchAll();
                 } else {
-                    // Handle error
                     console.error('Failed to submit comment');
                 }
             }
-
         } catch (error) {
             console.error('Error:', error);
         }
@@ -51,6 +44,7 @@
 
     let fileInput;
     let previewImage;
+    let showImage = false;
 
     function handleFileChange() {
         const file = fileInput.files[0];
@@ -60,6 +54,7 @@
 
             reader.onload = function (e) {
                 // Update the previewImage source to display the selected image
+                showImage = true;
                 previewImage.src = e.target.result;
             };
 
@@ -69,6 +64,10 @@
     }
 
     async function uploadFile() {
+        await setTestId();
+
+        console.log("Selected Step ", selectedStep)
+
         const file = fileInput.files[0];
 
         if (!file) {
@@ -79,38 +78,57 @@
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetchRequest('test/1/teststeps/2/attachment','POST',formData)
+        const response = await fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '/attachment', 'POST', formData)
         console.log(response);
+
+        previewImage.src = '';
+        await fetchAll();
     }
 </script>
 
 <div class="comments-section">
     <h2>Change Test Log</h2>
-    <ul>
-        {#each comments as comment (comment.id)}
-            <li>
-                <div class="comment-header">
-                    <span>{comment.user}</span>
-                    <span>{comment.timestamp}</span>
-                </div>
-                <p>{comment.text}</p>
-                {#if comment.attachment}
-                    <img src={comment.attachment} alt="Comment Attachment"/>
-                {/if}
-            </li>
-        {/each}
-    </ul>
+    <small class="hint">Make changes to selected step</small>
+    <div class="containerForAttachments mt-5">
+        <div class="form-group row">
+            <label for="comment" class="col-2 col-form-label">Comment</label>
+            <div class="col-10">
+                    <textarea class="form-control dark-text" id="comment" bind:value={comment}
+                              placeholder="Add a comment..." autocomplete="off" name="comment"
+                              required rows="5"></textarea>
+            </div>
+        </div>
+        <!--<textarea name="comment" placeholder="Add a comment..."></textarea><br>-->
+        <input type="file" bind:this={fileInput} on:change={handleFileChange}><br>
+        <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;"><br>
 
-    <form on:submit={handleSubmit}>
-        <textarea name="comment" placeholder="Add a comment..."></textarea>
-        <input type="file" bind:this={fileInput} on:change={handleFileChange}>
-        <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
-        <button on:click={uploadFile}>Upload File</button>
-        <button type="submit">Submit</button>
-    </form>
+        <div class="center">
+            <button class="btn btn-primary" on:click={uploadFile}>Upload File</button>
+            <button class="btn btn-primary" on:click={handleSubmit} type="submit">Submit</button>
+        </div>
+
+    </div>
 </div>
 
 <style>
+    .dark-text {
+        background-color: #25252b;
+        color: #fff;
+        border-radius: 4px;
+        border: none;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .containerForAttachments{
+        text-align: left;
+    }
+
+    textarea{
+    }
+
     .comments-section {
         margin-top: 20px;
     }
@@ -156,8 +174,13 @@
         cursor: pointer;
         border-radius: 5px;
     }
-    button:hover{
+
+    button:hover {
         background-color: #0056b3;
     }
 
+    .hint {
+        opacity: 0.3;
+        font-size: 16px !important;
+    }
 </style>

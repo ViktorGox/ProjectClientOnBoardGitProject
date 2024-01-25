@@ -4,7 +4,7 @@
     import router from "page";
     import userStore from "../stores/userStore.js";
     import SprintInfo from "../components/SprintInfo.svelte";
-
+    import {DateInput} from 'date-picker-svelte';
     import JafarButton from "../components/JafarButton.svelte";
     import {fetchRequest} from "../lib/Request.js";
 
@@ -12,10 +12,12 @@
     console.log(params);
     let sprintid = params.id;
     let email = $userStore ? $userStore.email : null;
-   let sprint = [];
+    let sprint = [];
     let title;
     let startDate;
     let dueDate;
+    let successMessage = ''; // Added success message state
+    let incorrectData = false;
 
 
     async function getSprintById() {
@@ -31,19 +33,23 @@
             await getSprintById(sprintid);
             if (sprint.length > 0) {
                 title = sprint[0].title;
-                startDate = sprint[0].startdate;
-                dueDate = sprint[0].duedate;
+                startDate = new Date(sprint[0].startdate);
+                dueDate = new Date(sprint[0].duedate);
             }
         } else {
             sprint = [{
                 sprintId: 0,
-                title: "Sprint 1",
-                startdate: "2021-01-01",
-                duedate: "2021-01-15"
+                title: "",
+                startdate: "",
+                duedate: ""
             }];
             title = sprint[0].title;
-            startDate = sprint[0].startdate;
-            dueDate = sprint[0].duedate;
+            startDate = new Date();
+            dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 7); // default + 1 week
+
+            sprint[0].startdate = formatDate(startDate);
+            sprint[0].duedate = formatDate(dueDate);
         }
         console.log("Title:", title);
         console.log("StartDate:", startDate);
@@ -89,10 +95,12 @@
 
     function formatDate(date) {
         let start = new Date(date);
-        return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
+        return start.getDate() + '-' + (start.getMonth() + 1) + '-' + start.getFullYear();
     }
-   async function submitNewInfo() {
+
+    async function submitNewInfo() {
         if (checkInputs()) {
+            incorrectData = false;
             let sprintInfo = {
                 title: title,
                 startDate: startDate,
@@ -100,14 +108,14 @@
             }
 
             if (sprintid && sprintid !== 'new') {
-              await  editSprint(sprintid, sprintInfo);
+                await editSprint(sprintid, sprintInfo);
             } else {
-              await  addNewSprint(sprintInfo);
+                await addNewSprint(sprintInfo);
             }
 
-           await router(`/projects`);
+            router(`/projects`);
         } else {
-            alert("One or many inputs are not correctly inputted!");
+            incorrectData = true;
         }
     }
 
@@ -121,111 +129,132 @@
 </script>
 
 <main>
-    {#if sprint && sprintid !== undefined}
-        <section id="informationPreview" class="content-section">
-            <!--            <div class="image-container">-->
-            <!--                <img src={logoImageLink} alt={logoImageLink}>-->
-            <!--            </div>-->
+    <div class="container">
 
-            <div class="info-container">
-                <div class="date-container">
-                    <label class="lighter-text">Title: {title}</label>
-                    <label class="lighter-text">Start Date: {formatDate(startDate)} </label>
-                    <label class="lighter-text">Due Date: {formatDate(dueDate)}</label>
+        {#if sprint && sprintid !== undefined}
+
+            <form>
+                <h1 class="mb-5">
+                    {#if sprintid && sprintid !== 'new'}
+                        Edit Sprint
+                    {:else}
+                        Add Sprint
+                    {/if}
+                </h1>
+
+                {#if incorrectData}
+                    <span class="error-text">Incorrect Inputs</span>
+                {/if}
+
+                <div class="form-group row mt-4 mb-5">
+                    <label for="name" class="col-2 col-form-label">Title</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control dark-text" id="name" placeholder="Name"
+                               autocomplete="off" required bind:value={title} class:error-input={incorrectData}>
+                    </div>
                 </div>
-            </div>
 
-        </section>
+                <div class="form-group row mt-5">
+                    <div class="col-5">
+                        <div class="row">
+                            <label for="startDate" class="col-6 col-form-label">Start date</label>
+                            <div class="col-6 date">
+                                <DateInput bind:value={startDate} format="yyyy-MM-dd"/>
+                            </div>
+                        </div>
+                    </div>
 
-        <section class="content-section">
-            <SprintInfo bind:title={title} bind:strartdate={startDate} bind:dueddate={dueDate}/>
-            <button class="add-sprint-button" on:click={submitNewInfo}>Add Sprint</button>
-        </section>
-    {:else }
-        <p class="no-sprint-message" >No sprint found!</p>
-    {/if}
+                    <div class="col-2">
+                        <div class="vr"></div>
+                    </div>
+
+                    <div class="col-5">
+                        <div class="row">
+                            <label for="dueDate" class="col-6 col-form-label">Due date</label>
+                            <div class="col-6 date">
+                                <DateInput bind:value={dueDate} format="yyyy-MM-dd"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <button on:click|stopPropagation|preventDefault={submitNewInfo} class="btn btn-primary mt-5 add-btn">
+                    {#if sprintid && sprintid !== 'new'}
+                        Edit Sprint
+                    {:else}
+                        Add Sprint
+                    {/if}
+                </button>
+            </form>
+
+        {:else }
+            <p class="no-sprint-message">No sprint found!</p>
+        {/if}
+
+        {#if successMessage}
+            <div class="success-message">{successMessage}</div>
+        {/if}
+    </div>
 </main>
 
 <style>
+
     body {
-        background-color: #666;
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    main {
-        display: flex;
-        justify-content: space-evenly;
-        padding: 20px;
-        font-family: 'Arial', sans-serif;
-        align-items: center;
-    }
-    .info-container {
-        text-align: center;
-    }
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        width: 45%;
-    }
-    .date-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        font-family: 'Arial', sans-serif;
-        font-size: large;
-        font-weight: bold;
-    }
-    .no-sprint-message {
-        color: #fff;
-    }
-
-    textarea {
-        flex: 1;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background-color: #313131;
-        padding: 10px;
         color: white;
-        font-weight: bold;
-        font-size: 18px;
-        font-family: "Baskerville Old Face";
-        resize: none;
-    }
-    .info-container {
-        background-color: #333;
-        border-radius: 10px;
-        padding: 15px;
-        color: white;
-        text-align: center;
-        margin-bottom: 85px;
     }
 
-
-    .date-container {
-        display: flex;
-        justify-content: space-between;
+    :global(body) {
+        --date-picker: ;
+        --date-picker-foreground: #f7f7f7;
+        --date-picker-background: #16171c;
+        --date-picker-highlight-border: hsl(var(--deg), 98%, 49%);
+        --date-picker-highlight-shadow: hsla(var(--deg), 98%, 49%, 50%);
+        --date-picker-selected-color: hsl(var(--deg), 100%, 85%);
+        --date-picker-selected-background: hsla(var(--deg), 98%, 49%, 20%);
+        transition: all 80ms ease-in-out;
     }
-    .add-sprint-button {
+
+    .success-message {
         background-color: #4CAF50;
-        padding: 10px;
-        margin: 5px;
+        opacity: 0.8;
         color: #fff;
-        cursor: pointer;
+        padding: 10px;
+        border-radius: 4px;
+        margin-top: 1rem;
+        font-size: 1rem;
+    }
+
+    main {
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .vr {
+        min-height: 2rem;
+    }
+
+    .dark-text {
+        background-color: #25252b;
+        color: #fff;
+        border-radius: 4px;
         border: none;
-        border-radius: 5px;
+    }
+
+    .add-btn {
+        width: 20rem;
+    }
+
+    .error-text {
+        color: red;
         font-size: 14px;
-        font-weight: bold;
-        font-size: large;
-    }
-    .content-section{
-        margin-top: 150px;
     }
 
-
+    .error-input {
+        border-color: red !important;
+        border-width: 2px !important;
+    }
 </style>

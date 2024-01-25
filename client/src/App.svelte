@@ -14,6 +14,7 @@
     import AccountManager from "./pages/AccountManager.svelte";
     import Modules from "./pages/Modules.svelte";
     import addTest from "./pages/addTest.svelte";
+    import EditTestCasePage from "./pages/EditTestCasePage.svelte";
 
     const token = $tokenStore.token;
     let page;
@@ -86,6 +87,13 @@
 
     router('/modules', (ctx) => {
         page = Modules;
+        params = ctx.params;
+        currentRoute = ctx.pathname;
+    });
+
+
+    router('/tests/:id/edit', (ctx) => {
+        page = EditTestCasePage;
         params = ctx.params;
         currentRoute = ctx.pathname;
     });
