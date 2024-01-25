@@ -46,7 +46,7 @@
 
     async function editNewModule() {
         showEditModulePopup = false;
-        await fetchRequest('module/' + editingModuleId, 'PUT', editModule);
+        await fetchRequest('module/label/' + editingModuleId, 'PATCH', editModule);
         modules = await fetchModules();
         sortModules();
     }

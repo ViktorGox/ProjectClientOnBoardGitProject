@@ -100,7 +100,9 @@
     }
 
     async function addTestStep() {
-        console.log("testId ", testId)
+        const currentRoute = router.current;
+        const parts = currentRoute.split('/');
+        let testId = parts[parts.length - 1];
         showAddTeststepPopup = false;
         const teststep = {
             testid: testId,
