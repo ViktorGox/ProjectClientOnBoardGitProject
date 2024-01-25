@@ -6,7 +6,8 @@
     let assigneeEmail;
     let userId;
     let sprintId;
-    let selectedModules = [];    let modules = [];
+    let selectedModules = [];
+    let modules = [];
     let selectedModulesArray=[];
     export let dueDate;
     export let testId;
@@ -25,7 +26,7 @@
         selectedModulesArray = await fetchRequest('test/'+testId+'/module')
         users = await fetchRequest('users/allUsernames');
         console.log(modules);
-        let selectedModules = [];
+        selectedModules = [];
 
         selectedModulesArray.forEach(selectedModule => {
             const { moduleid } = selectedModule;
@@ -34,7 +35,7 @@
                 selectedModules.push({ ...moduleDetails });
             }
         });
-        console.log('Selected Modules Array:', selectedModules);
+        console.log('Selected Modules:', selectedModules);
         console.log(selectedModules.some(module => module.moduleid === modules[0].moduleid));
     }
 
@@ -45,6 +46,7 @@
         await fetchRequest('testing/' + sprintId + '/assignee/' + testId, 'PUT', body)
         await fetchData();
     }
+
     function handleModuleClick(module) {
         const index = selectedModules.indexOf(module);
         if (index !== -1) {
@@ -53,11 +55,13 @@
         } else {
             selectedModules = [...selectedModules, module];
         }
-        console.log('modules: ', selectedModules);
+        console.log('Selected modules: ', selectedModules);
     }
 
     onMount(async () => {
         await fetchData();
+        console.log('Selected modules: ', selectedModules);
+        console.log('Modules: ', modules);
     });
 </script>
 
@@ -84,7 +88,7 @@
 
     <div class="scrollable-div-right mt-3">
         {#each modules as module (module.moduleid)}
-            <div class="module" class:chosen-module={selectedModules.includes(module)}>
+            <div class="module" class:chosen-module={selectedModules.some((selected) => selected.moduleid === module.moduleid)}>
                 <div class="text-container"
                      on:click|stopPropagation={() => {handleModuleClick(module)}}>
                     {module.label}
