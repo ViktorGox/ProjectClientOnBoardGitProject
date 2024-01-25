@@ -13,11 +13,11 @@
     let deletingStepId = null;
 
     async function fetchTestSteps() {
-        const response = await fetch(`http://localhost:3000/test/${testId}/teststeps`);
-        testSteps = await response.json();
+        const response = await fetchRequest(`test/${testId}/teststeps`);
+        testSteps = response;
 
-        const testCaseResponse = await fetch(`http://localhost:3000/test/${testId}`);
-        const testCaseData = await testCaseResponse.json();
+        const testCaseResponse = await fetchRequest(`test/${testId}`);
+        const testCaseData = testCaseResponse;
         testCaseName = testCaseData[0].name;
         testSteps.forEach(function (step, index) {
             if (step.completion) {

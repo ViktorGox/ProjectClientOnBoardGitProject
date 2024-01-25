@@ -5,6 +5,7 @@ import {
     getAttachmentIds,
     handleFileUpload
 } from "../controllers/file-upload-controller.js";
+import {isLoggedIn} from "../middleware/middlewares.js";
 
 const router = express.Router({mergeParams:true});
 
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/', upload.single('file'), handleFileUpload);
-router.get('/', getAttachmentIds)
-router.get('/:attachmentId', getAttachment);
+router.post('/', isLoggedIn, upload.single('file'), handleFileUpload);
+router.get('/', isLoggedIn, getAttachmentIds)
+router.get('/:attachmentId', isLoggedIn, getAttachment);
 export default router;

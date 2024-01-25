@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="col-auto">
-                {#if role === 'admin' || role === 'developer'}
+                {#if role === 'admin'}
                     <button class="btn btn-primary" on:click={addNewSprint}>
                         Add Sprint
                     </button>
@@ -92,7 +92,7 @@
                                 <td>{formatDate(sprint.startdate)}</td>
                                 <td>{formatDate(sprint.duedate)}</td>
                                 <td>
-                                    {#if role === 'admin' || role === 'developer'}
+                                    {#if role === 'admin'}
 
                                         <button class="btn btn-warning mx-1"
                                                 on:click|stopPropagation={() => editSprintWithId(sprint.sprintid)}>

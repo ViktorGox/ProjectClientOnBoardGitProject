@@ -3,6 +3,7 @@
     import Chart from 'chart.js/auto';
     import {fetchRequest} from "../lib/Request.js";
     import TestTable from "../components/TestTable.svelte";
+    import userStore from "../stores/userStore.js";
 
     let dashboardBoxes = [];
 
@@ -20,6 +21,8 @@
 
     let allPassedTests;
     let allTests;
+
+    let role;
 
     async function getSprintTestingInfo() {
         try {
@@ -158,6 +161,7 @@
     onMount(() => {
         sprintid = params ? params.id : null;
         getSprintTestingInfo();
+        role = $userStore.role;
     });
 
 </script>
@@ -168,7 +172,9 @@
             {#if sprintTitle !== undefined}
                 <div class="row">
                     <h1 class="bright-text">{sprintTitle}</h1>
-                    <button class="btn btn-primary abs-btn">Reset</button>
+                    {#if role === 'admin'}
+                        <button class="btn btn-primary abs-btn">Reset</button>
+                    {/if}
                 </div>
             {/if}
 

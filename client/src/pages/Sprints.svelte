@@ -33,9 +33,9 @@
     }
 
     async function getSprints() {
-        const response = await fetch(`http://localhost:3000/sprint`);
-        sprints = await response.json();
-        return sprints;
+        const response = await fetchRequest(`sprint`);
+        sprints = response;
+        return response;
     }
 
     function updateSprints() {
@@ -49,14 +49,7 @@
     }
 
     async function confirmDeleteSprint() {
-        const response = await fetch(`http://localhost:3000/sprint/${deletingSprintId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}`
-            }
-        });
-        const result = await response.json();
+        await fetchRequest(`sprint/${deletingSprintId}`, "DELETE")
         await getSprints();
 
         sortSprints();
@@ -221,6 +214,7 @@
 </script>
 
 {#if showDeleteConfirmation}
+
     <div class="overlay">
         <div class="delete-confirmation">
             <p>Are you sure you want to delete this sprint?</p>
