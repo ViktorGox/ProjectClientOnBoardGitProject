@@ -130,7 +130,7 @@
         router('/tests/' + testId + '/edit');
     }
 
-    let isFlippedID = true;
+    let isFlippedID = false;
 
     function reverseStepArray() {
         isFlippedID = !isFlippedID;
@@ -138,7 +138,7 @@
     }
 
     function sortSteps() {
-        if (isFlippedID) {
+        if (!isFlippedID) {
             testSteps = testSteps.sort((a, b) => a.stepnr - b.stepnr);
         } else {
             testSteps = testSteps.sort((a, b) => b.stepnr - a.stepnr);

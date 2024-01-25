@@ -109,6 +109,8 @@
                     updatedTests.reverse();
                 }
                 fullTests = updatedTests;
+
+                reverseTestArray();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
