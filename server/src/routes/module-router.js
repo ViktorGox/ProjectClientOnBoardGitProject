@@ -1,7 +1,7 @@
 import express from 'express';
 import {deleteModuleById, editModule, getModule, getModuleById, postModule} from "../controllers/module-controller.js";
 
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 router.get("/", getModule);
 router.get('/:moduleid', getModuleById)
