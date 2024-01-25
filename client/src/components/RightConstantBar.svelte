@@ -47,8 +47,20 @@
         await fetchData();
     }
 
-    function handleModuleClick(module) {
-        const index = selectedModules.indexOf(module);
+    async function handleModuleClick(module) {
+        if(selectedModules.some((selected) => selected.moduleid === module.moduleid)){
+            await fetchRequest('test/'+testId+'/module/'+module.moduleid+'?combinatory=true','DELETE')
+
+        }else if (modules.some((selected) => selected.moduleid === module.moduleid)){
+            const body={
+                moduleid: module.moduleid,
+                testid: testId
+            }
+            await fetchRequest('test/'+testId+'/module/','POST',body)
+        }
+
+        const index = selectedModules.map(m => m.moduleid).indexOf(module.moduleid);
+
         if (index !== -1) {
             selectedModules.splice(index, 1);
             selectedModules = selectedModules;
