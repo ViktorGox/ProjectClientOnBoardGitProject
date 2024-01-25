@@ -14,6 +14,7 @@
     let startDate;
     let dueDate;
     let successMessage = ''; // Added success message state
+    let incorrectData = false;
 
 
     async function getSprintById() {
@@ -97,6 +98,7 @@
 
     async function submitNewInfo() {
         if (checkInputs()) {
+            incorrectData = false;
             let sprintInfo = {
                 title: title,
                 startDate: startDate,
@@ -111,7 +113,7 @@
 
             router(`/projects`);
         } else {
-            alert("One or many inputs are not correctly inputted!");
+            incorrectData = true;
         }
     }
 
@@ -140,11 +142,15 @@
                     {/if}
                 </h1>
 
+                {#if incorrectData}
+                    <span class="error-text">Incorrect Inputs</span>
+                {/if}
+
                 <div class="form-group row mt-4 mb-5">
                     <label for="name" class="col-2 col-form-label">Title</label>
                     <div class="col-10">
                         <input type="text" class="form-control dark-text" id="name" placeholder="Name"
-                               autocomplete="off" required bind:value={title}>
+                               autocomplete="off" required bind:value={title} class:error-input={incorrectData}>
                     </div>
                 </div>
 
@@ -240,5 +246,15 @@
 
     .add-btn {
         width: 20rem;
+    }
+
+    .error-text {
+        color: red;
+        font-size: 14px;
+    }
+
+    .error-input {
+        border-color: red !important;
+        border-width: 2px !important;
     }
 </style>
