@@ -1,16 +1,13 @@
 <script>
     import {onMount} from "svelte";
-    import {tokenStore,} from "../stores/TokenStore.js";
     import router from "page";
     import userStore from "../stores/userStore.js";
-    import SprintInfo from "../components/SprintInfo.svelte";
     import {DateInput} from 'date-picker-svelte';
-    import JafarButton from "../components/JafarButton.svelte";
     import {fetchRequest} from "../lib/Request.js";
 
     export let params;
-    console.log(params);
     let sprintid = params.id;
+    let oldSprintId;
     let email = $userStore ? $userStore.email : null;
     let sprint = [];
     let title;
@@ -28,6 +25,11 @@
 
 
     onMount(async () => {
+        const currentRoute = router.current;
+        const parts = currentRoute.split('=');
+        const oldSprintIdResult = parts[parts.length - 1];
+        oldSprintId = oldSprintIdResult;
+
         if (sprintid && sprintid !== 'new') {
             await getSprintById(sprintid);
             if (sprint.length > 0) {
@@ -64,16 +66,12 @@
     }
 
     async function addNewSprint(sprintInfo) {
-        const response = await fetch(`http://localhost:3000/sprint`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}`
-            },
-            body: JSON.stringify(sprintInfo)
-        });
-        const result = await response.json();
-        console.log(result);
+        console.log("Old spruitn",sprintInfo);
+        if(!isNaN(oldSprintId)) {
+            await fetchRequest('sprint/' + oldSprintId,'POST', sprintInfo)
+        } else {
+            await fetchRequest('sprint/', 'POST', sprintInfo)
+        }
     }
 
     function checkInputs() {
@@ -135,6 +133,8 @@
                 <h1 class="mb-5">
                     {#if sprintid && sprintid !== 'new'}
                         Edit Sprint
+                    {:else if oldSprintId !== undefined}
+                        Restart Sprint
                     {:else}
                         Add Sprint
                     {/if}

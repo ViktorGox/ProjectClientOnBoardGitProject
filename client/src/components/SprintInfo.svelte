@@ -1,4 +1,6 @@
 <script>
+    import router from "page";
+
     export let title;
     export let strartdate;
     export let dueddate;
