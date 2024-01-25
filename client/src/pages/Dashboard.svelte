@@ -166,8 +166,12 @@
     <div className="dash dark-bg text-light">
         <div className="container px-4 py-5" id="icon-grid ">
             {#if sprintTitle !== undefined}
-                <h1 class="bright-text">{sprintTitle}</h1>
+                <div class="row">
+                    <h1 class="bright-text">{sprintTitle}</h1>
+                    <button class="btn btn-primary abs-btn">Reset</button>
+                </div>
             {/if}
+
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
                 {#each dashboardBoxes as box (box.title)}
                     <div class="col d-flex align-items-center">
@@ -241,5 +245,12 @@
 
     .text-light {
         color: #ffffff;
+    }
+
+    .abs-btn {
+        position: absolute;
+        top: 7rem;
+        right: 3rem;
+        width: 5rem;
     }
 </style>
