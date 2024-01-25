@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS TestStep
     StepNR     integer                NOT NULL,
     Title      character varying(255) NOT NULL,
     TestLog    character varying(255)          DEFAULT null,
-    weight     integer                NOT NULL,
-    completion boolean                NOT NULL DEFAULT FALSE,
+    weight     integer                         Default 0,
+    completion boolean                         DEFAULT FALSE,
     PRIMARY KEY (StepID),
     FOREIGN KEY (TestID) REFERENCES Test (TestID) ON DELETE CASCADE
 );
@@ -102,10 +102,10 @@ CREATE TABLE IF NOT EXISTS TestStep
 CREATE TABLE IF NOT EXISTS Attachment
 (
     AttachmentID integer                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    StepId   integer                NOT NULL,
+    StepId   integer                    NOT NULL,
     path         character varying(255) NOT NULL,
     Primary key (AttachmentID),
-    FOREIGN KEY (StepId) REFERENCES TestStep (StepID) MATCH SIMPLE
+    FOREIGN KEY (StepId) REFERENCES TestStep (StepID) MATCH SIMPLE ON DELETE CASCADE
 );
 
 END;
@@ -141,18 +141,18 @@ values ('Check if first and last name are added correctly', 'first and last name
        ('Check if background color is not red', 'red background shall not be accepted'),
        ('Verify the sidebar is on the side', 'sidebar shall be on the side'),
        ('Confirm confirmation works correctly', 'confirmation shall work'),
-       ('Verify all data is shown 1', 'data stored shall be shown 1'),
-       ('Verify all data is shown 2', 'data stored shall be shown 2'),
-       ('Verify all data is shown 3', 'data stored shall be shown 3'),
-       ('Verify all data is shown 4', 'data stored shall be shown 4'),
-       ('Verify all data is shown 5', 'data stored shall be shown 5'),
-       ('Verify all data is shown 6', 'data stored shall be shown 6'),
-       ('Verify all data is shown 7', 'data stored shall be shown 7'),
-       ('Verify all data is shown 8', 'data stored shall be shown 8'),
-       ('Verify all data is shown 9', 'data stored shall be shown 9'),
-       ('Verify all data is shown 10', 'data stored shall be shown 10'),
-       ('Verify all data is shown 11', 'data stored shall be shown 11'),
-       ('Verify all data is shown 12', 'data stored shall be shown 12');
+       ('Verify statuses are shown correctly', 'data stored shall be shown'),
+       ('Statuses update from front end should be updated in database', 'data stored shall be updated'),
+       ('Unassigning a user from a test, works correctly', 'does not crash'),
+       ('Assigning a user from a test, works correctly', 'does not crash'),
+       ('Making a test uploads the full data', 'does not crash'),
+       ('Restarting a sprint copies all data from the old one', 'does not crash'),
+       ('Not logged in users should be redirected to log in.', 'does not crash'),
+       ('Admins should be able to create new users', 'does not crash'),
+       ('Non admins shall not be able to create new users', 'does not crash'),
+       ('Header logout option works', 'does not crash'),
+       ('All test steps are shown on the test case page', 'does not crash'),
+       ('Creating a test works correctly, all sprints and modules are added.', 'does not crash');
 
 insert into teststep (testid, stepnr, title, testlog, weight)
 values (1, 1, 'Open users page', 'nothing to note', 1),

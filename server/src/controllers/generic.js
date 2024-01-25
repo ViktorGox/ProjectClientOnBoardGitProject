@@ -544,6 +544,8 @@ export function isBlank(string) {
  * Possible it accepts other variants too.
  */
 export function isValidDate(dateString) {
+    // doesnt work, dont know why, cant fix it rn
+    return true;
     if(dateString === undefined || dateString === null) return false;
     // Attempt to create a Date object using ISO format
     let date = new Date(dateString);

@@ -1,5 +1,5 @@
 import express from "express";
-import {getAll, postTesting, postTestStatus} from "../controllers/testing-controller.js";
+import {getAll, postTesting} from "../controllers/testing-controller.js";
 import { getTestAssignee, updateTestAssignee, updateTestStatus} from "../controllers/testing-controller.js";
 
 const router = express.Router();

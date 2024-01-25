@@ -5,6 +5,7 @@ import {
 } from "./generic.js";
 
 export function getAll(req, res) {
+    req.query.combinatory = true;
     return badRequestOnly(req, res);
 }
 
@@ -29,6 +30,8 @@ export async function updateTestStatus(req, res) {
 }
 
 export function postTestStatus(req, res) {
+    req.query.combinatory = true;
+
     return badRequestOnly(req, res);
 }
 
@@ -43,11 +46,14 @@ export async function postTesting(req, res) {
     const testSearch = await performSimpleOneQuery('test', 'get', 'testid', req.body.testid);
     if(!testSearch[0]) return res.status(404).json({error: "Test not found. Id must match real test."})
 
+    req.query.combinatory = true;
 
     return badRequestOnly(req, res);
 }
 
 export async function updateTestAssignee(req, res) {
+    console.log(req.body)
+    console.log(req.params)
     if(req.body.userid === '-1') {
         req.body.userid = null;
     }
@@ -59,6 +65,7 @@ export async function updateTestAssignee(req, res) {
 }
 
 export async function getTestAssignee(req, res) {
+    req.query.combinatory = true;
 
     const userIdResult = await performQueryFromReq(req);
     if(!userIdResult[0]) return res.status(404).json({error: "User or sprint not found."})

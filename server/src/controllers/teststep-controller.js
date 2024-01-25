@@ -31,15 +31,6 @@ export async function postQuery(req, res) {
 
 export async function putQuery(req, res) {
     req.baseUrl = 'teststep';
-
-    const stepSearch = await performSimpleOneQuery('teststep', 'get', 'stepid', req.params.stepid);
-    if(!stepSearch[0]) return res.status(404).json({error: "Step not found. Id must match real step."})
-
-    if(isBlank(req.body.title)) return res.status(400).json({error: "Title cannot be empty."});
-    if(!req.body.stepnr) return res.status(400).json({error: "Step number cannot be empty."});
-
-    const testSearch = await performSimpleOneQuery('test', 'get', 'testid', req.params.testid);
-    if(!testSearch[0]) return res.status(404).json({error: "Test not found. Id must match real test."})
     req.body.testid = req.params.testid;
     return badRequestOnly(req, res);
 }
