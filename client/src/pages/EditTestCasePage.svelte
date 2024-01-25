@@ -2,10 +2,15 @@
     import {onMount} from "svelte";
     import {fetchRequest} from "../lib/Request.js";
     import router from "page";
+    import {isBlank} from "../lib/Utils.js";
 
     let testId;
     let testCaseName;
     let testSteps = [];
+    let incorrectName = false;
+    let successMessage = '';
+    let showDeleteConfirmation = false;
+    let deletingStepId = null;
 
     async function fetchTestSteps() {
         const response = await fetchRequest(`test/${testId}/teststeps`);
@@ -36,7 +41,7 @@
         router(`/tests/${testId}`);
     }
 
-    function updateDetails(stepid) {
+    async function updateDetails(stepid) {
         const updatedStep = testSteps.find(step => step.stepid === stepid);
 
         if (updatedStep.weight < 0) {
@@ -59,12 +64,34 @@
 
         console.log(body);
 
-        fetchRequest(`test/${testId}/teststeps/${stepid}?combinatory=true`, "PUT", body);
+        await fetchRequest(`test/${testId}/teststeps/${stepid}?combinatory=true`, "PUT", body);
+
+        successMessage = 'Step changed successfully!';
+        setTimeout(() => {
+            successMessage = '';
+        }, 2000);
     }
 
     async function removeDetail(stepid) {
         await fetchRequest(`test/${testId}/teststeps/${stepid}?combinatory=true`, "DELETE");
         await fetchTestSteps();
+    }
+
+    async function deleteStepWithId(stepid) {
+        deletingStepId = stepid;
+        showDeleteConfirmation = true;
+    }
+
+    async function confirmDeleteStep() {
+        await fetchRequest(`test/${testId}/teststeps/${deletingStepId}?combinatory=true`, "DELETE");
+        await fetchTestSteps();
+        deletingStepId = null;
+        showDeleteConfirmation = false;
+    }
+
+    function cancelDeleteStep() {
+        deletingStepId = null;
+        showDeleteConfirmation = false;
     }
 
     let isFlippedID = false;
@@ -83,20 +110,38 @@
     }
 
     async function changeTitle() {
+        incorrectName = false;
+        if (isBlank(testCaseName)) {
+            incorrectName = true;
+            return;
+        }
+
         const body = {
             name: testCaseName,
         };
         const response = await fetchRequest(`test/${testId}`, 'PUT', body);
         console.log(response);
     }
+
+
 </script>
+
+{#if showDeleteConfirmation}
+    <div class="overlay">
+        <div class="delete-confirmation">
+            <p>Are you sure you want to delete this step?</p>
+            <button class="confirm-btn" on:click={confirmDeleteStep}>Yes</button>
+            <button class="cancel-btn" on:click={cancelDeleteStep}>No</button>
+        </div>
+    </div>
+{/if}
 
 <div class="test-case-details" style="margin-top: 100px">
     <div class="form-group row head mx-auto">
         <label for="testTitle" class="col-2 col-form-label">Test title</label>
         <div class="col-10">
             <input id="testTitle" class="form-control list-search big-input" type="text" bind:value={testCaseName}
-            on:input={changeTitle}>
+            on:input={changeTitle} class:error-input={incorrectName}>
         </div>
     </div>
 
@@ -143,7 +188,7 @@
                         </td>
                         <td>
                             <button class="btn btn-success" on:click={updateDetails(step.stepid)}>Confirm</button>
-                            <button class="btn btn-danger" on:click={removeDetail(step.stepid)}>Remove
+                            <button class="btn btn-danger" on:click={deleteStepWithId(step.stepid)}>Remove
                                 <i class="bi bi-trash-fill"></i></button>
                         </td>
                     </tr>
@@ -162,11 +207,80 @@
             </tbody>
         </table>
     </div>
+
+    {#if successMessage}
+        <div class="success-message">{successMessage}</div>
+    {/if}
 </div>
 
 <style>
     * {
         color: white;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .delete-confirmation {
+        background-color: #19191d;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 300px;
+    }
+
+    .delete-confirmation p {
+        margin-bottom: 1rem;
+    }
+
+    .confirm-btn,
+    .cancel-btn {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .confirm-btn {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+    .confirm-btn:hover {
+        background-color: #45a049;
+    }
+
+    .cancel-btn {
+        background-color: #f44336;
+        color: #fff;
+    }
+
+    .cancel-btn:hover {
+        background-color: #d32f2f;
+    }
+
+    .success-message {
+        background-color: #4CAF50;
+        opacity: 0.7;
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        margin-top: 1rem;
+        font-size: 1rem;
     }
 
     .custom-table thead tr, .custom-table thead th {
@@ -345,5 +459,10 @@
 
     .head {
         width: 80% !important;
+    }
+
+    .error-input {
+        border-color: red;
+        border-width: 2px;
     }
 </style>
