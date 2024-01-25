@@ -33,9 +33,9 @@
     }
 
     async function getSprints() {
-        const response = await fetch(`http://localhost:3000/sprint`);
-        sprints = await response.json();
-        return sprints;
+        const response = await fetchRequest(`sprint`);
+        sprints = response;
+        return response;
     }
 
     function updateSprints() {
@@ -221,6 +221,7 @@
 </script>
 
 {#if showDeleteConfirmation}
+
     <div class="overlay">
         <div class="delete-confirmation">
             <p>Are you sure you want to delete this sprint?</p>

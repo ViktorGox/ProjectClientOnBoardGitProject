@@ -3,7 +3,7 @@
     import {arrayToString} from "../lib/Utils.js";
     import {onMount} from 'svelte';
     import router from "page";
-    import Button from "./Button.svelte";
+    import userStore from "../stores/userStore.js";
 
     export let generalTable;
     export let sprintId;
@@ -19,6 +19,8 @@
 
     let statusOptions = [];
     let moduleOptions = [];
+
+    let role;
 
     function handleCheckboxChange(event, option) {
         if (!event.target.checked) {
@@ -47,6 +49,7 @@
 
     onMount(async () => {
         await fullFetch();
+        role = $userStore.role;
     });
 
     function fullFetch() {
@@ -89,9 +92,9 @@
             const fetchAssignees = updatedTests.map(async (test) => {
                 if (sprintId) {
                     const assignee = await fetchRequest('testing/' + sprintId + '/assignee/' + test.testid);
-                    if(assignee.email === "null") {
+                    if (assignee.email === "null") {
                         test.assignee = 'Unassigned';
-                    }else {
+                    } else {
                         test.assignee = assignee.email;
                     }
                 }
@@ -234,9 +237,11 @@
             </div>
             <div class="col-auto">
                 {#if generalTable}
-                    <a class="btn btn-primary" href="/addtest">
-                        Add Test
-                    </a>
+                    {#if role === 'admin' || role === 'developer'}
+                        <a class="btn btn-primary" href="/addtest">
+                            Add Test
+                        </a>
+                    {/if}
                 {:else}
                     <div class="dropdown">
 
