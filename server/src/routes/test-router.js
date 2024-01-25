@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.use('/:testid/teststeps', testStepRouter);
 
-router.get('/', isLoggedIn, getQuery);
+router.get('/', getQuery);
 router.get('/:testid', isLoggedIn, getTestById);
 router.get('/:testid/weight', isLoggedIn, getTotalWeight);
 router.use('/:testid/module',moduleRouter)

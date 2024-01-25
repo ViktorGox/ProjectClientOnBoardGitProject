@@ -5,7 +5,7 @@ import {isLoggedIn} from "../middleware/middlewares.js";
 
 const router = express.Router();
 
-router.get('/', isLoggedIn, getAll);
+router.get('/', getAll);
 router.get('/:sprintid/assignee/:testid', isLoggedIn, getTestAssignee)
 
 router.put('/:sprintid/status/:testid', isLoggedIn, updateTestStatus)

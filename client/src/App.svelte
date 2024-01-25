@@ -105,9 +105,9 @@
 </svelte:head>
 
 <main>
-    {#if !token}
-        {router(`/`)}
-    {/if}
+    <!--{#if !token}-->
+    <!--    {router(`/`)}-->
+    <!--{/if}-->
     {#if currentRoute === '/'}
         <div class="main">
             <div class="page">
