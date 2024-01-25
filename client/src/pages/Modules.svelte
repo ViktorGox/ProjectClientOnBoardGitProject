@@ -2,7 +2,6 @@
     import userStore from "../stores/userStore.js";
     import {fetchRequest} from "../lib/Request.js";
     import {onMount} from "svelte";
-    import {tokenStore} from "../stores/TokenStore.js";
 
     let role = $userStore ? $userStore.role : 'user';
     let modules = [];
@@ -57,14 +56,8 @@
     }
 
     async function confirmDeleteModule() {
-        const response = await fetch(`http://localhost:3000/module/${deletingModuleId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}`
-            }
-        });
-        const result = await response.json();
+        const response = await fetchRequest(`module/${deletingModuleId}`, "DELETE");
+        const result = response;
         modules = await fetchModules();
 
         cancelDeleteModule();

@@ -49,8 +49,8 @@
         await new Promise(resolve => setTimeout(resolve, 100));
 
 
-        const response = await fetch('http://localhost:3000/test/' + testId + '/teststeps');
-        testSteps = await response.json();
+        const response = await fetchRequest('test/' + testId + '/teststeps');
+        testSteps = response;
         testSteps.forEach(function (step, index) {
             if (step.completion) {
                 testSteps[index].completion = "true";
@@ -94,7 +94,6 @@
             completion: (completionBool)
         };
 
-        console.log(JSON.stringify(body));
         fetchRequest('test/' + testId + '/teststeps/' + step.stepid + '?combinatory=true', 'PUT', body)
 
     }

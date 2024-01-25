@@ -1,17 +1,18 @@
 import express from 'express';
 import * as controller from '../controllers/sprint-controller.js';
 import {restartSprint} from "../controllers/sprint-controller.js";
+import {isAdmin, isLoggedIn} from "../middleware/middlewares.js";
 
 const router = express.Router();
 
-router.get("/", controller.getSprints);
-router.get("/:sprintId", controller.getSprintById);
+router.get("/", isLoggedIn, controller.getSprints);
+router.get("/:sprintId", isLoggedIn, controller.getSprintById);
 
-router.post("/", controller.addNewSprint);
-router.post("/:sprintId", restartSprint)
+router.post("/", isLoggedIn, isAdmin, controller.addNewSprint);
+router.post("/:sprintId", isLoggedIn, isAdmin, restartSprint)
 
-router.put("/:sprintId", controller.editSprintBySprintId);
+router.put("/:sprintId", isLoggedIn, isAdmin, controller.editSprintBySprintId);
 
-router.delete("/:sprintId", controller.removeSprintById);
+router.delete("/:sprintId", isLoggedIn, isAdmin, controller.removeSprintById);
 
 export default router;
