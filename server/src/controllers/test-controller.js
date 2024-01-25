@@ -1,4 +1,10 @@
-import {badRequestOnly, isBlank, notFoundReq, performSimpleOneQuery} from "./generic.js";
+import {
+    badRequestOnly,
+    isBlank,
+    notFoundReq,
+    performSimpleOneQuery,
+    removeBodyParametersIgnoreCase
+} from "./generic.js";
 import {performQuery} from "../database/database.js";
 
 export function getQuery(req, res) {
@@ -23,6 +29,8 @@ export function getTestById(req, res) {
 }
 
 export function putTestById(req, res) {
+    req = removeBodyParametersIgnoreCase(req, 'lastupdate');
+    req.body.lastupdate = new Date().toDateString();
     return notFoundReq(req, res);
 }
 

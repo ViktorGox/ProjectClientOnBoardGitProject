@@ -1,4 +1,4 @@
-import {badRequestOnly, notFoundReq} from "./generic.js";
+import {badRequestOnly, isBlank, notFoundReq, performSimpleOneQuery} from "./generic.js";
 import {performQuery} from "../database/database.js";
 
 export function getQuery(req, res) {
@@ -18,33 +18,28 @@ export function deleteQuery(req, res) {
 
 export async function postQuery(req, res) {
     req.baseUrl = 'teststep';
-    console.log(req.body);
-    const query = `DO $$ 
-DECLARE 
-    _TestID INT := ` + req.body.testid + `; -- Replace with the actual TestID
-    _NewPosition INT := ` + req.body.stepnr + `; -- The desired position for the new step
-BEGIN
-    -- Find the next available position in the sequence
-    _NewPosition := COALESCE(
-        (SELECT MIN(StepNR) FROM TestStep WHERE TestID = _TestID AND StepNR > _NewPosition),
-        (SELECT MAX(StepNR) + 1 FROM TestStep WHERE TestID = _TestID)
-    );
+    if(isBlank(req.body.title)) return res.status(400).json({error: "Title cannot be empty."});
+    if(!req.body.stepnr) return res.status(400).json({error: "Step number cannot be empty."});
 
-    -- Increment the Position for steps after the adjusted position
-    UPDATE TestStep
-    SET StepNR = StepNR + 1
-    WHERE TestStep.TestID = _TestID AND TestStep.StepNR >= _NewPosition;
-
-    -- Insert the new step at the adjusted position
-    INSERT INTO TestStep (TestID, StepNR, Title, TestLog, Weight)
-    VALUES (_TestID, _NewPosition, '` + req.body.title + `',  '` + req.body.testlog + `', '` + req.body.weight + `');
-END $$;`
-    await performQuery(query);
-    return res.status(200).json();
+    const testSearch = await performSimpleOneQuery('test', 'get', 'testid', req.params.testid);
+    if(!testSearch[0]) return res.status(404).json({error: "Test not found. Id must match real test."})
+    req.body.testid = req.params.testid;
+    if(!req.body.weight) req.body.weight = 0;
+    if(!req.body.testlog) req.body.testlog = "";
+    return badRequestOnly(req, res);
 }
 
 export async function putQuery(req, res) {
     req.baseUrl = 'teststep';
 
+    const stepSearch = await performSimpleOneQuery('teststep', 'get', 'stepid', req.params.stepid);
+    if(!stepSearch[0]) return res.status(404).json({error: "Step not found. Id must match real step."})
+
+    if(isBlank(req.body.title)) return res.status(400).json({error: "Title cannot be empty."});
+    if(!req.body.stepnr) return res.status(400).json({error: "Step number cannot be empty."});
+
+    const testSearch = await performSimpleOneQuery('test', 'get', 'testid', req.params.testid);
+    if(!testSearch[0]) return res.status(404).json({error: "Test not found. Id must match real test."})
+    req.body.testid = req.params.testid;
     return badRequestOnly(req, res);
 }

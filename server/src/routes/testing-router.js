@@ -8,8 +8,8 @@ router.get('/', getAll);
 router.get('/:sprintid/assignee/:testid', getTestAssignee)
 
 router.put('/:sprintid/status/:testid', updateTestStatus)
-router.post('/:sprintid/status/:testid', postTestStatus)
-router.post('/',postTesting)
 router.put('/:sprintid/assignee/:testid', updateTestAssignee)
+
+router.post('/',postTesting)
 
 export default router;
