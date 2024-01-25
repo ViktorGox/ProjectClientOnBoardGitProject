@@ -49,14 +49,7 @@
     }
 
     async function confirmDeleteSprint() {
-        const response = await fetch(`http://localhost:3000/sprint/${deletingSprintId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${$tokenStore}`
-            }
-        });
-        const result = await response.json();
+        await fetchRequest(`sprint/${deletingSprintId}`, "DELETE")
         await getSprints();
 
         sortSprints();
