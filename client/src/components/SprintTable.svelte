@@ -20,7 +20,7 @@
         return start.getDate() + '-' + (start.getMonth() + 1)  + '-' + start.getFullYear();
     }
 
-    export let isFlippedID = true;
+    export let isFlippedID = false;
 
     function reverseSprintArray() {
         isFlippedID = !isFlippedID;
@@ -28,7 +28,7 @@
     }
 
     function sortSprints() {
-        if (isFlippedID) {
+        if (!isFlippedID) {
             promiseSprints = promiseSprints.sort((a, b) => a.sprintid - b.sprintid);
         } else {
             promiseSprints = promiseSprints.sort((a, b) => b.sprintid - a.sprintid);
