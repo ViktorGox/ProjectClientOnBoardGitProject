@@ -1,5 +1,6 @@
 <script>
     import router from "page";
+    import {fetchRequest} from "../lib/Request.js";
 
     export let promiseSprints;
     export let editSprintWithId;
@@ -37,20 +38,28 @@
 
     sortSprints();
 
+    async function fetchSPrintTitle() {
+        try {
+            promiseSprints = await fetchRequest({ title: searchBarValue });
+            sortSprints();
+        } catch (error) {
+            console.error('Error fetching sprints:', error);
+        }
+    }
 </script>
 
 <div class="card mt-5 mb-5">
     <div class="card-header">
         <div class="row align-items-center">
             <div class="col">
-                <div class="input-group input-group-flush input-group-merge input-group-reverse">
-                        <span class="search-icon input-group-text"><i class="bi bi-search"
-                                                                      on:click={update}></i></span>
-                    <input class="form-control list-search" type="text" placeholder="Search"
-                           bind:value={searchBarValue} on:input={update}> <!--TODO change update to update with a name
-                                                                                              / or change getSprints to also filter by name
-                                                                                              searchBarValue -->
-                </div>
+<!--                <div class="input-group input-group-flush input-group-merge input-group-reverse">-->
+<!--                        <span class="search-icon input-group-text"><i class="bi bi-search"-->
+<!--                                                                      on:click={fetchSPrintTitle}></i></span>-->
+<!--                    <input class="form-control list-search" type="text" placeholder="Search"-->
+<!--                           bind:value={searchBarValue} on:input={fetchSPrintTitle}> &lt;!&ndash;TODO change update to update with a name-->
+<!--                                                                                              / or change getSprints to also filter by name-->
+<!--                                                                                              searchBarValue &ndash;&gt;-->
+<!--                </div>-->
             </div>
             <div class="col-auto">
                 {#if role === 'admin'}
