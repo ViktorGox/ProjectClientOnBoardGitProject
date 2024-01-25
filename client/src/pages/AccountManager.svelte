@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import {fetchRequest} from "../lib/Request.js";
+    import {isBlank} from "../lib/Utils.js";
 
 
     let roles = [];
@@ -10,6 +11,7 @@
         password: "",
         role: ""
     };
+    let incorrectInput = '';
 
     let showAddUserPopup = false;
 
@@ -48,6 +50,11 @@
     }
 
     async function addUser() {
+        if (isBlank(newUser.email) || isBlank(newUser.roleid) || isBlank(newUser.password)) {
+            incorrectInput = 'Incorrect Input';
+            return;
+        }
+        incorrectInput = '';
         showAddUserPopup = false;
         const newUserWithRoleID = {
             email: newUser.email,
@@ -145,6 +152,10 @@
             </div>
 
         </div>
+    {/if}
+
+    {#if incorrectInput !== ''}
+        <span class="error-text">{incorrectInput}</span>
     {/if}
 
 </main>
@@ -255,7 +266,7 @@
     }
 
     .custom-table {
-        margin-bottom: 10rem;
+        margin-bottom: 3rem;
     }
 
     .scrollable-div {
@@ -450,5 +461,10 @@
 
     .form-select-md:focus {
         box-shadow: none;
+    }
+
+    .error-text {
+        color: red;
+        font-size: 14px;
     }
 </style>
