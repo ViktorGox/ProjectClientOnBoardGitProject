@@ -3,10 +3,11 @@
     import {fetchRequest} from "../lib/Request.js";
     import router from "page";
 
-    export let assigneeProfilePicture;
     let assigneeEmail;
     let userId;
     let sprintId;
+    let selectedModules = [];    let modules = [];
+    let selectedModulesArray=[];
     export let dueDate;
     export let testId;
     let users = [];
@@ -20,7 +21,21 @@
             assigneeEmail = result.email;
         }
 
+        modules = await fetchRequest('module');
+        selectedModulesArray = await fetchRequest('test/'+testId+'/module')
         users = await fetchRequest('users/allUsernames');
+        console.log(modules);
+        let selectedModules = [];
+
+        selectedModulesArray.forEach(selectedModule => {
+            const { moduleid } = selectedModule;
+            const moduleDetails = modules.find(module => module.moduleid === moduleid);
+            if (moduleDetails) {
+                selectedModules.push({ ...moduleDetails });
+            }
+        });
+        console.log('Selected Modules Array:', selectedModules);
+        console.log(selectedModules.some(module => module.moduleid === modules[0].moduleid));
     }
 
     async function changeAssignee() {
@@ -29,6 +44,16 @@
         };
         await fetchRequest('testing/' + sprintId + '/assignee/' + testId, 'PUT', body)
         await fetchData();
+    }
+    function handleModuleClick(module) {
+        const index = selectedModules.indexOf(module);
+        if (index !== -1) {
+            selectedModules.splice(index, 1);
+            selectedModules = selectedModules;
+        } else {
+            selectedModules = [...selectedModules, module];
+        }
+        console.log('modules: ', selectedModules);
     }
 
     onMount(async () => {
@@ -50,9 +75,22 @@
                 {/each}
             </select>
         </div>
+
+        <div class="due-date">
+            <p>Due Date: {dueDate}</p>
+        </div>
     {/if}
-    <div class="due-date">
-        <p>Due Date: {dueDate}</p>
+    <span class="select-span">Modules</span>
+
+    <div class="scrollable-div-right mt-3">
+        {#each modules as module (module.moduleid)}
+            <div class="module" class:chosen-module={selectedModules.includes(module)}>
+                <div class="text-container"
+                     on:click|stopPropagation={() => {handleModuleClick(module)}}>
+                    {module.label}
+                </div>
+            </div>
+        {/each}
     </div>
 </div>
 
@@ -104,5 +142,56 @@
 
     .form-select-sm:focus {
         box-shadow: none;
+    }
+    .scrollable-div-right {
+        max-height: 8rem;
+        overflow-y: auto;
+        border-radius: 1rem;
+    }
+
+    .scrollable-div:hover {
+    }
+
+    .scrollable-div::-webkit-scrollbar, .scrollable-div-right::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .scrollable-div::-webkit-scrollbar-track, .scrollable-div-right::-webkit-scrollbar-track {
+        background: rgba(179, 179, 179, 0.3);
+        border-radius: 10px;
+    }
+
+    .scrollable-div::-webkit-scrollbar-thumb, .scrollable-div-right::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+    .module {
+        margin-bottom: 3px;
+        cursor: pointer;
+        background-color: #2e2e36;
+        border-radius: 0.5rem;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        color: #b3b3b3;
+    }
+
+    .module:hover {
+        background-color: #3a3a44;
+        color: white;
+    }
+    .text-container {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .chosen-module {
+        background: #593fe4;
+        color: white !important;
+    }
+
+    .chosen-module:hover {
+        background: #6f58ee !important;
     }
 </style>
