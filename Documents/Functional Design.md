@@ -8,11 +8,11 @@
   - [Context Analysis](#context-analysis)
 - [Solution Overview](#solution-overview)
 - [Functional Specification](#functional-specification)
-  - [Business](#business)
-  - [User](#user)
+  - [Business Requirement](#business-requirement)
+  - [User stories](#user-stories)
   - [Wireframes](#wireframes)
-  - [Functional Requirements](#functional)
-- [Non-Functional Requirements](#non-functional)
+  - [Functional Requirements](#functional-requirements)
+- [Non-Functional requirements](#non-functional-requirements)
 - [Exceptional Handling](#exceptional-handling)
 - [user credentials](#user-credentials)
 - [Change Log](#change-log)
@@ -110,6 +110,7 @@ automated testing integration. Automated testing integration could be added in t
 | The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M     | Document  |
 | The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M     | Interview |
 
+
 ## User stories
 
 | User Stories                                                                                                                                           | MSCW | Source    |
@@ -134,6 +135,51 @@ automated testing integration. Automated testing integration could be added in t
 | As a tester, I want to be able to change the status of the test case so that we can organize better.                                                   | M    | Interview |
 
 ## Wireframes
+
+### Log in
+The first wireframe is the login.
+
+![](assets/wireframes/LogInWireframe.drawio.png)
+
+It's a simple page which contains only 4 elements. Two input fields, for the username and for the password. A button which will log in the user if the input is correct.
+
+### Test case board
+The second wireframe is the main page.
+
+![](assets/wireframes/BoardWireFrame.drawio.png)
+
+It contains the board that will contain the columns, which will contain the test cases. On the top of it is a search bar where you can type name of test cases to search. On the right of, there is a button to order by weight, if disabled will be ordered by user movement choice.
+
+On the left side there is already a column added. It has a name, which is visible on the top. Inside the column are test cases, in this example there is 1, it will only show its name, for more information you have to click on it. Below all test cases in the column, a button will be shown. It will allow the user to create a new test case.
+
+Newly crated columns will go next to each other, and the screen will be sideways scrollable. Newly added test cases will go on the added column at the bottom.
+
+### Test case page
+The third wireframe is the page which you see when you click on an issue.
+
+![](assets/wireframes/TestCaseMoreInfoWireFrame.drawio.png)
+
+This page contains quite a few things. On the top left it will say the test case name. Below that will be a place where each step, that needs to be done to execute the test. There can be multiple steps, if there are more than the screen can contain, it will turn into a scrollable screen. To edit the test case press the edit button. The steps contain information about what needs to be done, the weight and whether they are completed or not. When a step is pressed, more information about it will appear below the steps. There is also a field where the tester can enter information about their tests if they decide they need to.
+
+On the right side you can see the assigned person and the due date.
+
+### List of All Test Cases
+The fourth wireframe is the page that shows the list of test cases
+
+![](assets/wireframes/ListOfAllTestCases.drawio.png)
+
+This page contains a few things. On the top middle the test cases can be filtered by open, close and all. Next to filters a new test case can be created.
+
+The list of the test cases shows test name, total weight of the test case, assignee and the due date. To see the details of the test case just needed to click on it.
+
+### Create Test Issue
+The fifth wireframe represents the page of that test issue can be created.
+
+![](assets/wireframes/CreateTestIssue.drawio.png)
+
+This page is the first page of creating a new test issue. On top left it asks the test name. The button on top right deletes the whole test issue, if its created by mistake. Below of the delete button, with assignee button test can be assigned to a person and can be put the due date of the test issue. On middle left it asks the steps and weights. Steps can be added one by one with Add Step button.
+
+
 
 
 ## Functional Requirements
