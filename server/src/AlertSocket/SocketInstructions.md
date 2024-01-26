@@ -58,5 +58,4 @@ Certainly! I've updated the usage guide to include the additional information ab
   ```
 
   - The server fetches blockers every 3 seconds, and subscribed clients automatically receive these updates.
-
----
+--
