@@ -24,9 +24,8 @@ involved in the project. By carefully defining requirements and incorporating wi
 meticulous planning vital for building a resilient and user-friendly system.
 
 - `revision history:`
-In first revision, we have added the requirements and the use case diagrams. In the second revision, we have added the
-influence matrix and the wireframes. In the second revision, we have added the Introduction, Problem Statement and Solution
-Overview. Also, we have updated the wireframes and the requirements.
+In first revision, we have added the requirements. In the second revision, we have added the Introduction, Problem Statement and Solution
+Overview,and Exceptional handling Also, we have updated the requirements and moved the wireframes from system design to functional design.
 
 ## Problem Statement
 The current regression testing process using Scrum boards in Jetbrains Space has the following problems:
@@ -162,3 +161,9 @@ automated testing integration. Automated testing integration could be added in t
 | The system should be easily maintainable, allowing updates and bug fixes to be implemented without causing downtime or loss of data.                                                                             | M    | Interview           |
 
 # Exceptional Handling
+# Change Log
+We have added the following sections to the document:
+- v 1.1
+- added the requirements and the use case diagrams.
+- v 1.2
+- 
