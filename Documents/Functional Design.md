@@ -14,7 +14,9 @@
   - [Functional Requirements](#functional)
 - [Non-Functional Requirements](#non-functional)
 - [Exceptional Handling](#exceptional-handling)
+- [user credentials](#user-credentials)
 - [Change Log](#change-log)
+
 
 # Introduction
 
@@ -161,9 +163,21 @@ automated testing integration. Automated testing integration could be added in t
 | The system should be easily maintainable, allowing updates and bug fixes to be implemented without causing downtime or loss of data.                                                                             | M    | Interview           |
 
 # Exceptional Handling
+
+
+# User Credentials
+
+Credentials that can be used to log into the system to use it.
+
+| Username    | Password | Account type |
+|-------------|----------|--------------|
+| `admin`     | admin    | admin |   
+| `tester`    | tester   | tester|
+| `developer` | developer     | developer|
+
 # Change Log
-We have added the following sections to the document:
-- v 1.1
-- added the requirements and the use case diagrams.
-- v 1.2
-- 
+- V 1.1
+Added requirements
+- V 1.2
+Added Introduction, Problem Statement and Solution Overview, and Exceptional handling Also, we have updated the
+requirements and moved the wireframes from system design to functional design.
