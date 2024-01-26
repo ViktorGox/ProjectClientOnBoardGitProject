@@ -1,4 +1,18 @@
-# TECHNICAL DOCUMENT
+# System Design
+`Revision: 1.2`
+
+# Table of Contents
+- [Introduction](#introduction)
+- [General Overview and Approach](#general-overview-and-approach)
+- [Design Considerations](#design-considerations)
+- [System Architecture](#system-architecture)
+  - [Logical View (Functional Components)](#logical-view-functional-components)
+  - [Software Architecture](#software-architecture)
+  - [Security Architecture](#security-architecture)
+- [System Design](#system-design)
+  - [Database Design](#database-design)
+  - [Software Design](#software-design)
+- [Change log](#change-log)
 
 ## Introduction
 In this file, it will be talked about the technical part of the project Wireframes of what the program will look like will be shown, and a description of each wireframe as well as database design explanation.
