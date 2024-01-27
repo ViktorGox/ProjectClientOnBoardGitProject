@@ -24,8 +24,10 @@
         event.preventDefault()
 
         if(isBlank(testName)) {
-            //TODO: Change border of name input field to red? Show its a problem.
-            //Empty description is okay. No Sprints / No modules is okay.
+            const nameInput = document.getElementById('name');
+            const errorMessage = document.getElementById('name-error');
+            nameInput.style.borderColor = 'red';
+            errorMessage.textContent = 'Name must not be empty';
             console.log("Name is empty")
             return;
         }
@@ -33,8 +35,8 @@
         await POSTtest();
         await Promise.all(selectedSprints.map(async sprintid => await POSTtesting(sprintid.sprintid)));
         await Promise.all(selectedModules.map(async moduleId => await POSTmodule(moduleId.moduleid)));
-
-        // Clear form and show success message after 2 seconds
+        const errorMessage = document.getElementById('name-error');
+        errorMessage.textContent = '';
         resetForm();
         successMessage = 'Test added successfully!';
         setTimeout(() => {
@@ -140,6 +142,7 @@
                 <div class="col-10">
                     <input type="text" class="form-control dark-text" id="name" placeholder="Name"
                            autocomplete="off" required bind:value={testName}>
+                    <div id="name-error" class="error-message"></div>
                 </div>
             </div>
 
@@ -202,7 +205,6 @@
                 Add Test
             </button>
         </form>
-
         {#if successMessage}
             <div class="success-message">{successMessage}</div>
         {/if}
@@ -262,27 +264,11 @@
 
     }
 
-    .form-check {
-        margin-bottom: 0.3rem;
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
     }
-
-    .form-check-input {
-        cursor: pointer;
-    }
-
-    .form-check-label {
-        cursor: pointer;
-        color: #6e6e6e;
-    }
-
-    .form-check-label:hover {
-        color: #b3b3b3;
-    }
-
-    .form-check-input:focus {
-        box-shadow: none;
-    }
-
     .form-check-input:checked + .form-check-label {
         color: #ffffff;
     }

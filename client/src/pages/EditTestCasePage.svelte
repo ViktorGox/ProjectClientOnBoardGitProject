@@ -11,6 +11,7 @@
     let successMessage = '';
     let showDeleteConfirmation = false;
     let deletingStepId = null;
+    let notificationMessage = '';
 
     async function fetchTestSteps() {
         const response = await fetchRequest(`test/${testId}/teststeps`);
@@ -31,25 +32,38 @@
     }
 
     onMount(async () => {
-        // Retrieve testId from the current route
         const pathArray = window.location.pathname.split('/');
         testId = parseInt(pathArray[pathArray.indexOf('tests') + 1], 10);
         await fetchTestSteps();
     });
-
+    function showNotification(message) {
+        notificationMessage = message;
+        setTimeout(() => {
+            notificationMessage = '';
+        }, 5000);
+    }
     function goBackToDetails() {
         router(`/tests/${testId}`);
     }
 
     async function updateDetails(stepid) {
         const updatedStep = testSteps.find(step => step.stepid === stepid);
-
+        if (isBlank(updatedStep.title)){
+            showNotification('Title must be not null')
+            return;
+        }
+        if (isBlank(updatedStep.testlog)){
+            showNotification('Testlog must be not null')
+            return;
+        }
         if (updatedStep.weight < 0) {
-            alert(`Weight can not be lower than 0.`);
+            showNotification(`Weight can not be lower than 0.`);
+            return;
         }
 
         if (updatedStep.stepnr <= 0) {
-            alert(`Step number must be a positive number.`);
+            showNotification(`Step number must be a positive number.`);
+            return;
         }
 
         let completionBool = updatedStep.completion === "true";
@@ -112,6 +126,7 @@
     async function changeTitle() {
         incorrectName = false;
         if (isBlank(testCaseName)) {
+            showNotification('Test case name must not be null')
             incorrectName = true;
             return;
         }
@@ -146,6 +161,9 @@
     </div>
 
     <button class="btn btn-primary mt-4 mb-4" on:click={goBackToDetails}>Back to Details</button>
+    {#if notificationMessage}
+        <div class="error-input">{notificationMessage}</div>
+    {/if}
     <div class="test-steps">
         <table class="table custom-table">
             <thead>
@@ -462,6 +480,7 @@
     }
 
     .error-input {
+        color: red;
         border-color: red;
         border-width: 2px;
     }

@@ -240,7 +240,86 @@ Also, we can remove Users with the button on the right.
 
 # Exceptional Handling
 
+### Login page
 
+**Empty Username or Password Error Handling**
+- If the user attempts to log in without entering a username or password:
+  - Prevents the login request from being sent.
+  - Displays an error message prompting the user to enter both username and password before proceeding.
+
+**Invalid Credentials Error Handling**
+- If the user enters incorrect credentials (username or password):
+  - Prevents the login request from being sent.
+  - Displays an error message indicating that the provided credentials are invalid.
+
+**Authentication Failure Error Handling**
+- If there is an error during the authentication process on the server-side:
+  - Displays an error message indicating that there was a problem with the login process.
+  - Advises the user to try again later or contact support if the issue persists.
+
+### Add test form
+
+When a user attempts to add a test through the form, the system checks whether the name field is empty. 
+If it is, an error notification is displayed to the user, indicating that the name field must not be left blank. 
+
+### Add sprint page
+
+Before submitting the form, the system checks the input data for correctness. The following validations are performed:
+The system ensures that the sprint title field is not left empty. If the title field is empty when the user attempts to submit the form, 
+an error message is displayed indicating a problem.
+
+### Test case details page ###
+
+**No Selected Step Error Handling**
+- If the user attempts to submit a comment or upload a file without selecting a step:
+  - Prevents the request from being sent.
+  - Notifies the user that they must select a step before proceeding.
+
+**Empty Submission Error Handling**
+- If the user attempts to submit an empty comment or upload an empty file:
+  - Prevents the request from being sent.
+  - Notifies the user that they cannot submit empty content.
+
+### Test case edit page ###
+
+ **Test Case Name Validation**
+- When navigating back to details:
+  - If the test case name is null or empty:
+    - Prevents navigating back.
+    - Displays a notification informing the user that the test case name cannot be empty.
+
+ **Step Weight and ID Validation**
+- After pressing the confirm button to update details:
+  - If the step weight or ID is negative:
+    - Prevents updating the details.
+    - Displays a notification informing the user that the weight cannot be negative and the step number must be positive.
+
+ **Step Name and Test Log Validation**
+- After pressing the confirm button to update details:
+  - If the step name or test log is null or empty:
+    - Prevents updating the details.
+    - Displays a notification informing the user that the step name and test log cannot be empty.
+
+ **Confirmation Notification for Step Deletion**
+- When attempting to delete a step:
+  - Displays a confirmation overlay.
+  - Allows the user to confirm or cancel the deletion.
+
+### Test step add popup ###
+
+The function checks for the following errors and displays a notification if any of them occur:
+- If the title of the new test step is null:
+  - Shows a notification: "Title must not be null".
+- If the step number of the new test step is null:
+  - Shows a notification: "Step number must not be null".
+- If the step number of the new test step is not a positive number:
+  - Shows a notification: "Step number must be a positive number".
+- If the weight of the new test step is null:
+  - Shows a notification: "Weight must not be null".
+- If the weight of the new test step is not a positive number:
+  - Shows a notification: "Weight must be a positive number".
+- If the test log of the new test step is null:
+  - Shows a notification: "Test log must not be null".
 # User Credentials
 
 Credentials that can be used to log into the system to use it.
