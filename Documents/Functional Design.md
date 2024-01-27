@@ -103,36 +103,39 @@ automated testing integration. Automated testing integration could be added in t
 # Functional Specification
 ## Business Requirement
 
-| Business Requirement                                                                                                            | MoSCW | Source    |
-|---------------------------------------------------------------------------------------------------------------------------------|-------|-----------|
-| The system must be easy to use and easy to understand so we don’t have to spend time explaining to new employees.               | M     | Interview |
-| The system should be error-free so that it will not slow down our company’s progress or even damage our profit.                 | M     | Document  |
-| The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M     | Document  |
-| The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M     | Interview |
+
+| ID   | Business Requirement                                                                                                            | MoSCW | Source    |
+|------|---------------------------------------------------------------------------------------------------------------------------------|-------|-----------|
+| BR-1 | The system must be easy to use and easy to understand so we don’t have to spend time explaining to new employees.               | M     | Interview |
+| BR-2 | The system should be error-free so that it will not slow down our company’s progress or even damage our profit.                 | M     | Document  |
+| BR-3 | The system should be accessible and user-friendly on mobile devices to enable users to perform essential tasks while on the go. | M     | Document  |
+| BR-4 | The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M     | Interview |
+
 
 
 ## User Requirements
 
-| User Requirement                                                                                                                                       | MSCW | Source    |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|------|-----------|
-| As a tester, I want to mark tests as blockers so that I can highlight serious bugs.                                                                    | M    | Interview |
-| As a developer, I want to assign weights to tests so that overall test effort can be estimated.                                                        | M    | Document  |
-| As a Admin, I want new boards to set up when old ones close so that new sprints can be started seamlessly.                                             | M    | Document  |
-| As a Admin, we want to add new sprint so that I can categorize test cases.                                                                             | M    | Document  |
-| As a Admin, I want to set due dates for tests so that test execution has clear timelines.                                                              | M    | Document  |
-| As a Admin, I want to edit user roles so that access can be controlled efficiently.                                                                    | M    | Interview |
-| As a user, I want to see an overview of current tests so that I can get the big picture.                                                               | M    | Interview |
-| As a user, I want to able generate report of tests per sprint so I can check situation.                                                                | M    | Document  |
-| As an Admin, I want to edit added tests to fix any errors.                                                                                             | M    | Interview |
-| As an Admin, I want to be able to add test cases so that we can test new features.                                                                     | M    | Document  |
-| As a User, I want to search tests by names so that I can access them faster.                                                                           | M    | Document  |
-| As a tester, I want to receive notification about overdue tests so that I can prioritize my work.                                                      | M    | Document  |
-| As a tester, I want to receive notification about upcoming tests so that I can prepare and allocate time.                                              | M    | Document  |
-| As a tester, I want to be able to assign and unassign people from test cases.                                                                          | M    | Interview |
-| As a tester, I want to be able to add comments on test cases so that I can keep track of progress.                                                     | M    | Interview |
-| As a tester, I want to be able to generate reports containing information about tests completed so far for this sprint and/or including older sprints. | M    | Interview |
-| As a tester, I want to be able to attach files to test case logs so that we can use images and videos to be more descriptive.                          | S    | Interview |
-| As a tester, I want to be able to change the status of the test case so that we can organize better.                                                   | M    | Interview |
+| ID    | User Requirement                                                                                                                                       | MSCW | Source    |
+|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------|------|-----------|
+| US-1  | As a tester, I want to mark tests as blockers so that I can highlight serious bugs.                                                                    | M    | Interview |
+| US-2  | As a developer, I want to assign weights to tests so that overall test effort can be estimated.                                                        | M    | Document  |
+| US-3  | As a Admin, I want new boards to set up when old ones close so that new sprints can be started seamlessly.                                             | M    | Document  |
+| US-4  | As a Admin, we want to add new sprint so that I can categorize test cases.                                                                             | M    | Document  |
+| US-5  | As a Admin, I want to set due dates for tests so that test execution has clear timelines.                                                              | M    | Document  |
+| US-6  | As a Admin, I want to edit user roles so that access can be controlled efficiently.                                                                    | M    | Interview |
+| US-7  | As a user, I want to see an overview of current tests so that I can get the big picture.                                                               | M    | Interview |
+| US-8  | As a user, I want to able generate report of tests per sprint so I can check situation.                                                                | M    | Document  |
+| US-9  | As an Admin, I want to edit added tests to fix any errors.                                                                                             | M    | Interview |
+| US-10 | As an Admin, I want to be able to add test cases so that we can test new features.                                                                     | M    | Document  |
+| US-11 | As a User, I want to search tests by names so that I can access them faster.                                                                           | M    | Document  |
+| US-12 | As a tester, I want to receive notification about overdue tests so that I can prioritize my work.                                                      | M    | Document  |
+| US-13 | As a tester, I want to receive notification about upcoming tests so that I can prepare and allocate time.                                              | M    | Document  |
+| US-14 | As a tester, I want to be able to assign and unassign people from test cases.                                                                          | M    | Interview |
+| US-15 | As a tester, I want to be able to add comments on test cases so that I can keep track of progress.                                                     | M    | Interview |
+| US-16 | As a tester, I want to be able to generate reports containing information about tests completed so far for this sprint and/or including older sprints. | M    | Interview |
+| US-17 | As a tester, I want to be able to attach files to test case logs so that we can use images and videos to be more descriptive.                          | S    | Interview |
+| US-18 | As a tester, I want to be able to change the status of the test case so that we can organize better.                                                   | M    | Interview |
+
 
 ## Wireframes
 
@@ -214,29 +217,30 @@ Also, we can remove Users with the button on the right.
 
 ## Functional Requirements
 
-| Functional Requirements                                                                                                                                                                     | MSCW | Source              |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
-| The system must notify testers about tests that have passed their due date.                                                                                                                 | M    | Document            |
-| The system must notify testers about tests that are due soon.                                                                                                                               | M    | Document            |
-| The system must immediately send a notification upon detecting a blocking issue.                                                                                                            | M    | Interview           |
-| The system must allow sorting tests by weight per column.                                                                                                                                   | S    | Document            |
-| The system must generate reports on the completion status of regression test runs per sprint and product, including details on tests, testers, failed/passed tests, time taken, and weight. | S    | Interview           |
-| The system must save data when a board is closed to be included in reports later.                                                                                                           | M    | Document, Interview |
-| Access to test data and configurations should be role-based, ensuring that users only have access to information relevant to their roles.                                                   | M    | Document, Interview |
-| The system must allow searching of tests by name.                                                                                                                                           | S    | Document            |
+| ID   | Functional Requirements                                                                                                                                                                     | MSCW | Source              |
+|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
+| FR-1 | The system must notify testers about tests that have passed their due date.                                                                                                                 | M    | Document            |
+| FR-2 | The system must notify testers about tests that are due soon.                                                                                                                               | M    | Document            |
+| FR-3 | The system must immediately send a notification upon detecting a blocking issue.                                                                                                            | M    | Interview           |
+| FR-4 | The system must allow sorting tests by weight per column.                                                                                                                                   | S    | Document            |
+| FR-5 | The system must generate reports on the completion status of regression test runs per sprint and product, including details on tests, testers, failed/passed tests, time taken, and weight. | S    | Interview           |
+| FR-6 | The system must save data when a board is closed to be included in reports later.                                                                                                           | M    | Document, Interview |
+| FR-7 | Access to test data and configurations should be role-based, ensuring that users only have access to information relevant to their roles.                                                   | M    | Document, Interview |
+| FR-8 | The system must allow searching of tests by name.                                                                                                                                           | S    | Document            |
+
 
 # Non-Functional requirements
 
-| Non-Functional requirements                                                                                                                                                                                      | MSCW | Source              |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
-| The system must ensure the confidentiality, integrity, and availability of all data and transactions. It must comply with GDPR legislation and prevent unauthorized access, modification, or disclosure of data. | M    | Document            |
-| The system should be designed to accommodate the company's future growth in terms of features, functionalities, and data storage capacity.                                                                       | M    | Document            |
-| The system must be able to integrate with other systems or platforms used by the company, such as accounting and inventory management systems.                                                                   | M    | Interview           |
-| The system must be easy to use and navigate for all employees, regardless of their technical skill level. It must have a user-friendly interface with clear and concise instructions.                            | M    | Interview           |
-| The system should be available 96.67% of the time.                                                                                                                                                               | M    | Document            |
-| The system must be compatible with different web browsers, operating systems, and devices, such as desktops, laptops, tablets, and mobile phones.                                                                | M    | Interview, Document |
-| The system must be able to recover from failure within 10 minutes without data loss or disruption of service.                                                                                                    | M    | Interview           |
-| The system should be easily maintainable, allowing updates and bug fixes to be implemented without causing downtime or loss of data.                                                                             | M    | Interview           |
+| ID    | Non-Functional requirements                                                                                                                                                                                      | MSCW | Source              |
+|-------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------|
+| NFR-1 | The system must ensure the confidentiality, integrity, and availability of all data and transactions. It must comply with GDPR legislation and prevent unauthorized access, modification, or disclosure of data. | M    | Document            |
+| NFR-2 | The system should be designed to accommodate the company's future growth in terms of features, functionalities, and data storage capacity.                                                                       | M    | Document            |
+| NFR-3 | The system must be able to integrate with other systems or platforms used by the company, such as accounting and inventory management systems.                                                                   | M    | Interview           |
+| NFR-4 | The system must be easy to use and navigate for all employees, regardless of their technical skill level. It must have a user-friendly interface with clear and concise instructions.                            | M    | Interview           |
+| NFR-5 | The system should be available 96.67% of the time.                                                                                                                                                               | M    | Document            |
+| NFR-6 | The system must be compatible with different web browsers, operating systems, and devices, such as desktops, laptops, tablets, and mobile phones.                                                                | M    | Interview, Document |
+| NFR-7 | The system must be able to recover from failure within 10 minutes without data loss or disruption of service.                                                                                                    | M    | Interview           |
+| NFR-8 | The system should be easily maintainable, allowing updates and bug fixes to be implemented without causing downtime or loss of data.                                                                             | M    | Interview           |
 
 # Exceptional Handling
 
