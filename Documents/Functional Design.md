@@ -9,7 +9,7 @@
 - [Solution Overview](#solution-overview)
 - [Functional Specification](#functional-specification)
   - [Business Requirement](#business-requirement)
-  - [User stories](#user-stories)
+  - [User Requirements](#user-requirements)
   - [Wireframes](#wireframes)
   - [Functional Requirements](#functional-requirements)
 - [Non-Functional requirements](#non-functional-requirements)
@@ -111,9 +111,9 @@ automated testing integration. Automated testing integration could be added in t
 | The system must be ready for future growth, accommodating evolving business needs and the addition of more employees.           | M     | Interview |
 
 
-## User stories
+## User Requirements
 
-| User Stories                                                                                                                                           | MSCW | Source    |
+| User Requirement                                                                                                                                       | MSCW | Source    |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------|------|-----------|
 | As a tester, I want to mark tests as blockers so that I can highlight serious bugs.                                                                    | M    | Interview |
 | As a developer, I want to assign weights to tests so that overall test effort can be estimated.                                                        | M    | Document  |
