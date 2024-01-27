@@ -139,9 +139,18 @@ automated testing integration. Automated testing integration could be added in t
 ### Log in
 The first wireframe is the login.
 
-![](assets/wireframes/LogInWireframe.drawio.png)
+![](assets/wireframes/LoginWireFrame.drawio.png)
 
 It's a simple page which contains only 4 elements. Two input fields, for the username and for the password. A button which will log in the user if the input is correct.
+
+### Navegation
+
+![](assets/wireframes/NavegationWireFrame.drawio.png)
+
+### List All Sprints
+
+![](assets/wireframes/SprintsWireFrame.drawio.png)
+
 
 ### Test case board
 The second wireframe is the main page.
