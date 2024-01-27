@@ -145,58 +145,72 @@ It's a simple page which contains only 4 elements. Two input fields, for the use
 
 ### Navegation
 
+This WireFrame is the part of navegation.
 Navigation Bar: On the left side, there’s a vertical navigation bar. Below it are four menu items: Tests, Sprints, Modules, User & Roles. These likely represent different sections of the application that users can navigate to.
 Main Area: The main area of the interface will displays information of each menu item.
 Top Right Corner: At the top right corner, there are icons for Notifications and User profile/settings.
 ![](assets/wireframes/NavegationWireFrame.drawio.png)
 
 ### List All Sprints
+The third wireframe shows all the sprints.
 Main Area: The main area of the interface displays a table for tracking sprints. The table has columns for ID, Title, Start Date, and Due Date. Each row in the table represents a sprint and has options to Edit, Delete, view Details or generate a Report. This suggests that users can manage sprints directly from this interface.
 Top Right Corner: At the top right corner, there’s also an “Add Sprint” button next to them. Which likely allows users to create new sprints.
 ![](assets/wireframes/SprintsWireFrame.drawio.png)
 
+### Edit/Add Sprint
+New page:A window in the center has fields to enter details of a new sprint, here you can edit and add news Sprints:
+Title: The title of the sprint.
+Start Date: The start date of the sprint.
+End Date: The end date of the sprint.
+Add Sprint Button: There is an “Add Sprint” button at the bottom of this window. This is used to add the new sprint to the system.
+![](assets/wireframes/Edit_Add_SprintWireFrame.drawio.png)
+
 ### List All Tests
+This wireframe shows all the tests.
 Main Area: The main area of the interface displays a table for tracking tests. The table has columns for ID, Title, Modules, and Weight. Each row in the table represents a test and has options to Edit, Delete, view Details or generate a Report. This suggests that users can manage tests directly from this interface.
 At the top right corner, there is an “Add Test” button next to them, which likely allows users to create new tests.
 ![](assets/wireframes/TestCasesWireFrame.drawio.png)
 
+### Test Case Detail
+Main Area: The main area of the interface displays all the steps of the test. We can see: ID, Name, Weight, Test Log, and Completion State. Each row represents a step and has options to Edit or Delete. This suggests that users can manage tasks directly from this interface.
+Change Test Log: Below all the task, there’s a section titled ‘CHANGE TEST LOG’ where users can add comments and upload files. This could be used to log changes made to a test.
+![](assets/wireframes/TestCaseDetailsWireFrame.drawio.png)
+
+### Edit Tasks of a Test
+Main Area: The main area of the interface displays all the tasks of a Test. We can see columns for ID, Name, Weight, Test Log, and Completion State. Each row in the table represents a Task and has options to write and later Confirm or Remove.
+![](assets/wireframes/Edit_TestCaseDetailsWireFrame.drawio.png)
+
+### Add Tasks of a Test
+Pop-up Window: A pop-up window in the center has fields to enter details of a new test step:
+Name of the test step, the step number, the weight or importance of this step in the test and testLog.
+Add new Test Step Button: There is an “Add new Test Step” button at the bottom of this pop-up window. This is used to add the new test step to the system.
+![](assets/wireframes/Add_TestStepWireFrame.drawio.png)
+
 ### List All Modules
-
-
+Shows all the modules.
+Main Area: The main area of the interface displays a table for tracking modules. The table has columns for ID and Label. Each row in the table represents a module and has options to Edit or Delete. This suggests that users can manage modules directly from this interface.
+Top Right Corner: At the top right corner, there is an “Add Module” button next to them, which likely allows users to create new modules.
 ![](assets/wireframes/ModulesWireFrame.drawio.png)
-It contains the board that will contain the columns, which will contain the test cases. On the top of it is a search bar where you can type name of test cases to search. On the right of, there is a button to order by weight, if disabled will be ordered by user movement choice.
 
-On the left side there is already a column added. It has a name, which is visible on the top. Inside the column are test cases, in this example there is 1, it will only show its name, for more information you have to click on it. Below all test cases in the column, a button will be shown. It will allow the user to create a new test case.
+### Edit/Add Modules
+In this WireFrame we can edit and add new Modules.
+We have the same page as above, however, now we have two new functionalities.
+The first one is a writing bar to add the new module.
+The second one is a writing bar to edit label module
+![](assets/wireframes/Add_Edit_ModulesWireFrame.drawio.png)
 
-Newly crated columns will go next to each other, and the screen will be sideways scrollable. Newly added test cases will go on the added column at the bottom.
+### List All Users & Roles
+Shows all the Users and User's Roles.
+Main Area: The section is titled “ACCOUNT MANAGEMENT”. This is where the admin can manage user accounts.
+Email and Role Columns: There are two columns labeled “EMAIL” and “ROLE”. These display the email addresses and roles of the users in the system.
+Delete Buttons: Each row has a corresponding “Delete” button on the right side. This allows the admin to remove users from the system.
+Add User Button: At the bottom of these rows, there’s an “Add User” button. This is used to add new users to the account management system.
+![](assets/wireframes/UsersAndRolesWireFrame.drawio.png)
 
-### Test case page
-The third wireframe is the page which you see when you click on an issue.
-
-![](assets/wireframes/TestCaseMoreInfoWireFrame.drawio.png)
-
-This page contains quite a few things. On the top left it will say the test case name. Below that will be a place where each step, that needs to be done to execute the test. There can be multiple steps, if there are more than the screen can contain, it will turn into a scrollable screen. To edit the test case press the edit button. The steps contain information about what needs to be done, the weight and whether they are completed or not. When a step is pressed, more information about it will appear below the steps. There is also a field where the tester can enter information about their tests if they decide they need to.
-
-On the right side you can see the assigned person and the due date.
-
-### List of All Test Cases
-The fourth wireframe is the page that shows the list of test cases
-
-![](assets/wireframes/ListOfAllTestCases.drawio.png)
-
-This page contains a few things. On the top middle the test cases can be filtered by open, close and all. Next to filters a new test case can be created.
-
-The list of the test cases shows test name, total weight of the test case, assignee and the due date. To see the details of the test case just needed to click on it.
-
-### Create Test Issue
-The fifth wireframe represents the page of that test issue can be created.
-
-![](assets/wireframes/CreateTestIssue.drawio.png)
-
-This page is the first page of creating a new test issue. On top left it asks the test name. The button on top right deletes the whole test issue, if its created by mistake. Below of the delete button, with assignee button test can be assigned to a person and can be put the due date of the test issue. On middle left it asks the steps and weights. Steps can be added one by one with Add Step button.
-
-
-
+### Add/Delete Users & Roles
+Add New User: At the bottom, there’s an option to add new users. You can enter their email, password, select their role from a dropdown menu, and then click the “Add New User” button to create a new user account.
+Also, we can remove Users with the button on the right.
+![](assets/wireframes/Add_Delete_UsersAndRolesWireFrame.drawio.png)
 
 ## Functional Requirements
 
