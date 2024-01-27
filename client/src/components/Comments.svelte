@@ -24,8 +24,10 @@
         };
         try {
             if (selectedStep != null) {
-                console.log("RequestCommentBody => ", requestCommentBody);
-                console.log("TestId => ", testId);
+                if (!comment.trim()) {
+                    showNotification('Empty comment. Please enter a comment before submitting.');
+                    return;
+                }
                 const textResponse = fetchRequest('test/' + testId + '/teststeps/' + selectedStep.stepid + '?combinatory=true', 'PUT', requestCommentBody);
                 if (textResponse.status = 200) {
                     console.log('Comment submitted successfully');
@@ -36,6 +38,8 @@
                 } else {
                     console.error('Failed to submit comment');
                 }
+            }else{
+                showNotification('No step selected. Please select a step before submitting.');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -68,10 +72,15 @@
 
         console.log("Selected Step ", selectedStep)
 
+        if (!selectedStep) {
+            showNotification('No step selected. Please select a step before uploading a file.');
+            return;
+        }
+
         const file = fileInput.files[0];
 
         if (!file) {
-            console.error('No file selected.');
+            showNotification('No file selected.');
             return;
         }
 
@@ -83,6 +92,14 @@
 
         previewImage.src = '';
         await fetchAll();
+    }
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
     }
 </script>
 
@@ -98,15 +115,14 @@
                               required rows="5"></textarea>
             </div>
         </div>
-        <!--<textarea name="comment" placeholder="Add a comment..."></textarea><br>-->
         <input type="file" bind:this={fileInput} on:change={handleFileChange}><br>
         <img bind:this={previewImage} alt="Preview" style="max-width: 300px; max-height: 300px; margin-top: 10px;"><br>
+        <div id="notification" class="error-text"></div>
 
         <div class="center">
             <button class="btn btn-primary" on:click={uploadFile}>Upload File</button>
             <button class="btn btn-primary" on:click={handleSubmit} type="submit">Submit</button>
         </div>
-
     </div>
 </div>
 
@@ -182,5 +198,10 @@
     .hint {
         opacity: 0.3;
         font-size: 16px !important;
+    }
+    .error-text {
+        margin: auto;
+        color: red;
+        font-size: 18px;
     }
 </style>
