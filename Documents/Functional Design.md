@@ -138,25 +138,32 @@ automated testing integration. Automated testing integration could be added in t
 
 ### Log in
 The first wireframe is the login.
+It's a simple page which contains only 4 elements. Two input fields, for the username and for the password. A button which will log in the user if the input is correct.
 
 ![](assets/wireframes/LoginWireFrame.drawio.png)
 
-It's a simple page which contains only 4 elements. Two input fields, for the username and for the password. A button which will log in the user if the input is correct.
 
 ### Navegation
 
+Navigation Bar: On the left side, there’s a vertical navigation bar. Below it are four menu items: Tests, Sprints, Modules, User & Roles. These likely represent different sections of the application that users can navigate to.
+Main Area: The main area of the interface will displays information of each menu item.
+Top Right Corner: At the top right corner, there are icons for Notifications and User profile/settings.
 ![](assets/wireframes/NavegationWireFrame.drawio.png)
 
 ### List All Sprints
-
+Main Area: The main area of the interface displays a table for tracking sprints. The table has columns for ID, Title, Start Date, and Due Date. Each row in the table represents a sprint and has options to Edit, Delete, view Details or generate a Report. This suggests that users can manage sprints directly from this interface.
+Top Right Corner: At the top right corner, there’s also an “Add Sprint” button next to them. Which likely allows users to create new sprints.
 ![](assets/wireframes/SprintsWireFrame.drawio.png)
 
+### List All Tests
+Main Area: The main area of the interface displays a table for tracking tests. The table has columns for ID, Title, Modules, and Weight. Each row in the table represents a test and has options to Edit, Delete, view Details or generate a Report. This suggests that users can manage tests directly from this interface.
+At the top right corner, there is an “Add Test” button next to them, which likely allows users to create new tests.
+![](assets/wireframes/TestCasesWireFrame.drawio.png)
 
-### Test case board
-The second wireframe is the main page.
+### List All Modules
 
-![](assets/wireframes/BoardWireFrame.drawio.png)
 
+![](assets/wireframes/ModulesWireFrame.drawio.png)
 It contains the board that will contain the columns, which will contain the test cases. On the top of it is a search bar where you can type name of test cases to search. On the right of, there is a button to order by weight, if disabled will be ordered by user movement choice.
 
 On the left side there is already a column added. It has a name, which is visible on the top. Inside the column are test cases, in this example there is 1, it will only show its name, for more information you have to click on it. Below all test cases in the column, a button will be shown. It will allow the user to create a new test case.
