@@ -336,6 +336,12 @@ The burn down chart started out low, as we had not yet had the starting meeting.
 #### Rubén
 #### Ferhat
 
+This sprint, me and my friend have done the database together. But we had to change it twice. Now it's much better than previous one.
+Probably we will change small things on database but, it shouldn't be a problem.
+We had to change the database because of the leek of communication with our teacher and client. We thought we can use
+a database management system that we are not allow to use, that's why we had to change the database.
+For next time I will make sure that we are allow to use what we want to use before implementing it.
+
 ## Sprint 2
 *Slight downfall*
 
@@ -441,6 +447,12 @@ making necessary adaptations grounded on feedback. The integration of the new te
 #### Justin
 #### Rubén
 #### Ferhat
+During this sprint, my focus was changing API calls for users, middlewares, and creating token. I was done with these last sprint but
+we have changed the database for users and I had to change it from the backend. Then my friend Viktor created a generic class
+for queries and I had to change again. At the end we were done with the whole backend, with using generic class.
+Communication could've been much better, but it wasn't the worst. If my team-mate told me that he was working on generic 
+class for backend, I wouldn't work on API calls for users and would have work on something else for the project.
+For next time, I would say everyone should be more clear what they are working on.
 
 ## Sprint 3
 *The redemption*
@@ -872,7 +884,7 @@ Yaroslav
 ### Meeting 30 - 28.01.2024 16:00
 Scrum Master - Jafar
 
-This is the last meeting. All of us gathered so we can finish everything, and send the project.
+This is the last meeting. All of us gathered, so we can finish everything, and send the project.
 
 Present:
 Ferhat,
@@ -906,3 +918,10 @@ Board at the End Of Sprint
 #### Justin
 #### Rubén
 #### Ferhat
+Finally, we are done with the project. In this sprint we all worked on frontend. Unfortunately, I was sick on 7th week.
+I have done line and donut chart for
+sprint dashboard. It was hard coded before, now it's connected to backend and shows how many tests have passed and how many
+tests needs to be done in that sprint.
+Nothing went wrong, everything was good with my team-mates, and we have finished the project on time. We were much better
+with communication part as well. At the end we are delivering a web application that has a role-based login system that you
+can create sprints, tests and test steps. We are happy with our project now.
