@@ -14,16 +14,17 @@ Revision: 1.2
 
 
 # Targets
-- To carry out this project successfully we have to increase our programming skills, specifically
-  with JavaScript. Not all members know this language, so we must learn and practice.
-- Successfully complete all the requirements that Parantion has asked of us.
-- Be able to complete all proposed tasks on time.
-- As a team we want to be organized. There will be 3 weekly meetings to advance the project 
-  and talk to each other to assign tasks.
-- We want to be an efficient team. To do this, first we need to be organized and, from here, 
-  we have to work hard
-- We must cooperate and help each other. If we avoid conflicts we will have a happy and motivated 
-  team. There will be peace and you will be able to work better
+- To carry out this project successfully we have to increase our programming skills, specifically with JavaScript, html and css. Not all members know this language, so we must learn and practice it. We will also use svelte, a front-end component framework. Also, we will have to connect the project to a database to be able to make it work and store all the data, for this we will use PostgreSQL.
+- Successfully comply with all the requirements that Parantion has requested of us. Above all, keep in mind the requirement to implement notifications.
+- Be able to complete all the tasks proposed for each Sprint.
+- Finish the product for the customer before final delivery.
+- Talk to the client to know exactly what they need. Hold the necessary meetings so that the client and we are clear about the path to follow.
+- As a team we want to be organized. There will be at least 3 weekly meetings to advance the project and talk to each other to assign tasks. Whenever necessary we will increase the number of meetings
+- We want to be an efficient team. To do this, we must first organize ourselves and, from here,
+  we have to work hard. Based on the Scrum methodology, we will assign a Scrum Master for each Sprint.
+- We must cooperate and help each other. If we avoid conflicts we will have a happy and motivated life.
+  equipment. There will be peace and you will be able to work better. 
+- We need to be constant and for all of us to form a team together. We will help each other to make the best project we can.
 # The Assignment
 
 Parantion wants to develop a regression testing management system to better track and manage their manual regression

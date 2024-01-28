@@ -1,6 +1,14 @@
 # Client Communication Log
 
-### Introduction
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Sprint 0](#Sprint 0)
+- [Sprint 1](#Sprint 1)
+- [Sprint 2](#Sprint 2)
+- [Sprint 3](#Sprint 3)
+
+## Introduction
 
 In this document, all the communication between us and the
 client will be displayed. There have been no emails sent 
@@ -51,18 +59,19 @@ Admins: reset board, delete tests, add tests, edit tests''
 
 *5/12/23* **Viktor**: Hello, these are the wireframes we created. Wanted to shared them with you for possible feedback.
 this is for the place where you can see a list of all test cases, outside of a board.
-
+![](.ClientLog_images/ListOfAllTestCases.drawio.png)
 -----------------------------------------------
 This one is for creating a new test case
-
+![](.ClientLog_images/CreateTestIssue.drawio.png)
 ----------------------------------------------
 This is the page which opens when you click on a test case and you can see more information about it
-
+![](.ClientLog_images/TestCaseMoreInfoWireFrame.drawio.png)
 -----------------------------------------
 This is the main screen with the board, where you can put columns and issues.
-
+![](.ClientLog_images/BoardWireFrame.drawio.png)
 ------------------------------
 and a simple log in page
+![](.ClientLog_images/LogInWireframe.drawio.png)
 
 *6/12/23* **Nick**: i'll take a look at them today
 is this a overview of a sprint ?

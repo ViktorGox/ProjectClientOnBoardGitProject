@@ -9,6 +9,7 @@
     export let selectedStep = null;
     let testCaseName;
     let showAddTeststepPopup = false;
+    let notificationMessage='';
     let testSteps = [];
     let newTeststep = {
         stepnr: "",
@@ -99,6 +100,25 @@
     }
 
     async function addTestStep() {
+        if (!newTeststep.title){
+            showNotification('Title must be not null')
+            return;
+        } if (!newTeststep.stepnr){
+            showNotification('Step number must be not null')
+            return;
+        }   if (newTeststep.stepnr<1){
+            showNotification('Step number must be a positive number')
+            return;
+        }    if (!newTeststep.weight){
+            showNotification('Weight must be not null')
+            return;
+        }   if (newTeststep.weight<1){
+            showNotification('Weight must be a positive number')
+            return;
+        }    if (!newTeststep.testlog){
+            showNotification('Testlog must be not null')
+            return;
+        }
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
         let testId = parts[parts.length - 1];
@@ -123,7 +143,12 @@
         };
 
     }
-
+    function showNotification(message) {
+        notificationMessage = message;
+        setTimeout(() => {
+            notificationMessage = '';
+        }, 5000);
+    }
     function editPage() {
         const currentRoute = router.current;
         const parts = currentRoute.split('/');
@@ -228,6 +253,7 @@
         <label for="testlog">Testlog:</label>
         <input id="testlog" type="text" bind:value={newTeststep.testlog}/>
 
+        <div id="notification" class="error-text">{notificationMessage}</div>
         <button class="add-teststep-button" on:click={addTestStep}>Add a new Test step</button>
     </div>
 
@@ -491,5 +517,10 @@
         min-width: 130px;
         max-width: 200px;
         max-height: 200px;
+    }
+    .error-text {
+        color: red;
+        border-color: red;
+        border-width: 2px;
     }
 </style>
