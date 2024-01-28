@@ -1,6 +1,14 @@
 # Client Communication Log
 
-### Introduction
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Sprint 0](#Sprint 0)
+- [Sprint 1](#Sprint 1)
+- [Sprint 2](#Sprint 2)
+- [Sprint 3](#Sprint 3)
+
+## Introduction
 
 In this document, all the communication between us and the
 client will be displayed. There have been no emails sent 
