@@ -56,8 +56,8 @@ A diagram showing how each component is connected.
 
 ## WebSocket Protocol
 
-For more on our WebSocket setup, see the [WebSocket Protocol Documentation](SocketInstructions.md).
+For more on our WebSocket setup, see the **[WebSocket Protocol Documentation](SocketInstructions.md)**.
 
 ## API Documentation
 
-For details on our API, check out the [API Specification](APIdocumentation.md).
+For details on our API, check out the __**[API Specification](APIdocumentation.md)**__.
