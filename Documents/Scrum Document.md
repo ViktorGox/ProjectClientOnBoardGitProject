@@ -5,7 +5,24 @@
 - [Introduction](#introduction)
 - [Start up](#start-up)
 - [Backlog](#backlog)
-
+- [Introduction](#introduction)
+- [Start up](#start-up)
+- [Backlog](#backlog)
+- [Sprint 0](#sprint 0)
+  - [End of sprint 0](#end of sprint 0)
+  - [Retrospectives](#retrospectives)
+- [Sprint 1](#sprint 1)
+  - [End of sprint 1](#end of sprint 1)
+  - [Burn down chart](#burn down chart)
+  - [Retrospectives](#retrospectives)
+- [Sprint 2](#sprint 2)
+  - [End of sprint 2](#end of sprint 2)
+  - [Burn down chart](#burn down chart)
+  - [Retrospectives](#retrospectives)
+- [Sprint 3](#sprint 3)
+  - [End of sprint 3](#end of sprint 3)
+  - [Burn down chart](#burn down chart)
+  - [Retrospectives](#retrospectives)
 ## Introduction
 In this document you can find all the information about our scrum. Meeting information, git boards, results and retrospectives.
 Each meeting is numerated, after that it contains the date and time.
@@ -305,7 +322,7 @@ Board at the End Of Sprint
 One issue that was planned to be done remained, and that was the possibility to attach files. The assigned person was unable to finish it. So it will be moved to the next sprint.
 
 ### Burn down chart
-![](.Scrum Document_images/35f6f8ae.png)
+![](.Scrum Document_images/1881b8f3.png)
 
 The burn down chart started out low, as we had not yet had the starting meeting. The first increase is that first meeting, where we created a backlog for it. The reason it does not go down after, is that the choice of issues was not good enough, and we had to continuously add new issue throughout the sprint.
 
@@ -867,6 +884,18 @@ Justin,
 Yaroslav
 
 Absent:
+
+### End of sprint 3
+Board at the End Of Sprint
+
+![](.Scrum Document_images/594fd214.png)
+![](.Scrum Document_images/1e2dd698.png)
+![](.Scrum Document_images/e3660f63.png)
+![](.Scrum Document_images/4d18ecbe.png)
+![](.Scrum Document_images/f0a36bd2.png)
+
+### Burn down chart
+![](.Scrum Document_images/e4a3b2f0.png)
 
 ### Retrospectives
 
